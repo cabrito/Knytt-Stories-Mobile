@@ -30,6 +30,13 @@ public class World {
         return mapFileOffsets.get(new Pair<Integer>(x,y));
     }
 
+    public boolean screenOffsetExists(int x, int y) {
+        if(mapFileOffsets.containsKey(new Pair<Integer>(x,y)))
+            return true;
+        else
+            return false;
+    }
+
     public String getWorldName() {
         return worldName;
     }

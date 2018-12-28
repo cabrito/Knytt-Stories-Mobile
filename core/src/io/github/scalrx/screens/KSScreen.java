@@ -1,6 +1,7 @@
 package io.github.scalrx.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
@@ -68,27 +69,6 @@ public class KSScreen implements Screen {
         playMusic();
     }
 
-    private void playMusic() {
-        // Take care to make sure music and ambiance is actually set!
-        // TODO: Custom music and atmos
-        if(musicID > 0) {
-            music = Gdx.audio.newMusic(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg"));
-            music.setLooping(true);
-            music.play();
-        }
-        if(atmosAID > 0) {
-            atmosA = Gdx.audio.newMusic(Gdx.files.internal("Data/Ambiance/Ambi" + atmosAID + ".ogg"));
-            atmosA.setLooping(true);
-            atmosA.play();
-        }
-        if(atmosBID > 0) {
-            atmosB = Gdx.audio.newMusic(Gdx.files.internal("Data/Ambiance/Ambi" + atmosAID + ".ogg"));
-            atmosB.setLooping(true);
-            atmosB.play();
-        }
-
-    }
-
     @Override
     public void show() {
 
@@ -110,6 +90,22 @@ public class KSScreen implements Screen {
         game.batch.begin();
         //font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
         game.batch.end();
+        if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && (game.world.screenOffsetExists(xID - 1, yID))) {
+            game.setScreen(new KSScreen(game,xID - 1, yID));
+            dispose();
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) && (game.world.screenOffsetExists(xID + 1, yID))) {
+            game.setScreen(new KSScreen(game,xID + 1, yID));
+            dispose();
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && (game.world.screenOffsetExists(xID, yID - 1))) {
+            game.setScreen(new KSScreen(game,xID, yID - 1));
+            dispose();
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)  && (game.world.screenOffsetExists(xID, yID + 1))) {
+            game.setScreen(new KSScreen(game,xID, yID + 1));
+            dispose();
+        }
     }
 
     @Override
@@ -142,9 +138,33 @@ public class KSScreen implements Screen {
         bg.dispose();
 
         // Dispose music
-        music.dispose();
-        atmosA.dispose();
-        atmosB.dispose();
+        if(music != null)
+            music.dispose();
+        if(atmosA != null)
+            atmosA.dispose();
+        if(atmosB != null)
+            atmosB.dispose();
+    }
+
+    private void playMusic() {
+        // Take care to make sure music and ambiance is actually set!
+        // TODO: Custom music and atmos
+        if(musicID > 0) {
+            music = Gdx.audio.newMusic(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg"));
+            music.setLooping(true);
+            music.play();
+        }
+        if(atmosAID > 0) {
+            atmosA = Gdx.audio.newMusic(Gdx.files.internal("Data/Ambiance/Ambi" + atmosAID + ".ogg"));
+            atmosA.setLooping(true);
+            atmosA.play();
+        }
+        if(atmosBID > 0) {
+            atmosB = Gdx.audio.newMusic(Gdx.files.internal("Data/Ambiance/Ambi" + atmosAID + ".ogg"));
+            atmosB.setLooping(true);
+            atmosB.play();
+        }
+
     }
 
     /**
@@ -159,6 +179,7 @@ public class KSScreen implements Screen {
         // Split up each tileset into 24x24 whole sections. Any section that is not whole will not be considered.
         TextureRegion[][] splitTilesA = TextureRegion.split(tilesetA, 24, 24);
         TextureRegion[][] splitTilesB = TextureRegion.split(tilesetB, 24, 24);
+
         tiledMap = new TiledMap();
 
         // Here, we interpret and assemble the tile information for Layers 0 - 3 (Scenery)
@@ -191,7 +212,8 @@ public class KSScreen implements Screen {
 
         // Produce the "backgroundID" gradient layer. The gradient is a single "strip" png.
         bg = new Texture(Gdx.files.internal("Data/Gradients/Gradient"+ backgroundID + ".png"));
-        TiledMapTileLayer bgLayer = new TiledMapTileLayer(25, 1, 24, 240);
+        TiledMapTileLayer bgLayer = new TiledMapTileLayer(600/bg.getWidth(),
+                240/bg.getHeight(), bg.getWidth(), bg.getHeight());
         TiledMapTileLayer.Cell bgCell = new TiledMapTileLayer.Cell();
         bgCell.setTile(new StaticTiledMapTile(new TextureRegion(bg)));
 
