@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -45,9 +46,10 @@ public class KSScreen implements Screen {
     private TiledMapRenderer tiledMapRenderer;
     private Texture tilesetA;
     private Texture tilesetB;
-    private Music music;
-    private Music atmosA;
-    private Music atmosB;
+    //private Music music;
+    //private Music atmosA;
+    //private Music atmosB;
+    BitmapFont font = new BitmapFont();
     private final int[] BACKGROUND_LAYER = {4};
     private final int[] PRIMARY_LAYERS = {0,1,2,3};
 
@@ -66,7 +68,17 @@ public class KSScreen implements Screen {
         // Assemble data and layers
         assembleData();
         assembleScenery();
-        playMusic();
+
+        // Now that we have the musicID, atmosA, and atmosB bytes, try loading such audio files TODO: Custom files!
+        if(musicID > 0) {
+            game.assetManager.load(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path(), Music.class);
+        }
+        if(atmosAID > 0) {
+            game.assetManager.load(Gdx.files.internal("Data/Ambiance/Ambi" + atmosAID + ".ogg").path(), Music.class);
+        }
+        if(atmosBID > 0) {
+            game.assetManager.load(Gdx.files.internal("Data/Ambiance/Ambi" + atmosBID + ".ogg").path(), Music.class);
+        }
     }
 
     @Override
@@ -83,13 +95,27 @@ public class KSScreen implements Screen {
 
         tiledMapRenderer.setView(camera);
 
+        // Proceed only if all the assets we need have been loaded
+
+        if(game.assetManager.update()) {
+            /* Music and Ambiance */
+            playMusicAndAmbiance();
+        }
+
         // Render the KSScreen in the desired order TODO: Leave space for Juni
         tiledMapRenderer.render(BACKGROUND_LAYER);
         // renderJuni();
         tiledMapRenderer.render(PRIMARY_LAYERS);
         game.batch.begin();
-        //font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
+
+        // Print the current KSScreen coordinates in the bottom left of the screen.
+        font.draw(game.batch, "(" + xID + ", " + yID + ")", 10, 20);
+        //font.draw(game.batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
+
+        // Finish drawing to the screen
         game.batch.end();
+
+        // Movement-related controls for us to use temporarily
         if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && (game.world.screenOffsetExists(xID - 1, yID))) {
             game.setScreen(new KSScreen(game,xID - 1, yID));
             dispose();
@@ -136,35 +162,66 @@ public class KSScreen implements Screen {
         tilesetA.dispose();
         tilesetB.dispose();
         bg.dispose();
-
-        // Dispose music
-        if(music != null)
-            music.dispose();
-        if(atmosA != null)
-            atmosA.dispose();
-        if(atmosB != null)
-            atmosB.dispose();
     }
 
-    private void playMusic() {
-        // Take care to make sure music and ambiance is actually set!
+    private void playMusicAndAmbiance() {
         // TODO: Custom music and atmos
+        // Logic for playing/stopping atmosA
         if(musicID > 0) {
-            music = Gdx.audio.newMusic(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg"));
-            music.setLooping(true);
-            music.play();
-        }
-        if(atmosAID > 0) {
-            atmosA = Gdx.audio.newMusic(Gdx.files.internal("Data/Ambiance/Ambi" + atmosAID + ".ogg"));
-            atmosA.setLooping(true);
-            atmosA.play();
-        }
-        if(atmosBID > 0) {
-            atmosB = Gdx.audio.newMusic(Gdx.files.internal("Data/Ambiance/Ambi" + atmosAID + ".ogg"));
-            atmosB.setLooping(true);
-            atmosB.play();
+            if(game.assetManager.isLoaded(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path())) {
+                if(!game.assetManager.get(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path(), Music.class).isPlaying()) {
+                    if(game.music != null) {
+                        game.music.stop();
+                        game.music.dispose();
+                    }
+                    game.music = game.assetManager.get(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path(), Music.class);
+                    game.music.setLooping(true);
+                    game.music.play();
+                }
+
+            }
+        } else {
+            if(game.music != null)
+                game.music.stop();
         }
 
+        // Logic for playing/stopping atmosA
+        if(atmosAID > 0) {
+            if(game.assetManager.isLoaded(Gdx.files.internal("Data/Ambiance/Ambi" + atmosAID + ".ogg").path())) {
+                if(!game.assetManager.get(Gdx.files.internal("Data/Ambiance/Ambi" + atmosAID + ".ogg").path(), Music.class).isPlaying()) {
+                    if(game.atmosA != null) {
+                        game.atmosA.stop();
+                        game.atmosA.dispose();
+                    }
+                    game.atmosA = game.assetManager.get(Gdx.files.internal("Data/Ambiance/Ambi" + atmosAID + ".ogg").path(), Music.class);
+                    game.atmosA.setLooping(true);
+                    game.atmosA.play();
+                }
+
+            }
+        } else {
+            if(game.atmosA != null)
+                game.atmosA.stop();
+        }
+
+        // Logic for playing/stopping atmosB
+        if(atmosBID > 0) {
+            if(game.assetManager.isLoaded(Gdx.files.internal("Data/Ambiance/Ambi" + atmosBID + ".ogg").path())) {
+                if(!game.assetManager.get(Gdx.files.internal("Data/Ambiance/Ambi" + atmosBID + ".ogg").path(), Music.class).isPlaying()) {
+                    if(game.atmosB != null) {
+                        game.atmosB.stop();
+                        game.atmosB.dispose();
+                    }
+                    game.atmosB = game.assetManager.get(Gdx.files.internal("Data/Ambiance/Ambi" + atmosBID + ".ogg").path(), Music.class);
+                    game.atmosB.setLooping(true);
+                    game.atmosB.play();
+                }
+
+            }
+        } else {
+            if(game.atmosB != null)
+                game.atmosB.stop();
+        }
     }
 
     /**

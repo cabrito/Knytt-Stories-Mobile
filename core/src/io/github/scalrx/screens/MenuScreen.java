@@ -7,18 +7,23 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
 import io.github.scalrx.KnyttStories;
+import io.github.scalrx.World;
 
 public class MenuScreen implements Screen {
 
     final KnyttStories game;
     OrthographicCamera camera;
-    Texture guiButton;  // REMOVE?!
 
     public MenuScreen(final KnyttStories game) {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, KnyttStories.V_WIDTH,KnyttStories.V_HEIGHT);
-        guiButton = new Texture("System/Gui_btn_medium.png");   // REMOVE?!
+
+        // Load the various components of the GUI we expect to use
+        this.game.assetManager.load(Gdx.files.internal("System/Gui_btn_medium.png").path(), Texture.class);
+
+        // TODO: For now, we initialize our world, but should leave it uninitialized when world selection is implemented.
+        game.world = new World("The Machine", "Nifflas", 2);
     }
 
     @Override
@@ -28,16 +33,26 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        // Clear the screen for drawing the next frame
         Gdx.gl.glClearColor(1f, 1f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // Update the camera for any movement that may occur
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
+        // Begin drawing our GUI to the screen
         game.batch.begin();
-        game.batch.draw(guiButton,(KnyttStories.V_WIDTH/2) - guiButton.getWidth()/2,5);
-        //game.font.draw(game.batch, "Welcome to Drop!!! ", 100, 150);
-        //game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
+
+        // Make sure to only draw if we have all the assets loaded appropriately.
+        if(game.assetManager.update()) {
+            Texture guiButton = game.assetManager.get(Gdx.files.internal("System/Gui_btn_medium.png").path(), Texture.class);
+            game.batch.draw(guiButton,(KnyttStories.V_WIDTH/2) - guiButton.getWidth()/2,5);
+            //game.font.draw(game.batch, "Font Test", 100, 150);
+            //game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
+        }
+
+        // End all drawing from the SpriteBatch
         game.batch.end();
 
         if (Gdx.input.isTouched()) {
@@ -48,7 +63,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        // TODO: Need to add a viewport
     }
 
     @Override
@@ -68,6 +83,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        guiButton.dispose();    // REMOVE?!
+        game.assetManager.unload(Gdx.files.internal("System/Gui_btn_medium.png").path());
+        //guiButton.dispose();    // REMOVE?!
     }
 }
