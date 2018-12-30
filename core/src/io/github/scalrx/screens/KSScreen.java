@@ -99,7 +99,7 @@ public class KSScreen implements Screen {
 
         if(game.assetManager.update()) {
             /* Music and Ambiance */
-            playMusicAndAmbiance();
+            playMusicAndAmbiance(delta);
         }
 
         // Render the KSScreen in the desired order TODO: Leave space for Juni
@@ -164,25 +164,44 @@ public class KSScreen implements Screen {
         bg.dispose();
     }
 
-    private void playMusicAndAmbiance() {
+    private void playMusicAndAmbiance(float delta) {
         // TODO: Custom music and atmos
         // Logic for playing/stopping atmosA
         if(musicID > 0) {
-            if(game.assetManager.isLoaded(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path())) {
-                if(!game.assetManager.get(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path(), Music.class).isPlaying()) {
-                    if(game.music != null) {
-                        game.music.stop();
-                        game.music.dispose();
+            if(game.music != null) {
+                if(game.music.isPlaying()) {
+                    if(!game.assetManager.get(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path(),Music.class).isPlaying() || (game.music.getVolume() < 1f)) {
+                        game.music.setVolume(game.music.getVolume() - 0.2f*delta);
+                        System.out.println("Volume = " + (game.music.getVolume() - 0.2f*delta));
+                        if(game.music.getVolume() < 0.02f) {
+                            game.music.stop();
+                            game.music = game.assetManager.get(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path(),Music.class);
+                            game.music.setVolume(1f);
+                            game.music.play();
+                        }
                     }
-                    game.music = game.assetManager.get(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path(), Music.class);
-                    game.music.setLooping(true);
+                } else {
+                    game.music = game.assetManager.get(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path(),Music.class);
+                    game.music.setVolume(1f);
                     game.music.play();
+                }
+            } else {
+                game.music = game.assetManager.get(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path(),Music.class);
+                game.music.setVolume(1f);
+                game.music.play();
+            }
+        } else {
+            if(game.music != null) {
+                if(game.music.isPlaying()) {
+                    game.music.setVolume(game.music.getVolume() - 0.2f*delta);
+                    System.out.println("Volume = " + (game.music.getVolume() - 0.2f*delta));
+                    if(game.music.getVolume() < 0.02f) {
+                        game.music.stop();
+                        game.music.setVolume(1f);
+                    }
                 }
 
             }
-        } else {
-            if(game.music != null)
-                game.music.stop();
         }
 
         // Logic for playing/stopping atmosA
