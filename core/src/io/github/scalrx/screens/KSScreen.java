@@ -46,9 +46,6 @@ public class KSScreen implements Screen {
     private TiledMapRenderer tiledMapRenderer;
     private Texture tilesetA;
     private Texture tilesetB;
-    //private Music music;
-    //private Music atmosA;
-    //private Music atmosB;
     BitmapFont font = new BitmapFont();
     private final int[] BACKGROUND_LAYER = {4};
     private final int[] PRIMARY_LAYERS = {0,1,2,3};
@@ -116,19 +113,19 @@ public class KSScreen implements Screen {
         game.batch.end();
 
         // Movement-related controls for us to use temporarily
-        if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && (game.world.screenOffsetExists(xID - 1, yID))) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
             game.setScreen(new KSScreen(game,xID - 1, yID));
             dispose();
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) && (game.world.screenOffsetExists(xID + 1, yID))) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
             game.setScreen(new KSScreen(game,xID + 1, yID));
             dispose();
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && (game.world.screenOffsetExists(xID, yID - 1))) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             game.setScreen(new KSScreen(game,xID, yID - 1));
             dispose();
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)  && (game.world.screenOffsetExists(xID, yID + 1))) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
             game.setScreen(new KSScreen(game,xID, yID + 1));
             dispose();
         }
@@ -172,7 +169,6 @@ public class KSScreen implements Screen {
                 if(game.music.isPlaying()) {
                     if(!game.assetManager.get(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path(),Music.class).isPlaying() || (game.music.getVolume() < 1f)) {
                         game.music.setVolume(game.music.getVolume() - 0.2f*delta);
-                        System.out.println("Volume = " + (game.music.getVolume() - 0.2f*delta));
                         if(game.music.getVolume() < 0.02f) {
                             game.music.stop();
                             game.music = game.assetManager.get(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path(),Music.class);
@@ -194,7 +190,6 @@ public class KSScreen implements Screen {
             if(game.music != null) {
                 if(game.music.isPlaying()) {
                     game.music.setVolume(game.music.getVolume() - 0.2f*delta);
-                    System.out.println("Volume = " + (game.music.getVolume() - 0.2f*delta));
                     if(game.music.getVolume() < 0.02f) {
                         game.music.stop();
                         game.music.setVolume(1f);
@@ -308,51 +303,61 @@ public class KSScreen implements Screen {
     // -----METHODS FOR ASSEMBLING DATA FOR KSScreen-----
     private void assembleData() {
         //TODO: FIX path!!!!
-        try {
-            RandomAccessFile mapFile = new RandomAccessFile(Gdx.files.external("knytt/" +
-                    game.world.getAuthor() + " - " + game.world.getWorldName() + "/Map").file(), "r");
+        if(game.world.screenOffsetExists(xID,yID)) {
             try {
-                // Seek the specific location in the Map file
-                mapFile.seek(game.world.getScreenOffset(xID,yID));
+                RandomAccessFile mapFile = new RandomAccessFile(Gdx.files.external("knytt/" +
+                        game.world.getAuthor() + " - " + game.world.getWorldName() + "/Map").file(), "r");
+                try {
+                    // Seek the specific location in the Map file
+                    mapFile.seek(game.world.getScreenOffset(xID, yID));
 
-                // Copy byte data for layers 0 - 3
-                for(int scnLayer = 0; scnLayer < 4; scnLayer++) {
-                    for(int row = 0; row < 10; row++) {
-                        for(int column = 0; column < 25; column++) {
-                            sceneryData[scnLayer][row][column] = mapFile.readByte();
+                    // Copy byte data for layers 0 - 3
+                    for (int scnLayer = 0; scnLayer < 4; scnLayer++) {
+                        for (int row = 0; row < 10; row++) {
+                            for (int column = 0; column < 25; column++) {
+                                sceneryData[scnLayer][row][column] = mapFile.readByte();
+                            }
                         }
                     }
+
+                    // Copy in byte data for layers 4 - 7
+                    for (int objLayer = 4; objLayer <= 7; objLayer++) {
+                        // Read object number
+                        for (int row = 0; row < 10; row++) {
+                            for (int column = 0; column < 25; column++) {
+                                objectData[objLayer - 4][row][column] = mapFile.readByte();
+                            }
+                        }
+                        // Read bank number
+                        for (int row = 0; row < 10; row++) {
+                            for (int column = 25; column < 50; column++) {
+                                objectData[objLayer - 4][row][column] = mapFile.readByte();
+                            }
+                        }
+                    }
+
+                    // Initialize KSScreen attributes
+                    tsetAID = mapFile.readByte();
+                    tsetBID = mapFile.readByte();
+                    atmosAID = mapFile.readByte();
+                    atmosBID = mapFile.readByte();
+                    musicID = mapFile.readByte();
+                    backgroundID = mapFile.readByte();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-
-                // Copy in byte data for layers 4 - 7
-                for(int objLayer = 4; objLayer <= 7; objLayer++) {
-                    // Read object number
-                    for(int row = 0; row < 10; row++) {
-                        for(int column = 0; column < 25; column++) {
-                            objectData[objLayer - 4][row][column] = mapFile.readByte();
-                        }
-                    }
-                    // Read bank number
-                    for(int row = 0; row < 10; row++) {
-                        for(int column = 25; column < 50; column++) {
-                            objectData[objLayer - 4][row][column] = mapFile.readByte();
-                        }
-                    }
-                }
-
-                // Initialize KSScreen attributes
-                tsetAID = mapFile.readByte();
-                tsetBID = mapFile.readByte();
-                atmosAID = mapFile.readByte();
-                atmosBID = mapFile.readByte();
-                musicID = mapFile.readByte();
-                backgroundID = mapFile.readByte();
-
-            } catch(IOException e) {
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } else {
+            // Initialize KSScreen attributes
+            tsetAID = 0;
+            tsetBID = 0;
+            atmosAID = 0;
+            atmosBID = 0;
+            musicID = 0;
+            backgroundID = 0;
         }
     }
 }
