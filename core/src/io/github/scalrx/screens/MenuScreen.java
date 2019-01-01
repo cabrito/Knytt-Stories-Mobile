@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
+import io.github.scalrx.KSFiles;
 import io.github.scalrx.KnyttStories;
 import io.github.scalrx.World;
 
@@ -22,8 +23,9 @@ public class MenuScreen implements Screen {
         // Load the various components of the GUI we expect to use
         this.game.assetManager.load(Gdx.files.internal("System/Gui_btn_medium.png").path(), Texture.class);
 
-        // TODO: For now, we initialize our world, but should leave it uninitialized when world selection is implemented.
-        game.world = new World("The Machine", "Nifflas", 2);
+        // TODO: For now, we initialize our world so that we have something to play
+        game.world = new World("UncleSporky", "Don't Eat the Mushroom", 2);
+        game.files = new KSFiles(game.world.getAuthor(), game.world.getWorldName());
     }
 
     @Override

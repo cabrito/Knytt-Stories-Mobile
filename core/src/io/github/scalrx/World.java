@@ -16,7 +16,7 @@ public class World {
     HashMap<Pair<Integer>, Long> mapFileOffsets = new HashMap<Pair<Integer>, Long>();
 
     // Constructor (info comes from World.ini?)
-    public World(String worldName, String author, int size) {
+    public World(String author, String worldName, int size) {
         this.worldName = worldName;
         this.author = author;
         this.size = size;
@@ -52,7 +52,7 @@ public class World {
 
         try {
             // First, assign the directory we're working with TODO: The default directory is ~/knytt. FIX!!!
-            FileInputStream mapFile = (FileInputStream) Gdx.files.external("knytt/" +
+            FileInputStream mapFile = (FileInputStream) Gdx.files.external("Knytt Stories Mobile/" +
                     author + " - " + worldName + "/Map").read();
 
             //Now, progress through the file finding level headers

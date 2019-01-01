@@ -46,11 +46,11 @@ public class KSScreen implements Screen {
     private TiledMapRenderer tiledMapRenderer;
     private Texture tilesetA;
     private Texture tilesetB;
+    private Texture bg;
+
     BitmapFont font = new BitmapFont();
     private final int[] BACKGROUND_LAYER = {4};
     private final int[] PRIMARY_LAYERS = {0,1,2,3};
-
-    private Texture bg;
 
     // Constructor
     public KSScreen(final KnyttStories game, int xID, int yID) {
@@ -60,21 +60,21 @@ public class KSScreen implements Screen {
 
         camera = new OrthographicCamera();
         camera.position.set(KnyttStories.V_WIDTH/2,KnyttStories.V_HEIGHT/2,0);
-        viewport = new FitViewport(KnyttStories.V_WIDTH,KnyttStories.V_HEIGHT, camera);
+        viewport = new FitViewport(KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT, camera);
 
         // Assemble data and layers
         assembleData();
         assembleScenery();
 
-        // Now that we have the musicID, atmosA, and atmosB bytes, try loading such audio files TODO: Custom files!
-        if(musicID > 0) {
-            game.assetManager.load(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path(), Music.class);
+        // Now that we have the musicID, atmosA, and atmosB bytes, try loading such audio files
+        if((musicID & 0xFF) > 0) {
+            game.assetManager.load(game.files.music(musicID), Music.class);
         }
-        if(atmosAID > 0) {
-            game.assetManager.load(Gdx.files.internal("Data/Ambiance/Ambi" + atmosAID + ".ogg").path(), Music.class);
+        if((atmosAID & 0xFF) > 0) {
+            game.assetManager.load(game.files.ambiance(atmosAID), Music.class);
         }
-        if(atmosBID > 0) {
-            game.assetManager.load(Gdx.files.internal("Data/Ambiance/Ambi" + atmosBID + ".ogg").path(), Music.class);
+        if((atmosBID & 0xFF) > 0) {
+            game.assetManager.load(game.files.ambiance(atmosBID), Music.class);
         }
     }
 
@@ -86,14 +86,13 @@ public class KSScreen implements Screen {
     @Override
     public void render(float delta) {
         game.batch.setProjectionMatrix(camera.combined);
-        Gdx.gl.glClearColor(100f / 255f, 100f / 255f, 250f / 255f, 1f);
+        Gdx.gl.glClearColor(0f / 255f, 0 / 255f, 0f / 255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
 
         tiledMapRenderer.setView(camera);
 
         // Proceed only if all the assets we need have been loaded
-
         if(game.assetManager.update()) {
             /* Music and Ambiance */
             playMusicAndAmbiance(delta);
@@ -155,6 +154,7 @@ public class KSScreen implements Screen {
     @Override
     public void dispose() {
         //texture.dispose();
+
         tiledMap.dispose();
         tilesetA.dispose();
         tilesetB.dispose();
@@ -162,27 +162,26 @@ public class KSScreen implements Screen {
     }
 
     private void playMusicAndAmbiance(float delta) {
-        // TODO: Custom music and atmos
-        // Logic for playing/stopping atmosA
-        if(musicID > 0) {
+        // Logic for playing/stopping music
+        if((musicID & 0xFF) > 0) {
             if(game.music != null) {
                 if(game.music.isPlaying()) {
-                    if(!game.assetManager.get(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path(),Music.class).isPlaying() || (game.music.getVolume() < 1f)) {
+                    if(!game.assetManager.get(game.files.music(musicID), Music.class).isPlaying() || (game.music.getVolume() < 1f)) {
                         game.music.setVolume(game.music.getVolume() - 0.2f*delta);
                         if(game.music.getVolume() < 0.02f) {
                             game.music.stop();
-                            game.music = game.assetManager.get(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path(),Music.class);
+                            game.music = game.assetManager.get(game.files.music(musicID), Music.class);
                             game.music.setVolume(1f);
                             game.music.play();
                         }
                     }
                 } else {
-                    game.music = game.assetManager.get(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path(),Music.class);
+                    game.music = game.assetManager.get(game.files.music(musicID), Music.class);
                     game.music.setVolume(1f);
                     game.music.play();
                 }
             } else {
-                game.music = game.assetManager.get(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path(),Music.class);
+                game.music = game.assetManager.get(game.files.music(musicID), Music.class);
                 game.music.setVolume(1f);
                 game.music.play();
             }
@@ -200,14 +199,14 @@ public class KSScreen implements Screen {
         }
 
         // Logic for playing/stopping atmosA
-        if(atmosAID > 0) {
-            if(game.assetManager.isLoaded(Gdx.files.internal("Data/Ambiance/Ambi" + atmosAID + ".ogg").path())) {
-                if(!game.assetManager.get(Gdx.files.internal("Data/Ambiance/Ambi" + atmosAID + ".ogg").path(), Music.class).isPlaying()) {
+        if((atmosAID & 0xFF) > 0) {
+            if(game.assetManager.isLoaded(game.files.ambiance(atmosAID))) {
+                if(!game.assetManager.get(game.files.ambiance(atmosAID), Music.class).isPlaying()) {
                     if(game.atmosA != null) {
                         game.atmosA.stop();
                         game.atmosA.dispose();
                     }
-                    game.atmosA = game.assetManager.get(Gdx.files.internal("Data/Ambiance/Ambi" + atmosAID + ".ogg").path(), Music.class);
+                    game.atmosA = game.assetManager.get(game.files.ambiance(atmosAID), Music.class);
                     game.atmosA.setLooping(true);
                     game.atmosA.play();
                 }
@@ -219,14 +218,14 @@ public class KSScreen implements Screen {
         }
 
         // Logic for playing/stopping atmosB
-        if(atmosBID > 0) {
-            if(game.assetManager.isLoaded(Gdx.files.internal("Data/Ambiance/Ambi" + atmosBID + ".ogg").path())) {
-                if(!game.assetManager.get(Gdx.files.internal("Data/Ambiance/Ambi" + atmosBID + ".ogg").path(), Music.class).isPlaying()) {
+        if((atmosBID & 0xFF) > 0) {
+            if(game.assetManager.isLoaded(game.files.ambiance(atmosBID))) {
+                if(!game.assetManager.get(game.files.ambiance(atmosBID), Music.class).isPlaying()) {
                     if(game.atmosB != null) {
                         game.atmosB.stop();
                         game.atmosB.dispose();
                     }
-                    game.atmosB = game.assetManager.get(Gdx.files.internal("Data/Ambiance/Ambi" + atmosBID + ".ogg").path(), Music.class);
+                    game.atmosB = game.assetManager.get(game.files.ambiance(atmosBID), Music.class);
                     game.atmosB.setLooping(true);
                     game.atmosB.play();
                 }
@@ -244,8 +243,8 @@ public class KSScreen implements Screen {
     private void assembleScenery() {
 
         // Load the appropriate tilesets A and B
-        tilesetA = new Texture(Gdx.files.internal("Data/Tilesets/Tileset"+ tsetAID + ".png"));
-        tilesetB = new Texture(Gdx.files.internal("Data/Tilesets/Tileset"+ tsetBID + ".png"));
+        tilesetA = new Texture(game.files.tileset(tsetAID));
+        tilesetB = new Texture(game.files.tileset(tsetBID));
 
         // Split up each tileset into 24x24 whole sections. Any section that is not whole will not be considered.
         TextureRegion[][] splitTilesA = TextureRegion.split(tilesetA, 24, 24);
@@ -282,7 +281,7 @@ public class KSScreen implements Screen {
         }
 
         // Produce the "backgroundID" gradient layer. The gradient is a single "strip" png.
-        bg = new Texture(Gdx.files.internal("Data/Gradients/Gradient"+ backgroundID + ".png"));
+        bg = new Texture(game.files.gradient(backgroundID));
         TiledMapTileLayer bgLayer = new TiledMapTileLayer(600/bg.getWidth(),
                 240/bg.getHeight(), bg.getWidth(), bg.getHeight());
         TiledMapTileLayer.Cell bgCell = new TiledMapTileLayer.Cell();
@@ -305,8 +304,7 @@ public class KSScreen implements Screen {
         //TODO: FIX path!!!!
         if(game.world.screenOffsetExists(xID,yID)) {
             try {
-                RandomAccessFile mapFile = new RandomAccessFile(Gdx.files.external("knytt/" +
-                        game.world.getAuthor() + " - " + game.world.getWorldName() + "/Map").file(), "r");
+                RandomAccessFile mapFile = new RandomAccessFile(game.files.getWorldDir() + "/Map", "r");
                 try {
                     // Seek the specific location in the Map file
                     mapFile.seek(game.world.getScreenOffset(xID, yID));

@@ -26,6 +26,8 @@ public class KnyttStories extends Game {
 	public Music atmosA;
 	public Music atmosB;
 
+	// Used for simplifying filepaths
+	public KSFiles files;
 
 	@Override
 	public void create () {
