@@ -6,11 +6,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+import io.github.scalrx.utilities.KS_Files;
+
 public class World {
     // World information
     private String worldName;
     private String author;
     private int size;
+
+    // Used for simplifying filepaths
+    public KS_Files files;
 
     // Map information
     HashMap<Pair<Integer>, Long> mapFileOffsets = new HashMap<Pair<Integer>, Long>();
@@ -21,20 +26,20 @@ public class World {
         this.author = author;
         this.size = size;
 
+        // Initialize the files directory specific to the specified world
+        files = new KS_Files(author, worldName);
+
         // Fill out the HashMap with all the offsets from the (uncompressed) Map file.
         createMapFileOffsets();
     }
 
-    // Get the Map file offset for the desired KSScreen
+    // Get the Map file offset for the desired KS_Screen
     public long getScreenOffset(int x, int y) {
         return mapFileOffsets.get(new Pair<Integer>(x,y));
     }
 
     public boolean screenOffsetExists(int x, int y) {
-        if(mapFileOffsets.containsKey(new Pair<Integer>(x,y)))
-            return true;
-        else
-            return false;
+        return mapFileOffsets.containsKey(new Pair<Integer>(x, y));
     }
 
     public String getWorldName() {

@@ -1,17 +1,18 @@
-package io.github.scalrx;
+package io.github.scalrx.utilities;
 
 import com.badlogic.gdx.Gdx;
 
 /*
  * Used for *easier* filesystem access
  */
-public class KSFiles {
+public class KS_Files {
+
     // Filesystem
     private final String ksmDirName = "Knytt Stories Mobile";
     private String worldDir;
 
     // Constructor
-    public KSFiles(String author, String worldName) {
+    public KS_Files(String author, String worldName) {
         worldDir = Gdx.files.external(ksmDirName + "/" + author + " - " + worldName).path();
     }
 

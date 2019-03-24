@@ -2,19 +2,22 @@ package io.github.scalrx.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
-import io.github.scalrx.KSFiles;
+import io.github.scalrx.utilities.KS_Files;
 import io.github.scalrx.KnyttStories;
 import io.github.scalrx.World;
+import io.github.scalrx.utilities.KS_Music;
 
 public class MenuScreen implements Screen {
 
     final KnyttStories game;
     OrthographicCamera camera;
 
+    // Initialize our menu screen
     public MenuScreen(final KnyttStories game) {
         this.game = game;
         camera = new OrthographicCamera();
@@ -23,9 +26,11 @@ public class MenuScreen implements Screen {
         // Load the various components of the GUI we expect to use
         this.game.assetManager.load(Gdx.files.internal("System/Gui_btn_medium.png").path(), Texture.class);
 
-        // TODO: For now, we initialize our world so that we have something to play
-        game.world = new World("UncleSporky", "Don't Eat the Mushroom", 2);
-        game.files = new KSFiles(game.world.getAuthor(), game.world.getWorldName());
+        // TODO: For now, we initialize our currWorld so that we have something to play
+        this.game.currWorld = new World("UncleSporky", "Don't Eat the Mushroom", 2);
+        this.game.currWorld.files = new KS_Files(game.currWorld.getAuthor(), game.currWorld.getWorldName());
+        this.game.audio = new KS_Music(game.assetManager);
+        game.audio.loadMusic((byte)20);
     }
 
     @Override
@@ -50,6 +55,7 @@ public class MenuScreen implements Screen {
         if(game.assetManager.update()) {
             Texture guiButton = game.assetManager.get(Gdx.files.internal("System/Gui_btn_medium.png").path(), Texture.class);
             game.batch.draw(guiButton,(KnyttStories.V_WIDTH/2) - guiButton.getWidth()/2,5);
+            game.audio.playMusic((byte)20, delta);
             //game.font.draw(game.batch, "Font Test", 100, 150);
             //game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
         }
@@ -58,7 +64,12 @@ public class MenuScreen implements Screen {
         game.batch.end();
 
         if (Gdx.input.isTouched()) {
-            game.setScreen(new KSScreen(game, 1000, 1000));
+            game.setScreen(new KS_Screen(game, 1000, 1000));
+            game.audio.setFiles(game.currWorld.files);
+
+            // Temporary. For when we actually load a world
+            game.audio.stopMusic();
+            game.audio.stopAmbience();
             dispose();
         }
     }

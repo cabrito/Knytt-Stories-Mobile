@@ -23,23 +23,23 @@ import java.io.RandomAccessFile;
 
 import io.github.scalrx.KnyttStories;
 
-public class KSScreen implements Screen {
+public class KS_Screen implements Screen {
 
     // Set up how our level will display
     final KnyttStories game;
     private OrthographicCamera camera;
     private Viewport viewport;
 
-    // Attributes for the particular KSScreen we're on
+    // Attributes for the particular KS_Screen we're on
     private int xID, yID;       // TODO: WHEN DO THESE NEED TO BE SET? CONVERT TO PAIR OBJECT
     private byte tsetAID;      // 0x00 to 0x7F in tile data
     private byte tsetBID;      // 0x80 to 0xFF in tile data
     private byte atmosAID;        // Atmospheric sounds A
     private byte atmosBID;        // Atmospheric sounds B
-    private byte musicID;         // Music for this KSScreen
+    private byte musicID;         // Music for this KS_Screen
     private byte backgroundID;    // Background picture
 
-    // Assets for the particular KSScreen we're on
+    // Assets for the particular KS_Screen we're on
     private byte[][][] sceneryData = new byte[4][10][25];   // TODO: RENAME SINCE WE NEED TO IMPLEMENT OBJECTS ALSO!
     private byte[][][] objectData = new byte[4][10][50];
     private TiledMap tiledMap;
@@ -53,7 +53,7 @@ public class KSScreen implements Screen {
     private final int[] PRIMARY_LAYERS = {0,1,2,3};
 
     // Constructor
-    public KSScreen(final KnyttStories game, int xID, int yID) {
+    public KS_Screen(final KnyttStories game, int xID, int yID) {
         this.game = game;
         this.xID = xID;
         this.yID = yID;
@@ -68,13 +68,13 @@ public class KSScreen implements Screen {
 
         // Now that we have the musicID, atmosA, and atmosB bytes, try loading such audio files
         if((musicID & 0xFF) > 0) {
-            game.assetManager.load(game.files.music(musicID), Music.class);
+            game.assetManager.load(game.currWorld.files.music(musicID), Music.class);
         }
         if((atmosAID & 0xFF) > 0) {
-            game.assetManager.load(game.files.ambiance(atmosAID), Music.class);
+            game.assetManager.load(game.currWorld.files.ambiance(atmosAID), Music.class);
         }
         if((atmosBID & 0xFF) > 0) {
-            game.assetManager.load(game.files.ambiance(atmosBID), Music.class);
+            game.assetManager.load(game.currWorld.files.ambiance(atmosBID), Music.class);
         }
     }
 
@@ -95,16 +95,17 @@ public class KSScreen implements Screen {
         // Proceed only if all the assets we need have been loaded
         if(game.assetManager.update()) {
             /* Music and Ambiance */
-            playMusicAndAmbiance(delta);
+            game.audio.playMusic(musicID, delta);
+            game.audio.playAmbiance(atmosAID,atmosBID);
         }
 
-        // Render the KSScreen in the desired order TODO: Leave space for Juni
+        // Render the KS_Screen in the desired order TODO: Leave space for Juni
         tiledMapRenderer.render(BACKGROUND_LAYER);
         // renderJuni();
         tiledMapRenderer.render(PRIMARY_LAYERS);
         game.batch.begin();
 
-        // Print the current KSScreen coordinates in the bottom left of the screen.
+        // Print the current KS_Screen coordinates in the bottom left of the screen.
         font.draw(game.batch, "(" + xID + ", " + yID + ")", 10, 20);
         //font.draw(game.batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
 
@@ -113,19 +114,19 @@ public class KSScreen implements Screen {
 
         // Movement-related controls for us to use temporarily
         if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
-            game.setScreen(new KSScreen(game,xID - 1, yID));
+            game.setScreen(new KS_Screen(game,xID - 1, yID));
             dispose();
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
-            game.setScreen(new KSScreen(game,xID + 1, yID));
+            game.setScreen(new KS_Screen(game,xID + 1, yID));
             dispose();
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            game.setScreen(new KSScreen(game,xID, yID - 1));
+            game.setScreen(new KS_Screen(game,xID, yID - 1));
             dispose();
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
-            game.setScreen(new KSScreen(game,xID, yID + 1));
+            game.setScreen(new KS_Screen(game,xID, yID + 1));
             dispose();
         }
     }
@@ -161,90 +162,14 @@ public class KSScreen implements Screen {
         bg.dispose();
     }
 
-    private void playMusicAndAmbiance(float delta) {
-        // Logic for playing/stopping music
-        if((musicID & 0xFF) > 0) {
-            if(game.music != null) {
-                if(game.music.isPlaying()) {
-                    if(!game.assetManager.get(game.files.music(musicID), Music.class).isPlaying() || (game.music.getVolume() < 1f)) {
-                        game.music.setVolume(game.music.getVolume() - 0.2f*delta);
-                        if(game.music.getVolume() < 0.02f) {
-                            game.music.stop();
-                            game.music = game.assetManager.get(game.files.music(musicID), Music.class);
-                            game.music.setVolume(1f);
-                            game.music.play();
-                        }
-                    }
-                } else {
-                    game.music = game.assetManager.get(game.files.music(musicID), Music.class);
-                    game.music.setVolume(1f);
-                    game.music.play();
-                }
-            } else {
-                game.music = game.assetManager.get(game.files.music(musicID), Music.class);
-                game.music.setVolume(1f);
-                game.music.play();
-            }
-        } else {
-            if(game.music != null) {
-                if(game.music.isPlaying()) {
-                    game.music.setVolume(game.music.getVolume() - 0.2f*delta);
-                    if(game.music.getVolume() < 0.02f) {
-                        game.music.stop();
-                        game.music.setVolume(1f);
-                    }
-                }
-
-            }
-        }
-
-        // Logic for playing/stopping atmosA
-        if((atmosAID & 0xFF) > 0) {
-            if(game.assetManager.isLoaded(game.files.ambiance(atmosAID))) {
-                if(!game.assetManager.get(game.files.ambiance(atmosAID), Music.class).isPlaying()) {
-                    if(game.atmosA != null) {
-                        game.atmosA.stop();
-                        game.atmosA.dispose();
-                    }
-                    game.atmosA = game.assetManager.get(game.files.ambiance(atmosAID), Music.class);
-                    game.atmosA.setLooping(true);
-                    game.atmosA.play();
-                }
-
-            }
-        } else {
-            if(game.atmosA != null)
-                game.atmosA.stop();
-        }
-
-        // Logic for playing/stopping atmosB
-        if((atmosBID & 0xFF) > 0) {
-            if(game.assetManager.isLoaded(game.files.ambiance(atmosBID))) {
-                if(!game.assetManager.get(game.files.ambiance(atmosBID), Music.class).isPlaying()) {
-                    if(game.atmosB != null) {
-                        game.atmosB.stop();
-                        game.atmosB.dispose();
-                    }
-                    game.atmosB = game.assetManager.get(game.files.ambiance(atmosBID), Music.class);
-                    game.atmosB.setLooping(true);
-                    game.atmosB.play();
-                }
-
-            }
-        } else {
-            if(game.atmosB != null)
-                game.atmosB.stop();
-        }
-    }
-
     /**
-     * Methods for assembling the KSScreen
+     * Methods for assembling the KS_Screen
      */
     private void assembleScenery() {
 
         // Load the appropriate tilesets A and B
-        tilesetA = new Texture(game.files.tileset(tsetAID));
-        tilesetB = new Texture(game.files.tileset(tsetBID));
+        tilesetA = new Texture(game.currWorld.files.tileset(tsetAID));
+        tilesetB = new Texture(game.currWorld.files.tileset(tsetBID));
 
         // Split up each tileset into 24x24 whole sections. Any section that is not whole will not be considered.
         TextureRegion[][] splitTilesA = TextureRegion.split(tilesetA, 24, 24);
@@ -281,7 +206,7 @@ public class KSScreen implements Screen {
         }
 
         // Produce the "backgroundID" gradient layer. The gradient is a single "strip" png.
-        bg = new Texture(game.files.gradient(backgroundID));
+        bg = new Texture(game.currWorld.files.gradient(backgroundID));
         TiledMapTileLayer bgLayer = new TiledMapTileLayer(600/bg.getWidth(),
                 240/bg.getHeight(), bg.getWidth(), bg.getHeight());
         TiledMapTileLayer.Cell bgCell = new TiledMapTileLayer.Cell();
@@ -299,15 +224,15 @@ public class KSScreen implements Screen {
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
-    // -----METHODS FOR ASSEMBLING DATA FOR KSScreen-----
+    // -----METHODS FOR ASSEMBLING DATA FOR KS_Screen-----
     private void assembleData() {
         //TODO: FIX path!!!!
-        if(game.world.screenOffsetExists(xID,yID)) {
+        if(game.currWorld.screenOffsetExists(xID,yID)) {
             try {
-                RandomAccessFile mapFile = new RandomAccessFile(game.files.getWorldDir() + "/Map", "r");
+                RandomAccessFile mapFile = new RandomAccessFile(game.currWorld.files.getWorldDir() + "/Map", "r");
                 try {
                     // Seek the specific location in the Map file
-                    mapFile.seek(game.world.getScreenOffset(xID, yID));
+                    mapFile.seek(game.currWorld.getScreenOffset(xID, yID));
 
                     // Copy byte data for layers 0 - 3
                     for (int scnLayer = 0; scnLayer < 4; scnLayer++) {
@@ -334,7 +259,7 @@ public class KSScreen implements Screen {
                         }
                     }
 
-                    // Initialize KSScreen attributes
+                    // Initialize KS_Screen attributes
                     tsetAID = mapFile.readByte();
                     tsetBID = mapFile.readByte();
                     atmosAID = mapFile.readByte();
@@ -349,7 +274,7 @@ public class KSScreen implements Screen {
                 e.printStackTrace();
             }
         } else {
-            // Initialize KSScreen attributes
+            // Initialize KS_Screen attributes
             tsetAID = 0;
             tsetBID = 0;
             atmosAID = 0;

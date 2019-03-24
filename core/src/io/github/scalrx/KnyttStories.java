@@ -4,11 +4,11 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.github.scalrx.screens.MenuScreen;
+import io.github.scalrx.utilities.KS_Files;
+import io.github.scalrx.utilities.KS_Music;
 
 public class KnyttStories extends Game {
 
@@ -21,13 +21,10 @@ public class KnyttStories extends Game {
 	public static final int V_HEIGHT = 10*24;
 
 	// World object
-	public World world;
-	public Music music;
-	public Music atmosA;
-	public Music atmosB;
+	public World currWorld;
 
-	// Used for simplifying filepaths
-	public KSFiles files;
+	// Used for handling all the music and ambiance.
+	public KS_Music audio;
 
 	@Override
 	public void create () {
@@ -37,8 +34,6 @@ public class KnyttStories extends Game {
 
 		// Push the main menu onto the screen stack.
 		this.setScreen(new MenuScreen(this));
-		//setScreen(new KSScreen(this,1000,1000));
-		//img = new Texture("badlogic.jpg");
 	}
 
 	@Override
