@@ -26,8 +26,6 @@ public class MapFile {
         // Make sure the optimized Map.bin.raw and date files actually exist before we try making file offsets
         if(!Gdx.files.absolute(files.MapBin() + ".raw").exists())
             decompress();
-        if(!Gdx.files.absolute(files.MapBin() + ".dat").exists())
-            writeDateFile(files.MapBin());
         if (getMapBinDatDate(files.MapBin()) != Gdx.files.absolute(files.MapBin()).lastModified())
             decompress();
 
