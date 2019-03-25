@@ -21,6 +21,14 @@ public class KS_Files {
         return Gdx.files.getExternalStoragePath() + worldDir;
     }
 
+    public String MapBin() {
+        return getWorldDir() + "/Map.bin";
+    }
+
+    public String MapBinRaw() {
+        return getWorldDir() + "/Map.bin.raw";
+    }
+
     public String music(byte mID) {
         // Custom Music
         if(Gdx.files.external(worldDir + "/Music/Song" + (mID & 0xFF) + ".ogg").exists()) {

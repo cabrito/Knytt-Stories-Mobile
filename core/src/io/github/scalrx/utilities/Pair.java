@@ -1,4 +1,4 @@
-package io.github.scalrx;
+package io.github.scalrx.utilities;
 
 final class Pair<T> {
     private final T x, y;

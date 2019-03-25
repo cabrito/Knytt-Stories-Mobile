@@ -227,12 +227,12 @@ public class KS_Screen implements Screen {
     // -----METHODS FOR ASSEMBLING DATA FOR KS_Screen-----
     private void assembleData() {
         //TODO: FIX path!!!!
-        if(game.currWorld.screenOffsetExists(xID,yID)) {
+        if(game.currWorld.map.screenOffsetExists(xID,yID)) {
             try {
-                RandomAccessFile mapFile = new RandomAccessFile(game.currWorld.files.getWorldDir() + "/Map", "r");
+                RandomAccessFile mapFile = new RandomAccessFile(game.currWorld.files.MapBinRaw(), "r");
                 try {
                     // Seek the specific location in the Map file
-                    mapFile.seek(game.currWorld.getScreenOffset(xID, yID));
+                    mapFile.seek(game.currWorld.map.getScreenOffset(xID, yID));
 
                     // Copy byte data for layers 0 - 3
                     for (int scnLayer = 0; scnLayer < 4; scnLayer++) {
