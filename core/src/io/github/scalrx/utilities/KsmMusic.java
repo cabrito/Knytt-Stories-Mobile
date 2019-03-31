@@ -77,64 +77,6 @@ public class KsmMusic {
             }
         }
     }
-    /*public void playMusic(byte musicID, float delta) {
-        // If there is no world set (e.g., we're on the main menu), attempt to play default music
-        if(files == null) {
-            if((musicID & 0xFF) > 0) {
-                if(assetManager.isLoaded(Gdx.files.internal("Data/Music/Song" + (musicID & 0xFF) + ".ogg").path())) {
-                    if(!assetManager.get(Gdx.files.internal("Data/Music/Song" + (musicID & 0xFF) + ".ogg").path(), Music.class).isPlaying()) {
-                        if(music != null) {
-                            music.stop();
-                            music.dispose();
-                        }
-                        music = assetManager.get(Gdx.files.internal("Data/Music/Song" + (musicID & 0xFF) + ".ogg").path(), Music.class);
-                        music.setLooping(true);
-                        music.play();
-                    }
-
-                }
-            } else {
-                if(music != null)
-                    music.stop();
-            }
-            return;
-        }
-
-        // Otherwise, if there IS a world loaded, load that music instead
-        if((musicID & 0xFF) > 0) {
-            if(music != null) {
-                if(music.isPlaying()) {
-                    if(!assetManager.get(files.music(musicID), Music.class).isPlaying() || (music.getVolume() < 1f)) {
-                        music.setVolume(music.getVolume() - 0.2f*delta);
-                        if(music.getVolume() < 0.02f) {
-                            music.stop();
-                            music = assetManager.get(files.music(musicID), Music.class);
-                            music.setVolume(1f);
-                            music.play();
-                        }
-                    }
-                } else {
-                    music = assetManager.get(files.music(musicID), Music.class);
-                    music.setVolume(1f);
-                    music.play();
-                }
-            } else {
-                music = assetManager.get(files.music(musicID), Music.class);
-                music.setVolume(1f);
-                music.play();
-            }
-        } else {
-            if(music != null) {
-                if(music.isPlaying()) {
-                    music.setVolume(music.getVolume() - 0.2f*delta);
-                    if(music.getVolume() < 0.02f) {
-                        music.stop();
-                        music.setVolume(1f);
-                    }
-                }
-            }
-        }
-    }*/
 
     // Load the ambiance track
     public void playAmbiance(byte atmosAID, byte atmosBID) {

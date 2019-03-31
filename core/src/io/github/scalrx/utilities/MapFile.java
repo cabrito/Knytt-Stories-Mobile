@@ -25,12 +25,12 @@ import java.util.HashMap;
 public class MapFile {
 
     /**     Members     */
-    private final HashMap<Pair<Integer>, Long> mapFileOffsets;
+    private final HashMap<Pair<Integer>, Integer> mapFileOffsets;
     private final KsmFiles files;
 
     /**     Constructor     */
     public MapFile(final KsmFiles files) {
-        mapFileOffsets = new HashMap<Pair<Integer>, Long>();
+        mapFileOffsets = new HashMap<Pair<Integer>, Integer>();
         this.files = files;
 
         // Make sure the optimized Map.bin.raw and date files actually exist before we try making file offsets
@@ -80,7 +80,7 @@ public class MapFile {
     }
 
     // Get the Map file offset for the desired KsmScreen
-    public long getScreenOffset(int x, int y) {
+    public int getScreenOffset(int x, int y) {
         return mapFileOffsets.get(new Pair<Integer>(x,y));
     }
 
@@ -97,68 +97,54 @@ public class MapFile {
             // Open Map.bin.raw as a byte array
             FileHandle mapFile = Gdx.files.external(files.mapBin(true));
             byte[] mapFileBytes = mapFile.readBytes();
+
             //FileInputStream mapFile = (FileInputStream) Gdx.files.external(files.mapBin(true)).read();
 
             // Now, progress through the file finding level headers
-            int currByte = 255, X = 0, Y = 0;
+            int X = 0, Y = 0;
             int coordVal = 0;
-            long charPos = 0, offset = 0;
+            int offset = 0;
             boolean isNegative = false;
 
-            // While we haven't reached EOF...
-            while(currByte != -1) {
-                // While we haven't reached the end of the submap header...
-                while((currByte) != 0) {
-                    currByte = mapFile.read();
-                    if (currByte == 'x') {
+            int cursorPosition = 0;
+
+            while(cursorPosition < mapFileBytes.length) {
+                for (int charPos = 0; ; charPos++, cursorPosition++) {
+                    if ((mapFileBytes[cursorPosition] & 0xFF) == 'x') {
                         if (charPos != 0) {
-                            // Invalid header, x coord at an unexpected place - upper layers
                             throw new IOException("Invalid header; unexpected x-coordinate encountered.");
                         }
-                    }
-                    else if (currByte == 'y') {
+                    } else if ((mapFileBytes[cursorPosition] & 0xFF) == 'y') {
                         if (isNegative)
                             X = -coordVal;
                         else
                             X = coordVal;
                         coordVal = 0;
                         isNegative = false;
-                    }
-                    else if ((currByte >= '0') && (currByte <= '9')) {
-                        coordVal = coordVal * 10 + (currByte - '0');
-                    }
-                    else if (currByte == '-') {
+                    } else if (((mapFileBytes[cursorPosition] & 0xFF) >= '0') && ((mapFileBytes[cursorPosition] & 0xFF) <= '9')) {
+                        coordVal = coordVal * 10 + ((mapFileBytes[cursorPosition] & 0xFF) - '0');
+                    } else if ((mapFileBytes[cursorPosition] & 0xFF) == '-') {
                         isNegative = true;
                         coordVal = 0;
-                    }
-                    else if (currByte == 0) {
+                    } else if ((mapFileBytes[cursorPosition] & 0xFF) == 0) {
                         if (isNegative)
                             Y = -coordVal;
                         else
                             Y = coordVal;
                         break;
+                    } else {
+                            break;  // ?????????
                     }
-                    else {
-                        if(currByte == -1)
-                            break;
-                    }
-                    // Increase our cursor position
-                    charPos++;
                 }
-                offset += charPos + 5;
-                // charPos = 0;
+                offset = cursorPosition + 5;
+
                 // Once the inner while loop ends, we need to take note of the submap coordinates and its file offset
                 mapFileOffsets.put(new Pair<Integer>(X,Y), offset);
-                // Skip to the next level header
-                mapFile.skip(SCREEN_DATA_SIZE + 4);
-                offset += SCREEN_DATA_SIZE;
-                X = Y = coordVal = 0;
 
-                // Reset the character counter position appropriately.
-                charPos = 1;
-                currByte = mapFile.read();
+                // Skip to the next level header
+                cursorPosition += (5 + SCREEN_DATA_SIZE);
+                X = Y = coordVal = 0;
             }
-            mapFile.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

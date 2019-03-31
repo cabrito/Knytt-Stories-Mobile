@@ -3,6 +3,8 @@ package io.github.scalrx.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.loaders.TextureLoader;
+import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
@@ -65,6 +67,8 @@ public class KsmScreen implements Screen {
 
         // Assemble data and layers
         assembleData();
+        game.assetManager.load(game.files.tileset(tsetAID), Texture.class);
+        game.assetManager.load(game.files.tileset(tsetBID), Texture.class);
         assembleScenery();
 
         // Now that we have the musicID, atmosA, and atmosB bytes, try loading such audio files
@@ -158,8 +162,10 @@ public class KsmScreen implements Screen {
         //texture.dispose();
 
         tiledMap.dispose();
-        tilesetA.dispose();
-        tilesetB.dispose();
+        //tilesetA.dispose();
+        //tilesetB.dispose();
+        game.assetManager.unload(game.files.tileset(tsetAID));
+        game.assetManager.unload(game.files.tileset(tsetBID));
         bg.dispose();
     }
 
@@ -167,10 +173,13 @@ public class KsmScreen implements Screen {
      * Methods for assembling the KsmScreen
      */
     private void assembleScenery() {
+        //game.assetManager.finishLoading();
+        //tilesetA = game.assetManager.get(game.files.tileset(tsetAID));
+        //tilesetB = game.assetManager.get(game.files.tileset(tsetBID));
+        //game.assetManager.finishLoading();
 
-        // Load the appropriate tilesets A and B
-        tilesetA = new Texture(game.files.tileset(tsetAID));
-        tilesetB = new Texture(game.files.tileset(tsetBID));
+        tilesetA = game.assetManager.get(game.files.tileset(tsetAID));
+        tilesetB = game.assetManager.get(game.files.tileset(tsetBID));
 
         // Split up each tileset into 24x24 whole sections. Any section that is not whole will not be considered.
         TextureRegion[][] splitTilesA = TextureRegion.split(tilesetA, 24, 24);
@@ -195,7 +204,9 @@ public class KsmScreen implements Screen {
                     // Determine which tileset we need to pull from
                     if(tileNumber <= 0x7F) {
                         cell.setTile(new StaticTiledMapTile(splitTilesA[tilesetRow][tilesetColumn]));
+                        //System.out.println("Tileset A Attempted.");
                     } else {
+                        //System.out.println("Tileset B Attempted.");
                         cell.setTile(new StaticTiledMapTile(splitTilesB[tilesetRow - 8][tilesetColumn]));
                     }
 					// Press the tile Cell into place (note: we set the columns horizontally!)
@@ -229,51 +240,47 @@ public class KsmScreen implements Screen {
     private void assembleData() {
         //TODO: FIX path!!!!
         if(game.currWorld.getMap().screenOffsetExists(xID,yID)) {
-            try {
-                RandomAccessFile mapFile = new RandomAccessFile(game.files.mapBin(true), "r");
-                try {
-                    // Seek the specific location in the Map file
-                    mapFile.seek(game.currWorld.getMap().getScreenOffset(xID, yID));
+            // Open Map.bin.raw as a byte array
+            FileHandle mapFile = Gdx.files.external(game.files.mapBin(true));
+            byte[] mapFileBytes = mapFile.readBytes();
 
-                    // Copy byte data for layers 0 - 3
-                    for (int scnLayer = 0; scnLayer < 4; scnLayer++) {
-                        for (int row = 0; row < 10; row++) {
-                            for (int column = 0; column < 25; column++) {
-                                sceneryData[scnLayer][row][column] = mapFile.readByte();
-                            }
-                        }
+            // Seek the specific location in the Map file
+            int cursorPosition = game.currWorld.getMap().getScreenOffset(xID, yID);
+
+            // Copy byte data for layers 0 - 3
+            for (int scnLayer = 0; scnLayer < 4; scnLayer++) {
+                for (int row = 0; row < 10; row++) {
+                    for (int column = 0; column < 25; column++, cursorPosition++) {
+                        sceneryData[scnLayer][row][column] = mapFileBytes[cursorPosition];
                     }
-
-                    // Copy in byte data for layers 4 - 7
-                    for (int objLayer = 4; objLayer <= 7; objLayer++) {
-                        // Read object number
-                        for (int row = 0; row < 10; row++) {
-                            for (int column = 0; column < 25; column++) {
-                                objectData[objLayer - 4][row][column] = mapFile.readByte();
-                            }
-                        }
-                        // Read bank number
-                        for (int row = 0; row < 10; row++) {
-                            for (int column = 25; column < 50; column++) {
-                                objectData[objLayer - 4][row][column] = mapFile.readByte();
-                            }
-                        }
-                    }
-
-                    // Initialize KsmScreen attributes
-                    tsetAID = mapFile.readByte();
-                    tsetBID = mapFile.readByte();
-                    atmosAID = mapFile.readByte();
-                    atmosBID = mapFile.readByte();
-                    musicID = mapFile.readByte();
-                    backgroundID = mapFile.readByte();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             }
+
+            // Copy in byte data for layers 4 - 7
+            for (int objLayer = 4; objLayer <= 7; objLayer++) {
+                // Read object number
+                for (int row = 0; row < 10; row++) {
+                    for (int column = 0; column < 25; column++, cursorPosition++) {
+                        objectData[objLayer - 4][row][column] = mapFileBytes[cursorPosition];
+                    }
+                }
+
+                // Read bank number
+                for (int row = 0; row < 10; row++) {
+                    for (int column = 25; column < 50; column++, cursorPosition++) {
+                        objectData[objLayer - 4][row][column] = mapFileBytes[cursorPosition];
+                    }
+                }
+            }
+
+            // Initialize KsmScreen attributes
+            tsetAID = mapFileBytes[cursorPosition++];
+            tsetBID = mapFileBytes[cursorPosition++];
+            atmosAID = mapFileBytes[cursorPosition++];
+            atmosBID = mapFileBytes[cursorPosition++];
+            musicID = mapFileBytes[cursorPosition++];
+            backgroundID = mapFileBytes[cursorPosition++];
+
         } else {
             // Initialize KsmScreen attributes
             tsetAID = 0;

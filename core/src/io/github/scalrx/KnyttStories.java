@@ -30,7 +30,7 @@ public class KnyttStories extends Game {
 	public void create () {
 		// Initialize our SpriteBatch and AssetManager
 		batch = new SpriteBatch();
-		assetManager = new AssetManager(new ExternalFileHandleResolver());
+		assetManager = new AssetManager();
 		files = new KsmFiles(assetManager);
 		// Push the main menu onto the screen stack.
 		this.setScreen(new MenuScreen(this));

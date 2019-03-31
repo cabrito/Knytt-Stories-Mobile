@@ -3,6 +3,7 @@ package io.github.scalrx.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
+import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
@@ -30,8 +31,8 @@ public class MenuScreen implements Screen {
 
         // TODO: For now, we initialize our currWorld so that we have something to play
         this.game.currWorld = new World(game.files);
-        this.game.currWorld.setAuthor("Nifflas");
-        this.game.currWorld.setWorldName("The Machine");
+        this.game.currWorld.setAuthor("UncleSporky");
+        this.game.currWorld.setWorldName("Don't Eat the Mushroom");
         this.game.currWorld.initMap();
 
         //this.game.currWorld.files = new KS_Files(game.currWorld.getAuthor(), game.currWorld.getWorldName());
@@ -70,7 +71,7 @@ public class MenuScreen implements Screen {
         game.batch.end();
 
         if (Gdx.input.isTouched()) {
-            game.setScreen(new KsmScreen(game, 1000, 1000));
+            game.setScreen(new KsmScreen(game, 1002, 1000));
             //game.audio.setFiles(game.currWorld.files);
 
             // Temporary. For when we actually load a world
