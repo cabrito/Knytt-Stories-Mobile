@@ -4,17 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 
-
 /***************************************************************************************************
- * Knytt Stories Mobile     (https://www.github.com/scalrx/knytt-stories-mobile)
- * KS_Music.java
- * Created by: scalr at 11:38 PM, 3/22/19
+ * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
+ * KsmMusic.java
+ * Created by: scalr at 3:48 PM, 3/30/19
  *
- * Handles all of the Knytt Stories-related music shenanigans.
+ * Handles all of the music-related goodies for Knytt Stories Mobile.
  *
  **************************************************************************************************/
 
-public class KS_Music {
+public class KsmMusic {
 
     // Music and Ambiance
     private Music music;
@@ -22,38 +21,63 @@ public class KS_Music {
     private Music atmosB;
 
     // For conveniently handling filesystem calls
-    final AssetManager assetManager;
-    KS_Files files;
+    private final AssetManager assetManager;
+    private final KsmFiles files;
 
-    // KS_Files-based constructor
-    public KS_Music(final AssetManager assetManager) {
+    /**     Constructor     */
+    public KsmMusic(final AssetManager assetManager, final KsmFiles files) {
         this.assetManager = assetManager;
-    }
-
-    // Used for when we load a world
-    public void setFiles(final KS_Files files) {
         this.files = files;
     }
 
+    /**     Methods for handling music      */
     // Call before loading music
-    public void loadMusic(byte musicID) {
-        if(files != null) {
-            assetManager.load(files.music(musicID), Music.class);
-        } else {
-            assetManager.load(Gdx.files.internal("Data/Music/Song" + musicID + ".ogg").path(), Music.class);
-        }
+    public void loadMusic(byte muid) {
+        assetManager.load(files.music(muid), Music.class);
     }
 
-    public void loadAmbience(byte atmosID) {
-        if(files != null) {
-            assetManager.load(files.music(atmosID), Music.class);
-        } else {
-            assetManager.load(Gdx.files.internal("Data/Ambiance/Ambi" + atmosID + ".ogg").path(), Music.class);
-        }
+    // Call before loading ambiance
+    public void loadAmbience(byte amid) {
+        assetManager.load(files.ambiance(amid), Music.class);
     }
 
     // Plays music contextually
-    public void playMusic(byte musicID, float delta) {
+    public void playMusic(byte muid, float delta) {
+        if((muid & 0xFF) > 0) {
+            if(music != null) {
+                if(music.isPlaying()) {
+                    if(!assetManager.get(files.music(muid), Music.class).isPlaying() || (music.getVolume() < 1f)) {
+                        music.setVolume(music.getVolume() - 0.2f*delta);
+                        if(music.getVolume() < 0.02f) {
+                            music.stop();
+                            music = assetManager.get(files.music(muid), Music.class);
+                            music.setVolume(1f);
+                            music.play();
+                        }
+                    }
+                } else {
+                    music = assetManager.get(files.music(muid), Music.class);
+                    music.setVolume(1f);
+                    music.play();
+                }
+            } else {
+                music = assetManager.get(files.music(muid), Music.class);
+                music.setVolume(1f);
+                music.play();
+            }
+        } else {
+            if(music != null) {
+                if(music.isPlaying()) {
+                    music.setVolume(music.getVolume() - 0.2f*delta);
+                    if(music.getVolume() < 0.02f) {
+                        music.stop();
+                        music.setVolume(1f);
+                    }
+                }
+            }
+        }
+    }
+    /*public void playMusic(byte musicID, float delta) {
         // If there is no world set (e.g., we're on the main menu), attempt to play default music
         if(files == null) {
             if((musicID & 0xFF) > 0) {
@@ -110,7 +134,7 @@ public class KS_Music {
                 }
             }
         }
-    }
+    }*/
 
     // Load the ambiance track
     public void playAmbiance(byte atmosAID, byte atmosBID) {

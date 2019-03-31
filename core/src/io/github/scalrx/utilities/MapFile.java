@@ -1,6 +1,7 @@
 package io.github.scalrx.utilities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -12,30 +13,43 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+/***************************************************************************************************
+ * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
+ * MapFile.java
+ * Created by: scalr at 4:03 PM, 3/30/19
+ *
+ * Handles all routines related to the Map.bin and Map.bin.raw files for the currently-loaded World.
+ *
+ **************************************************************************************************/
 
 public class MapFile {
 
+    /**     Members     */
     private final HashMap<Pair<Integer>, Long> mapFileOffsets;
-    private final KS_Files files;
+    private final KsmFiles files;
 
-    // Constructor
-    public MapFile(final KS_Files files) {
+    /**     Constructor     */
+    public MapFile(final KsmFiles files) {
         mapFileOffsets = new HashMap<Pair<Integer>, Long>();
         this.files = files;
 
         // Make sure the optimized Map.bin.raw and date files actually exist before we try making file offsets
-        if(!Gdx.files.absolute(files.MapBin() + ".raw").exists())
+        /*if(!Gdx.files.absolute(files.MapBin() + ".raw").exists())
             decompress();
         if (getMapBinDatDate(files.MapBin()) != Gdx.files.absolute(files.MapBin()).lastModified())
-            decompress();
+            decompress();*/
 
-        // Now that we have the necessary files in place, begin creating the Map.bin.raw file offsets.
+        /*if(!Gdx.files.external(files.mapBin(true)).exists())
+            decompress();
+        if(getMapBinDatDate(files.mapBin(false)) != Gdx.files.external(files.mapBin(false)).lastModified())
+            decompress();
+        // Now that we have the necessary files in place, begin creating the Map.bin.raw file offsets.*/
         createFileOffsets();
     }
 
     // Decompress the Map.bin file for optimization
     private void decompress() {
-        String mapBinFile = files.MapBin();
+        String mapBinFile = files.mapBin(false);
         GZip rawFile = new GZip(mapBinFile);
         rawFile.decompress();
         writeDateFile(mapBinFile);
@@ -46,7 +60,7 @@ public class MapFile {
         try {
             FileOutputStream output = new FileOutputStream(filepath + ".dat");
             DataOutputStream dataOutput = new DataOutputStream(output);
-            dataOutput.writeLong(Gdx.files.absolute(filepath).lastModified());
+            dataOutput.writeLong(Gdx.files.external(filepath).lastModified());
             dataOutput.close();
 
         } catch (IOException e) {
@@ -65,7 +79,7 @@ public class MapFile {
         return -1;
     }
 
-    // Get the Map file offset for the desired KS_Screen
+    // Get the Map file offset for the desired KsmScreen
     public long getScreenOffset(int x, int y) {
         return mapFileOffsets.get(new Pair<Integer>(x,y));
     }
@@ -80,8 +94,10 @@ public class MapFile {
         final long SCREEN_DATA_SIZE = 3006;
 
         try {
-            // First, assign the directory we're working with
-            FileInputStream mapFile = (FileInputStream) Gdx.files.absolute(files.MapBinRaw()).read();
+            // Open Map.bin.raw as a byte array
+            FileHandle mapFile = Gdx.files.external(files.mapBin(true));
+            byte[] mapFileBytes = mapFile.readBytes();
+            //FileInputStream mapFile = (FileInputStream) Gdx.files.external(files.mapBin(true)).read();
 
             // Now, progress through the file finding level headers
             int currByte = 255, X = 0, Y = 0;

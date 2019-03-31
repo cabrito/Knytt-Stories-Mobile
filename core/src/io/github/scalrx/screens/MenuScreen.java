@@ -2,15 +2,16 @@ package io.github.scalrx.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.assets.loaders.TextureLoader;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
-import io.github.scalrx.utilities.KS_Files;
 import io.github.scalrx.KnyttStories;
 import io.github.scalrx.World;
-import io.github.scalrx.utilities.KS_Music;
+import io.github.scalrx.utilities.KsmMusic;
 
 public class MenuScreen implements Screen {
 
@@ -24,13 +25,18 @@ public class MenuScreen implements Screen {
         camera.setToOrtho(false, KnyttStories.V_WIDTH,KnyttStories.V_HEIGHT);
 
         // Load the various components of the GUI we expect to use
+        this.game.assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
         this.game.assetManager.load(Gdx.files.internal("System/Gui_btn_medium.png").path(), Texture.class);
 
         // TODO: For now, we initialize our currWorld so that we have something to play
-        this.game.currWorld = new World("UncleSporky", "Don't Eat the Mushroom", 2);
-        this.game.currWorld.files = new KS_Files(game.currWorld.getAuthor(), game.currWorld.getWorldName());
-        this.game.audio = new KS_Music(game.assetManager);
-        game.audio.loadMusic((byte)20);
+        this.game.currWorld = new World(game.files);
+        this.game.currWorld.setAuthor("Nifflas");
+        this.game.currWorld.setWorldName("The Machine");
+        this.game.currWorld.initMap();
+
+        //this.game.currWorld.files = new KS_Files(game.currWorld.getAuthor(), game.currWorld.getWorldName());
+        this.game.audio = new KsmMusic(game.assetManager, game.files);
+        //game.audio.loadMusic((byte)20);
     }
 
     @Override
@@ -55,7 +61,7 @@ public class MenuScreen implements Screen {
         if(game.assetManager.update()) {
             Texture guiButton = game.assetManager.get(Gdx.files.internal("System/Gui_btn_medium.png").path(), Texture.class);
             game.batch.draw(guiButton,(KnyttStories.V_WIDTH/2) - guiButton.getWidth()/2,5);
-            game.audio.playMusic((byte)20, delta);
+            //game.audio.playMusic((byte)20, delta);
             //game.font.draw(game.batch, "Font Test", 100, 150);
             //game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
         }
@@ -64,8 +70,8 @@ public class MenuScreen implements Screen {
         game.batch.end();
 
         if (Gdx.input.isTouched()) {
-            game.setScreen(new KS_Screen(game, 1000, 1000));
-            game.audio.setFiles(game.currWorld.files);
+            game.setScreen(new KsmScreen(game, 1000, 1000));
+            //game.audio.setFiles(game.currWorld.files);
 
             // Temporary. For when we actually load a world
             game.audio.stopMusic();
