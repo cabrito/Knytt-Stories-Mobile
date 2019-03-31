@@ -68,18 +68,25 @@ public class KsmScreen implements Screen {
         // Assemble data and layers
         assembleData();
         game.assetManager.load(game.files.tileset(tsetAID), Texture.class);
+        game.assetManager.finishLoading();
         game.assetManager.load(game.files.tileset(tsetBID), Texture.class);
+        game.assetManager.finishLoading();
+        game.assetManager.load(game.files.gradient(backgroundID), Texture.class);
+        game.assetManager.finishLoading();
         assembleScenery();
 
         // Now that we have the musicID, atmosA, and atmosB bytes, try loading such audio files
         if((musicID & 0xFF) > 0) {
             game.assetManager.load(game.files.music(musicID), Music.class);
+            game.assetManager.finishLoading();
         }
         if((atmosAID & 0xFF) > 0) {
             game.assetManager.load(game.files.ambiance(atmosAID), Music.class);
+            game.assetManager.finishLoading();
         }
         if((atmosBID & 0xFF) > 0) {
             game.assetManager.load(game.files.ambiance(atmosBID), Music.class);
+            game.assetManager.finishLoading();
         }
     }
 
@@ -166,7 +173,8 @@ public class KsmScreen implements Screen {
         //tilesetB.dispose();
         game.assetManager.unload(game.files.tileset(tsetAID));
         game.assetManager.unload(game.files.tileset(tsetBID));
-        bg.dispose();
+        game.assetManager.unload(game.files.gradient(backgroundID));
+        //bg.dispose();
     }
 
     /**
@@ -218,7 +226,7 @@ public class KsmScreen implements Screen {
         }
 
         // Produce the "backgroundID" gradient layer. The gradient is a single "strip" png.
-        bg = new Texture(game.files.gradient(backgroundID));
+        bg = game.assetManager.get(game.files.gradient(backgroundID));
         TiledMapTileLayer bgLayer = new TiledMapTileLayer(600/bg.getWidth(),
                 240/bg.getHeight(), bg.getWidth(), bg.getHeight());
         TiledMapTileLayer.Cell bgCell = new TiledMapTileLayer.Cell();
