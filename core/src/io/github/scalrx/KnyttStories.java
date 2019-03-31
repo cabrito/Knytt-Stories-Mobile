@@ -18,6 +18,8 @@ public class KnyttStories extends Game {
 	// Attributes we use for rendering a screen in a Knytt Stories level
 	public static final int V_WIDTH = 25*24;
 	public static final int V_HEIGHT = 10*24;
+	//public static final int V_WIDTH	= 1280;
+	//public static final int V_HEIGHT = 720;
 
 	// World object
 	public World currWorld;

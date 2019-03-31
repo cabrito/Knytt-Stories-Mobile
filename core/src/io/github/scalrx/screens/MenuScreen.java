@@ -31,13 +31,12 @@ public class MenuScreen implements Screen {
 
         // TODO: For now, we initialize our currWorld so that we have something to play
         this.game.currWorld = new World(game.files);
-        this.game.currWorld.setAuthor("Nifflas");
-        this.game.currWorld.setWorldName("The Machine");
+        this.game.currWorld.setAuthor("UncleSporky");
+        this.game.currWorld.setWorldName("Don't Eat the Mushroom");
         this.game.currWorld.initMap();
 
-        //this.game.currWorld.files = new KS_Files(game.currWorld.getAuthor(), game.currWorld.getWorldName());
         this.game.audio = new KsmMusic(game.assetManager, game.files);
-        //game.audio.loadMusic((byte)20);
+        game.audio.loadMusic((byte)20);
     }
 
     @Override
@@ -62,7 +61,7 @@ public class MenuScreen implements Screen {
         if(game.assetManager.update()) {
             Texture guiButton = game.assetManager.get(Gdx.files.internal("System/Gui_btn_medium.png").path(), Texture.class);
             game.batch.draw(guiButton,(KnyttStories.V_WIDTH/2) - guiButton.getWidth()/2,5);
-            //game.audio.playMusic((byte)20, delta);
+            game.audio.playMusic((byte)20, delta);
             //game.font.draw(game.batch, "Font Test", 100, 150);
             //game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
         }
@@ -71,7 +70,7 @@ public class MenuScreen implements Screen {
         game.batch.end();
 
         if (Gdx.input.isTouched()) {
-            game.setScreen(new KsmScreen(game, 1002, 1000));
+            game.setScreen(new KsmScreen(game, 1000, 1000));
             //game.audio.setFiles(game.currWorld.files);
 
             // Temporary. For when we actually load a world

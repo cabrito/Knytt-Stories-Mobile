@@ -34,11 +34,13 @@ public class KsmMusic {
     // Call before loading music
     public void loadMusic(byte muid) {
         assetManager.load(files.music(muid), Music.class);
+        assetManager.finishLoading();
     }
 
     // Call before loading ambiance
     public void loadAmbience(byte amid) {
         assetManager.load(files.ambiance(amid), Music.class);
+        assetManager.finishLoading();
     }
 
     // Plays music contextually

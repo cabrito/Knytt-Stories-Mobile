@@ -12,9 +12,12 @@ public class DesktopLauncher {
 		final int NUMBER_OF_TILES_HORIZONTAL = 25;
 		final int NUMBER_OF_TILES_VERTICAL = 10;
 
-		// 480p, 16:9
-		final int WINDOW_WIDTH = 854;
-		final int WINDOW_HEIGHT = 480;
+		// 720p, 16:9
+		//final int WINDOW_WIDTH = 1280;
+		//final int WINDOW_HEIGHT = 720;
+        // 480p, 16:9
+        final int WINDOW_WIDTH = 854;
+        final int WINDOW_HEIGHT = 480;
 
 		// Set window properties
 		config.title = "Knytt Stories Mobile";

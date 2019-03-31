@@ -62,7 +62,7 @@ public class KsmScreen implements Screen {
         this.yID = yID;
 
         camera = new OrthographicCamera();
-        camera.position.set(KnyttStories.V_WIDTH/2,KnyttStories.V_HEIGHT/2,0);
+        camera.position.set(KnyttStories.V_WIDTH/2.0f,KnyttStories.V_HEIGHT/2.0f,0);
         viewport = new FitViewport(KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT, camera);
 
         // Assemble data and layers
@@ -77,16 +77,13 @@ public class KsmScreen implements Screen {
 
         // Now that we have the musicID, atmosA, and atmosB bytes, try loading such audio files
         if((musicID & 0xFF) > 0) {
-            game.assetManager.load(game.files.music(musicID), Music.class);
-            game.assetManager.finishLoading();
+            game.audio.loadMusic(musicID);
         }
         if((atmosAID & 0xFF) > 0) {
-            game.assetManager.load(game.files.ambiance(atmosAID), Music.class);
-            game.assetManager.finishLoading();
+            game.audio.loadAmbience(atmosAID);
         }
         if((atmosBID & 0xFF) > 0) {
-            game.assetManager.load(game.files.ambiance(atmosBID), Music.class);
-            game.assetManager.finishLoading();
+            game.audio.loadAmbience(atmosBID);
         }
     }
 
@@ -104,12 +101,9 @@ public class KsmScreen implements Screen {
 
         tiledMapRenderer.setView(camera);
 
-        // Proceed only if all the assets we need have been loaded
-        if(game.assetManager.update()) {
-            /* Music and Ambiance */
-            game.audio.playMusic(musicID, delta);
-            game.audio.playAmbiance(atmosAID,atmosBID);
-        }
+        // Play game music and ambiance
+        game.audio.playMusic(musicID, delta);
+        game.audio.playAmbiance(atmosAID,atmosBID);
 
         // Render the KsmScreen in the desired order TODO: Leave space for Juni
         tiledMapRenderer.render(BACKGROUND_LAYER);
@@ -118,8 +112,8 @@ public class KsmScreen implements Screen {
         game.batch.begin();
 
         // Print the current KsmScreen coordinates in the bottom left of the screen.
-        font.draw(game.batch, "(" + xID + ", " + yID + ")", 10, 20);
-        //font.draw(game.batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
+        font.draw(game.batch, "(" + xID + ", " + yID + ")", 10, 40);
+        font.draw(game.batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 20);
 
         // Finish drawing to the screen
         game.batch.end();
