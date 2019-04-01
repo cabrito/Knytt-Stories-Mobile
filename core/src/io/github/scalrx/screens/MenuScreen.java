@@ -31,8 +31,8 @@ public class MenuScreen implements Screen {
 
         // TODO: For now, we initialize our currWorld so that we have something to play
         this.game.currWorld = new World(game.files);
-        this.game.currWorld.setAuthor("UncleSporky");
-        this.game.currWorld.setWorldName("Don't Eat the Mushroom");
+        this.game.currWorld.setAuthor("Nifflas");
+        this.game.currWorld.setWorldName("The Machine");
         this.game.currWorld.initMap();
 
         this.game.audio = new KsmMusic(game.assetManager, game.files);
