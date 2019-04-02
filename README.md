@@ -1,6 +1,6 @@
 # Knytt Stories Mobile
 
-![Image](./img/KSM_beta_nojuni.png)
+![Image](./docs/img/KSM_beta_nojuni.png)
 
 Knytt Stories Mobile (KSM) is a port of the Windows game [Knytt Stories by Nifflas](https://nifflas.ni2.se/games/) based on the source code of [Knytt Stories DS by Rodrigo Roman](http://www.rodrigoroman.com/rrc2soft/nds_dsknytt.html).
 
