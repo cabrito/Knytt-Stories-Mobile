@@ -1,17 +1,17 @@
-package io.github.scalrx.utilities;
+package io.github.scalrx;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+
+import io.github.scalrx.utilities.GZip;
+import io.github.scalrx.utilities.Pair;
 
 /***************************************************************************************************
  * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
@@ -34,7 +34,7 @@ public class MapFile {
         this.files = files;
 
         // Make sure the optimized Map.bin.raw and date files actually exist before we try making file offsets
-        /*if(!Gdx.files.absolute(files.MapBin() + ".raw").exists())
+        /*if(!Gdx.files.absolute(files.MapBin() + ".raw").exists())     // TODO: Fix .dat.raw situation
             decompress();
         if (getMapBinDatDate(files.MapBin()) != Gdx.files.absolute(files.MapBin()).lastModified())
             decompress();*/
@@ -97,8 +97,6 @@ public class MapFile {
             // Open Map.bin.raw as a byte array
             FileHandle mapFile = Gdx.files.external(files.mapBin(true));
             byte[] mapFileBytes = mapFile.readBytes();
-
-            //FileInputStream mapFile = (FileInputStream) Gdx.files.external(files.mapBin(true)).read();
 
             // Now, progress through the file finding level headers
             int X = 0, Y = 0;

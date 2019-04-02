@@ -1,6 +1,5 @@
-package io.github.scalrx.utilities;
+package io.github.scalrx;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 

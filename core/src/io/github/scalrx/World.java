@@ -1,8 +1,5 @@
 package io.github.scalrx;
 
-import io.github.scalrx.utilities.KsmFiles;
-import io.github.scalrx.utilities.MapFile;
-
 /***************************************************************************************************
  * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
  * World.java

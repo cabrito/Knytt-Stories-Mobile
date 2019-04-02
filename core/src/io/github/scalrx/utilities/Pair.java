@@ -1,6 +1,6 @@
 package io.github.scalrx.utilities;
 
-final class Pair<T> {
+public final class Pair<T> {
     private final T x, y;
 
     public Pair(T x, T y) {
