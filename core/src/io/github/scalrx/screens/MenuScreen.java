@@ -34,15 +34,6 @@ public class MenuScreen implements Screen {
     OrthographicCamera camera;
     private Stage stage;
 
-    private Texture guiButtonLarge;
-    private Texture playIcon;
-    private Texture tutorialIcon;
-    private Texture installIcon;
-    private Texture downloadIcon;
-    private Texture settingsIcon;
-    private Texture aboutIcon;
-    private Texture graphic;
-
     // Initialize our menu screen
     public MenuScreen(final KnyttStories game) {
         // Initialize our members
@@ -53,25 +44,24 @@ public class MenuScreen implements Screen {
         stage = new Stage(viewport, game.batch);
         Gdx.input.setInputProcessor(stage);
 
-        /**     Load our assets     */
-        game.assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
-        game.assetManager.load("System/Gui_btn_large.png", Texture.class);
-        game.assetManager.load("System/icons/play_icon.png", Texture.class);
-        game.assetManager.load("System/icons/tutorial_icon.png", Texture.class);
-        game.assetManager.load("System/icons/install_icon.png", Texture.class);
-        game.assetManager.load("System/icons/download_icon.png", Texture.class);
-        game.assetManager.load("System/icons/settings_icon.png", Texture.class);
-        game.assetManager.load("System/icons/about_icon.png", Texture.class);
-        game.assetManager.load("graphic.png", Texture.class);                   // TODO: TEMPORARY. DELETE!!!!
-        game.assetManager.finishLoading();
+        Texture guiButtonLarge;
+        Texture playIcon;
+        Texture tutorialIcon;
+        Texture installIcon;
+        Texture downloadIcon;
+        Texture settingsIcon;
+        Texture aboutIcon;
+        Texture graphic;
 
-        guiButtonLarge = game.assetManager.get("System/Gui_btn_large.png");
+        loadAssets();
+
+        guiButtonLarge = game.assetManager.get("System/Gui_btn_large.png", Texture.class);
         playIcon = game.assetManager.get("System/icons/play_icon.png");
         tutorialIcon = game.assetManager.get("System/icons/tutorial_icon.png");
-        installIcon = game.assetManager.get("System/icons/install_icon.png");;
-        downloadIcon = game.assetManager.get("System/icons/download_icon.png");;
-        settingsIcon = game.assetManager.get("System/icons/settings_icon.png");;
-        aboutIcon = game.assetManager.get("System/icons/about_icon.png");;
+        installIcon = game.assetManager.get("System/icons/install_icon.png");
+        downloadIcon = game.assetManager.get("System/icons/download_icon.png");
+        settingsIcon = game.assetManager.get("System/icons/settings_icon.png");
+        aboutIcon = game.assetManager.get("System/icons/about_icon.png");
         graphic = game.assetManager.get("graphic.png");
         Image ksmGraphic = new Image(graphic);
 
@@ -80,6 +70,7 @@ public class MenuScreen implements Screen {
         /**     Assemble our GUI     */
         // Fill out the skin each of our buttons will use
         Skin menuBtnSkin = new Skin();
+        final float ICON_SIZE = 50;
         menuBtnSkin.add("large-gui-button", guiButtonLarge);
         menuBtnSkin.add("large-gui-button", game.assetManager.get("fonts/lsans.ttf"));
 
@@ -90,56 +81,33 @@ public class MenuScreen implements Screen {
 
         TextButton playButton = new TextButton("Play", textButtonStyle);
         playButton.clearChildren();                     // Reorganize the layout of the ImageTextButton
-        playButton.add(new Image(playIcon)).row();
+        playButton.add(new Image(playIcon)).size(ICON_SIZE).row();
         playButton.add(playButton.getLabel());
 
         TextButton tutorialButton = new TextButton("Tutorial", textButtonStyle);
         tutorialButton.clearChildren();                     // Reorganize the layout of the ImageTextButton
-        tutorialButton.add(new Image(tutorialIcon)).row();
+        tutorialButton.add(new Image(tutorialIcon)).size(ICON_SIZE).row();
         tutorialButton.add(tutorialButton.getLabel());
 
         TextButton installButton = new TextButton("Install", textButtonStyle);
         installButton.clearChildren();                     // Reorganize the layout of the ImageTextButton
-        installButton.add(new Image(installIcon)).row();
+        installButton.add(new Image(installIcon)).size(ICON_SIZE).row();
         installButton.add(installButton.getLabel());
 
         TextButton downloadButton = new TextButton("Download", textButtonStyle);
         downloadButton.clearChildren();                     // Reorganize the layout of the ImageTextButton
-        downloadButton.add(new Image(downloadIcon)).row();
+        downloadButton.add(new Image(downloadIcon)).size(ICON_SIZE).row();
         downloadButton.add(downloadButton.getLabel());
 
         TextButton settingsButton = new TextButton("Settings", textButtonStyle);
         settingsButton.clearChildren();                     // Reorganize the layout of the ImageTextButton
-        settingsButton.add(new Image(settingsIcon)).row();
+        settingsButton.add(new Image(settingsIcon)).size(ICON_SIZE).row();
         settingsButton.add(settingsButton.getLabel());
 
         TextButton aboutButton = new TextButton("About", textButtonStyle);
         aboutButton.clearChildren();                     // Reorganize the layout of the ImageTextButton
-        aboutButton.add(new Image(aboutIcon)).row();
+        aboutButton.add(new Image(aboutIcon)).size(ICON_SIZE).row();
         aboutButton.add(aboutButton.getLabel());
-
-
-
-
-        // TODO: Can you convert this to just use a Button and add an image to it (since they are Tables)?
-        /*ImageTextButton.ImageTextButtonStyle menuBtnStyle = new ImageTextButton.ImageTextButtonStyle();
-        menuBtnStyle.up = menuBtnSkin.newDrawable("large-gui-button");
-        menuBtnStyle.down = menuBtnSkin.newDrawable("large-gui-button", 0.0f,0.0f,0.0f,0.5f);
-        menuBtnStyle.font = menuBtnSkin.getFont("large-gui-button");
-
-        ImageTextButton.ImageTextButtonStyle playBtnStyle = new ImageTextButton.ImageTextButtonStyle(menuBtnStyle);
-        ImageTextButton playButton = new ImageTextButton("Play", playBtnStyle);
-        playButton.getStyle().imageUp = menuBtnSkin.newDrawable("play-icon");
-        playButton.clearChildren();                     // Reorganize the layout of the ImageTextButton
-        playButton.add(playButton.getImage()).row();
-        playButton.add(playButton.getLabel());
-
-        ImageTextButton.ImageTextButtonStyle tutorialBtnStyle = new ImageTextButton.ImageTextButtonStyle(menuBtnStyle);
-        ImageTextButton tutorialButton = new ImageTextButton("Tutorial", menuBtnStyle);
-        tutorialButton.getStyle().imageUp = menuBtnSkin.newDrawable("tutorial-icon");
-        tutorialButton.clearChildren();                 // Reorganize the layout of the ImageTextButton
-        tutorialButton.add(tutorialButton.getImage()).row();
-        tutorialButton.add(tutorialButton.getLabel());*/
 
         // Set the position of the ImageTextButtons
         ksmGraphic.setScale(2f);
@@ -155,7 +123,7 @@ public class MenuScreen implements Screen {
         // TODO: IT WORKS! Now decipher *why* it works...
         // Now, add items to the columns...
 
-        tutorialButton.addListener(new ChangeListener() {
+        playButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 game.setScreen(new KsmScreen(game, 1000, 1000));
@@ -190,6 +158,20 @@ public class MenuScreen implements Screen {
 
         this.game.audio = new KsmMusic(game.assetManager, game.files);
         game.audio.loadMusic((byte)20);
+    }
+
+    /**     Methods     */
+    public void loadAssets() {
+        game.assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
+        game.assetManager.load("System/Gui_btn_large.png", Texture.class);
+        game.assetManager.load("System/icons/play_icon.png", Texture.class);
+        game.assetManager.load("System/icons/tutorial_icon.png", Texture.class);
+        game.assetManager.load("System/icons/install_icon.png", Texture.class);
+        game.assetManager.load("System/icons/download_icon.png", Texture.class);
+        game.assetManager.load("System/icons/settings_icon.png", Texture.class);
+        game.assetManager.load("System/icons/about_icon.png", Texture.class);
+        game.assetManager.load("graphic.png", Texture.class);                   // TODO: TEMPORARY. DELETE!!!!
+        game.assetManager.finishLoading();
     }
 
     @Override
@@ -261,14 +243,14 @@ public class MenuScreen implements Screen {
         game.assetManager.unload(Gdx.files.internal("System/Gui_btn_large.png").path());
         game.assetManager.unload(Gdx.files.internal("System/icons/play_icon.png").path());
         game.assetManager.unload(Gdx.files.internal("System/icons/tutorial_icon.png").path());
-        guiButtonLarge.dispose();
+        /*guiButtonLarge.dispose();
         playIcon.dispose();
         tutorialIcon.dispose();
         installIcon.dispose();
         downloadIcon.dispose();
         settingsIcon.dispose();
         aboutIcon.dispose();
-        graphic.dispose();
+        graphic.dispose();*/
         stage.dispose();
         //guiButton.dispose();    // REMOVE?!
     }

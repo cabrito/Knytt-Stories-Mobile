@@ -1,5 +1,6 @@
 package io.github.scalrx.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import io.github.scalrx.KnyttStories;
+import io.github.scalrx.gui.OnscreenController;
 
 public class KsmScreen implements Screen {
 
@@ -32,6 +34,7 @@ public class KsmScreen implements Screen {
     final KnyttStories game;
     private OrthographicCamera camera;
     private Viewport viewport;
+    private OnscreenController controller;
 
     // Attributes for the particular KsmScreen we're on
     private int xID, yID;       // TODO: WHEN DO THESE NEED TO BE SET? CONVERT TO PAIR OBJECT
@@ -62,8 +65,10 @@ public class KsmScreen implements Screen {
         this.yID = yID;
 
         camera = new OrthographicCamera();
-        camera.position.set(KnyttStories.V_WIDTH/2.0f,KnyttStories.V_HEIGHT/2.0f,0);
-        viewport = new FitViewport(KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT, camera);
+        camera.position.set(24*25/2.0f,24*10/2.0f,0);
+        //viewport = new FitViewport(KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT, camera);
+        viewport = new FitViewport(24*25, 24*10, camera);
+        controller = new OnscreenController(game.batch);
 
         // Assemble data and layers
         assembleData();
@@ -117,21 +122,27 @@ public class KsmScreen implements Screen {
 
         // Finish drawing to the screen
         game.batch.end();
+        if(Gdx.app.getType() == Application.ApplicationType.Android)
+            controller.draw();
 
         // Movement-related controls for us to use temporarily
-        if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || controller.isLeftPressed()) {
+            controller.resetTouch();
             game.setScreen(new KsmScreen(game,xID - 1, yID));
             dispose();
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || controller.isRightPressed()) {
+            controller.resetTouch();
             game.setScreen(new KsmScreen(game,xID + 1, yID));
             dispose();
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.UP) || controller.isUpPressed()) {
+            controller.resetTouch();
             game.setScreen(new KsmScreen(game,xID, yID - 1));
             dispose();
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || controller.isDownPressed()) {
+            controller.resetTouch();
             game.setScreen(new KsmScreen(game,xID, yID + 1));
             dispose();
         }
@@ -139,8 +150,8 @@ public class KsmScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width,height);
-
+        viewport.update(width, height);
+        controller.resize(width, height);
     }
 
     @Override
