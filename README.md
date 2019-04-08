@@ -10,13 +10,13 @@ Currently, Knytt Stories Mobile functionality is limited to viewing level scener
 
 #### Desktop:
 
-On desktop, create a folder in your home directory named `Knytt Stories Mobile`. Inside this directory, place *already extracted* Knytt Stories level folders. At this time, KSM is hardcoded to load **The Machine** by Nifflas; however any regular Knytt Stories level should work. *A level selection screen is high priority, in progress, and should be implemented within the near future*.
+On desktop, create a folder in your home directory named `Knytt Stories Mobile`. Inside this directory, place *already extracted* Knytt Stories level folders. (**NOTE**: If you need a tool to extract a .knytt.bin file, use the Unknytt.java tool located in this GitHub repository at */core/src/io/github/scalrx/utilities/Unknytt.java* and follow the directions in the file. This functionality is expected to be integrated into the actual game within the next few revisions.) At this time, KSM is hardcoded to load **The Machine** by Nifflas; however any regular Knytt Stories level should work. *A level selection screen is high priority, in progress, and should be implemented within the near future*.
 
 Use the arrow keys on the keyboard to navigate the screens.
 
 #### Android:
 
-On Android, create a folder in the root of your phone's storage titled `Knytt Stories Mobile`. If your phone has internal storage, this will be the default. Otherwise, use the SD card. Place an *already extracted* Knytt Stories level inside the `Knytt Stories Mobile folder`. Afterwards, you will need to manually enable Storage permissions for the app `Knytt Stories Mobile` in the device settings. From here, you may launch the game. 
+On Android, create a folder in the root of your phone's storage titled `Knytt Stories Mobile`. If your phone has internal storage, this will be the default. Otherwise, use the SD card. Place an *already extracted* Knytt Stories level inside the `Knytt Stories Mobile folder`. (If you need a tool to extract a .knyttt.bin file, see the instructions above in Desktop) Afterwards, you will need to manually enable Storage permissions for the app `Knytt Stories Mobile` in the device settings. From here, you may launch the game.
 
 ### To do list:
 
