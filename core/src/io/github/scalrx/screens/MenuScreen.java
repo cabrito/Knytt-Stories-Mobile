@@ -29,9 +29,9 @@ import io.github.scalrx.utilities.PixelPerfectViewport;
 
 public class MenuScreen implements Screen {
 
-    final KnyttStories game;
-    FitViewport viewport;
-    OrthographicCamera camera;
+    private final KnyttStories game;
+    private FitViewport viewport;
+    private OrthographicCamera camera;
     private Stage stage;
 
     // Initialize our menu screen
@@ -65,14 +65,12 @@ public class MenuScreen implements Screen {
         graphic = game.assetManager.get("graphic.png");
         Image ksmGraphic = new Image(graphic);
 
-
-
         /**     Assemble our GUI     */
         // Fill out the skin each of our buttons will use
         Skin menuBtnSkin = new Skin();
         final float ICON_SIZE = 50;
         menuBtnSkin.add("large-gui-button", guiButtonLarge);
-        menuBtnSkin.add("large-gui-button", game.assetManager.get("fonts/lsans.ttf"));
+        menuBtnSkin.add("large-gui-button", game.assetManager.get("defaultFont.ttf", BitmapFont.class));
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.up = menuBtnSkin.newDrawable("large-gui-button");
@@ -126,6 +124,14 @@ public class MenuScreen implements Screen {
         playButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(new LevelSelectScreen(game));
+                dispose();
+            }
+        });
+
+        /*playButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
                 game.setScreen(new KsmScreen(game, 1000, 1000));
                 //game.audio.setFiles(game.currWorld.files);
 
@@ -134,7 +140,7 @@ public class MenuScreen implements Screen {
                 game.audio.stopAmbience();
                 dispose();
             }
-        });
+        });*/
 
 
         // Lastly, add the container to the stage
@@ -193,28 +199,14 @@ public class MenuScreen implements Screen {
         game.batch.begin();
 
         // Make sure to only draw if we have all the assets loaded appropriately.
-        if(game.assetManager.update()) {
-            Texture guiButton = game.assetManager.get(Gdx.files.internal("System/Gui_btn_medium.png").path(), Texture.class);
-            //game.batch.draw(guiButton,(KnyttStories.V_WIDTH/2) - guiButton.getWidth()/2,5);
+        if(game.assetManager.update())
             game.audio.playMusic((byte)20, delta);
-            //game.font.draw(game.batch, "Font Test", 100, 150);
-            //game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
-        }
 
         // End all drawing from the SpriteBatch
         game.batch.end();
         stage.act();
         stage.draw();
 
-        /*if (Gdx.input.isTouched()) {
-            game.setScreen(new KsmScreen(game, 1000, 1000));
-            //game.audio.setFiles(game.currWorld.files);
-
-            // Temporary. For when we actually load a world
-            game.audio.stopMusic();
-            game.audio.stopAmbience();
-            dispose();
-        }*/
     }
 
     @Override
@@ -240,18 +232,14 @@ public class MenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        game.assetManager.unload(Gdx.files.internal("System/Gui_btn_large.png").path());
-        game.assetManager.unload(Gdx.files.internal("System/icons/play_icon.png").path());
-        game.assetManager.unload(Gdx.files.internal("System/icons/tutorial_icon.png").path());
-        /*guiButtonLarge.dispose();
-        playIcon.dispose();
-        tutorialIcon.dispose();
-        installIcon.dispose();
-        downloadIcon.dispose();
-        settingsIcon.dispose();
-        aboutIcon.dispose();
-        graphic.dispose();*/
+        game.assetManager.unload("System/Gui_btn_large.png");
+        game.assetManager.unload("System/icons/play_icon.png");
+        game.assetManager.unload("System/icons/tutorial_icon.png");
+        game.assetManager.unload("System/icons/install_icon.png");
+        game.assetManager.unload("System/icons/download_icon.png");
+        game.assetManager.unload("System/icons/settings_icon.png");
+        game.assetManager.unload("System/icons/about_icon.png");
+        game.assetManager.unload("graphic.png");
         stage.dispose();
-        //guiButton.dispose();    // REMOVE?!
     }
 }

@@ -8,10 +8,10 @@ import java.util.zip.GZIPOutputStream;
 
 /***************************************************************************************************
  * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
- * FILE NAME GOES HERE.java
+ * GZip.java
  * Created by: scalr at 9:04 PM, 3/24/19
  *
- * FILE DESCRIPTION GOES HERE.
+ * Used for (de)compression of GZip-encoded archives.
  *
  **************************************************************************************************/
 public class GZip {

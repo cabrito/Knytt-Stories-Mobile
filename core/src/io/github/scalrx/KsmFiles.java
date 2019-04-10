@@ -46,6 +46,10 @@ public class KsmFiles {
         worldDir = null;
     }
 
+    public String getKsmDir() {
+        return ksmDir;
+    }
+
     public String getWorldDir() {
         return worldDir;
     }
@@ -60,7 +64,7 @@ public class KsmFiles {
         if(worldDir == null || worldDir.isEmpty()) {
             // Swap the music loader for the AssetManager to load internal music files
             assetManager.setLoader(Music.class, new MusicLoader(internal));
-            return Gdx.files.internal("Data/Music/Song" + (muid & 0xFF) + ".ogg").path();
+            return "Data/Music/Song" + (muid & 0xFF) + ".ogg";
         }
 
         // Swap the loader for external really quick for the following if-else statement...
@@ -68,11 +72,11 @@ public class KsmFiles {
 
         // If there is music for this screen, provide it
         if(Gdx.files.external(ksmDir + getWorldDir() + "Music/Song" + (muid & 0xFF) + ".ogg").exists())
-            return Gdx.files.external(ksmDir + getWorldDir() + "Music/Song" + (muid & 0xFF) + ".ogg").path();
+            return ksmDir + getWorldDir() + "Music/Song" + (muid & 0xFF) + ".ogg";
         else {
             // Swap the music loader back to load internal music files
             assetManager.setLoader(Music.class, new MusicLoader(internal));
-            return Gdx.files.internal("Data/Music/Song" + (muid & 0xFF) + ".ogg").path();
+            return "Data/Music/Song" + (muid & 0xFF) + ".ogg";
         }
     }
 
@@ -81,7 +85,7 @@ public class KsmFiles {
         if(worldDir == null || worldDir.isEmpty()) {
             // Swap the music loader for the AssetManager to load internal ambiance files
             assetManager.setLoader(Music.class, new MusicLoader(internal));
-            return Gdx.files.internal("Data/Ambiance/Ambi" + (amid & 0xFF) + ".ogg").path();
+            return "Data/Ambiance/Ambi" + (amid & 0xFF) + ".ogg";
         }
 
         // Swap the loader for external really quick for the following if-else statement...
@@ -89,12 +93,12 @@ public class KsmFiles {
 
         // If there is ambiance for this screen, provide it
         if(Gdx.files.external(ksmDir + getWorldDir() + "Ambiance/Ambi" + (amid & 0xFF) + ".ogg").exists()) {
-            return Gdx.files.external(ksmDir + getWorldDir() + "Ambiance/Ambi" + (amid & 0xFF) + ".ogg").path();
+            return ksmDir + getWorldDir() + "Ambiance/Ambi" + (amid & 0xFF) + ".ogg";
         }
         else {
             // Swap the music loader back to load internal ambiance files
             assetManager.setLoader(Music.class, new MusicLoader(internal));
-            return Gdx.files.internal("Data/Ambiance/Ambi" + (amid & 0xFF) + ".ogg").path();
+            return "Data/Ambiance/Ambi" + (amid & 0xFF) + ".ogg";
         }
     }
 
@@ -105,13 +109,13 @@ public class KsmFiles {
 
         // Provide custom tileset filepath if available
         if(Gdx.files.external(ksmDir + getWorldDir() + "Tilesets/Tileset" + (tsid & 0xFF) + ".png").exists()) {
-            return Gdx.files.external(ksmDir + getWorldDir() + "Tilesets/Tileset" + (tsid & 0xFF) + ".png").path();
+            return ksmDir + getWorldDir() + "Tilesets/Tileset" + (tsid & 0xFF) + ".png";
         }
         // Otherwise, use vanilla tilesets instead
         else {
             // Swap the texture loader back to load internal ambiance files
             assetManager.setLoader(Texture.class, new TextureLoader(internal));
-            return Gdx.files.internal("Data/Tilesets/Tileset" + (tsid & 0xFF) + ".png").path();
+            return "Data/Tilesets/Tileset" + (tsid & 0xFF) + ".png";
         }
     }
 
@@ -122,13 +126,13 @@ public class KsmFiles {
 
         // Provide custom gradients filepath if available
         if(Gdx.files.external(ksmDir + getWorldDir() + "Gradients/Gradient" + (gid & 0xFF) + ".png").exists()) {
-            return Gdx.files.external(ksmDir + getWorldDir() + "Gradients/Gradient" + (gid & 0xFF) + ".png").path();
+            return ksmDir + getWorldDir() + "Gradients/Gradient" + (gid & 0xFF) + ".png";
         }
         // Otherwise, use vanilla gradients instead
         else {
             // Swap the texture loader back to load internal ambiance files
             assetManager.setLoader(Texture.class, new TextureLoader(internal));
-            return Gdx.files.internal("Data/Gradients/Gradient" + (gid & 0xFF) + ".png").path();
+            return "Data/Gradients/Gradient" + (gid & 0xFF) + ".png";
         }
     }
 }

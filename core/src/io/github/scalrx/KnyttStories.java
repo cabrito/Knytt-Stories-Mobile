@@ -20,10 +20,6 @@ public class KnyttStories extends Game {
 	public AssetManager assetManager;
 
 	// Attributes we use for rendering a screen in a Knytt Stories level
-	//public static final int V_WIDTH = 25*24;
-	//public static final int V_HEIGHT = 10*24;
-	//public static final int V_WIDTH	= 1280;
-	//public static final int V_HEIGHT = 720;
 	public static final int V_WIDTH	= 854;
 	public static final int V_HEIGHT = 480;
 
@@ -33,6 +29,8 @@ public class KnyttStories extends Game {
 	// Used for handling all the music and ambiance.
 	public KsmMusic audio;
 	public KsmFiles files;
+
+	// Used for the various fonts we'll encounter throughout the game
 
 	@Override
 	public void create () {
@@ -44,13 +42,29 @@ public class KnyttStories extends Game {
 		FileHandleResolver internal = new InternalFileHandleResolver();
 		assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(internal));
 		assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(internal));
-		FreetypeFontLoader.FreeTypeFontLoaderParameter parameters = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-		parameters.fontFileName = "fonts/lsans.ttf";
-		parameters.fontParameters.size = 12;
-		parameters.fontParameters.color = Color.BLACK;
-		parameters.fontParameters.mono = true;
 
-		assetManager.load("fonts/lsans.ttf", BitmapFont.class, parameters);
+		FreetypeFontLoader.FreeTypeFontLoaderParameter defaultParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+		defaultParams.fontFileName = "fonts/lsans.ttf";
+		defaultParams.fontParameters.size = 12;
+		defaultParams.fontParameters.color = Color.BLACK;
+		defaultParams.fontParameters.mono = true;
+
+		FreetypeFontLoader.FreeTypeFontLoaderParameter smallParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+		smallParams.fontFileName = "fonts/lsans.ttf";
+		smallParams.fontParameters.size = 9;
+		smallParams.fontParameters.color = Color.BLACK;
+		smallParams.fontParameters.mono = true;
+
+		FreetypeFontLoader.FreeTypeFontLoaderParameter smallParamsGray = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+		smallParamsGray.fontFileName = "fonts/lsans.ttf";
+		smallParamsGray.fontParameters.size = 9;
+		smallParamsGray.fontParameters.color = Color.GRAY;
+		smallParamsGray.fontParameters.mono = true;
+
+		// You HAVE to write ".ttf" even if that's not the real name of the font file.
+		assetManager.load("defaultFont.ttf", BitmapFont.class, defaultParams);
+		assetManager.load("smallFont.ttf", BitmapFont.class, smallParams);
+		assetManager.load("smallGrayFont.ttf", BitmapFont.class, smallParamsGray);
 		assetManager.finishLoading();
 		// Push the main menu onto the screen stack.
 		this.setScreen(new MenuScreen(this));
