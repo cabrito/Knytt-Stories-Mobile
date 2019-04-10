@@ -13,7 +13,8 @@ buildscript {
         classpath 'org.wisepersist:gwt-gradle-plugin:1.0.6'
         classpath 'com.android.tools.build:gradle:3.3.2'
         classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.5'
-        
+
+
 
     }
 }
@@ -124,6 +125,9 @@ project(":core") {
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+
+        // https://mvnrepository.com/artifact/org.ini4j/ini4j
+        compile group: 'org.ini4j', name: 'ini4j', version: '0.5.4'
         
     }
 }

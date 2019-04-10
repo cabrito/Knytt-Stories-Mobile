@@ -157,10 +157,6 @@ public class MenuScreen implements Screen {
         this.game.assetManager.load(Gdx.files.internal("System/Gui_btn_medium.png").path(), Texture.class);
 
         // TODO: For now, we initialize our currWorld so that we have something to play
-        this.game.currWorld = new World(game.files);
-        this.game.currWorld.setAuthor("Nifflas");
-        this.game.currWorld.setWorldName("The Machine");
-        this.game.currWorld.initMap();
 
         this.game.audio = new KsmMusic(game.assetManager, game.files);
         game.audio.loadMusic((byte)20);

@@ -3,21 +3,32 @@ package io.github.scalrx.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
+import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import org.ini4j.Wini;
+
+import java.io.File;
+import java.io.IOException;
+
 import io.github.scalrx.KnyttStories;
+import io.github.scalrx.World;
 import io.github.scalrx.gui.GuiLevelButton;
 
 /***************************************************************************************************
@@ -46,56 +57,104 @@ public class LevelSelectScreen implements Screen {
         // Load our assets we'll use
         loadAssets();
         Texture guiBtnLevel = game.assetManager.get("System/Gui_btn_level.png", Texture.class);
-        Texture juniIcon    = game.assetManager.get("Data/Objects/Juni/Juni0.png", Texture.class);
 
         // Prepare the stage for level selection
         stage = new Stage(viewport, game.batch);
         Gdx.input.setInputProcessor(stage);
 
         // Create the look for each element in the scrollpane
-        Skin levelButton = new Skin();
-        //final float ICON_SIZE = 30;
-        levelButton.add("gui-button-level", guiBtnLevel);
-        levelButton.add("gui-button-level", game.assetManager.get("smallFont.ttf", BitmapFont.class));
-        levelButton.add("description-font", game.assetManager.get("smallGrayFont.ttf", BitmapFont.class));
+        Skin buttonSkin = new Skin();
+        final float BUTTON_SPACING = 5f;
+        buttonSkin.add("gui-button-level", guiBtnLevel);
+        buttonSkin.add("gui-button-level", game.assetManager.get("smallFont.ttf", BitmapFont.class));
+        buttonSkin.add("description-font", game.assetManager.get("smallGrayFont.ttf", BitmapFont.class));
 
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = levelButton.newDrawable("gui-button-level");
-        textButtonStyle.down = levelButton.newDrawable("gui-button-level", 0.0f,0.0f,0.0f,0.5f);
-        textButtonStyle.font = levelButton.getFont("gui-button-level");
-        levelButton.add("default", textButtonStyle);
-
-        GuiLevelButton levelBtn = new GuiLevelButton(juniIcon,"The Machine (Nifflas)", "testestest", levelButton);
-
-        /*TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = levelButton.newDrawable("gui-button-level");
-        textButtonStyle.down = levelButton.newDrawable("gui-button-level", 0.0f,0.0f,0.0f,0.5f);
-        textButtonStyle.font = levelButton.getFont("gui-button-level");
-
-        TextButton levelBtn = new TextButton("The Machine (Nifflas)", textButtonStyle);
-        levelBtn.clearChildren();                     // Reorganize the layout of the ImageTextButton
-        levelBtn.left().padLeft(2f);
-        levelBtn.add(new Image(juniIcon)).size(ICON_SIZE).padRight(2f);
-        levelBtn.add(levelBtn.getLabel());*/
+        //GuiLevelButton levelBtn = new GuiLevelButton(juniIcon,"The Machine (Nifflas)", "A save-the-world adventure.", buttonSkin);
+        //GuiLevelButton levelBtn2 = new GuiLevelButton(juniIcon2,"Different Adventure (Test)", "These should say different things.", buttonSkin);
 
         // Make the table used in the scrollpane
         Table table = new Table();
-        table.add(levelBtn);
+
+        FileHandle[] files = Gdx.files.external("Knytt Stories Mobile/").list();
+        try {
+            for (final FileHandle fh : files) {
+                if (fh.isDirectory()) {
+                    if (Gdx.files.external(fh.path() + "/World.ini").exists()) {
+                        Wini ini = new Wini(Gdx.files.external(fh.path() + "/World.ini").file());
+                        final String name = ini.get("World", "Name", String.class);
+                        final String author = ini.get("World", "Author", String.class);
+                        final String description = ini.get("World", "Description", String.class);
+
+                        // Load stuff
+                        game.assetManager.setLoader(Texture.class, new TextureLoader(new ExternalFileHandleResolver()));
+                        game.assetManager.load(Gdx.files.external(fh.path() + "/Icon.png").path(), Texture.class);
+                        game.assetManager.finishLoading();
+                        Texture icon = game.assetManager.get(Gdx.files.external(fh.path() + "/Icon.png").path(), Texture.class);
+
+                        // Make our button and add it to the scrollpane table
+                        GuiLevelButton button = new GuiLevelButton(icon, name + " (" + author + ")",
+                                description,buttonSkin);
+                        button.addListener(new ChangeListener() {
+                            // TODO: IMPLEMENT FILE SELECTION/CUTSCENES BEFORE GOING TO THE GAME
+                            @Override
+                            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                                try {
+                                    Wini ini = new Wini(Gdx.files.external(fh.path() + "/DefaultSavegame.ini").file());
+                                    int xID = ini.get("Positions","X Map", int.class);
+                                    int yID = ini.get("Positions", "Y Map", int.class);
+
+                                    game.currWorld = new World(game.files);
+                                    game.currWorld.setAuthor(author);
+                                    game.currWorld.setWorldName(name);
+                                    game.currWorld.initMap();
+                                    game.setScreen(new KsmScreen(game, xID, yID));
+                                    //game.audio.setFiles(game.currWorld.files);
+
+                                    // Temporary. For when we actually load a world
+                                    game.audio.stopMusic();
+                                    game.audio.stopAmbience();
+                                    dispose();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        table.add(button).padBottom(BUTTON_SPACING).row();
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         ScrollPane scrollPane = new ScrollPane(table);
         scrollPane.setPosition(0f,KnyttStories.V_HEIGHT/2);
         scrollPane.setSize(300,200);
 
         stage.addActor(scrollPane);
-
     }
 
     private void loadAssets() {
         // Load internal resources
         game.assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
         game.assetManager.load("System/Gui_btn_level.png", Texture.class);
-        game.assetManager.load("Data/Objects/Juni/Juni0.png", Texture.class);
         game.assetManager.finishLoading();
     }
+
+    // Test implementation of ini4j
+    /*private void iniExample() throws IOException {
+        FileHandle[] files = Gdx.files.external("Knytt Stories Mobile/").list();
+        for(FileHandle fh : files) {
+            if(fh.isDirectory()) {
+                if(Gdx.files.external(fh.path() + "/World.ini").exists()) {
+                    Wini ini = new Wini(Gdx.files.external(fh.path() + "/World.ini").file());
+                    String name = ini.get("World", "Name", String.class);
+                    String author = ini.get("World", "Author", String.class);
+                    System.out.println("TEST: " + name + " - " + author);
+                }
+            }
+        }
+    }*/
 
     @Override
     public void show() {
@@ -144,7 +203,6 @@ public class LevelSelectScreen implements Screen {
     @Override
     public void dispose() {
         game.assetManager.unload("System/Gui_btn_level.png");
-        game.assetManager.unload("Data/Objects/Juni/Juni0.png");
         stage.dispose();
     }
 }
