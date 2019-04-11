@@ -1,5 +1,6 @@
 package io.github.scalrx.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
@@ -178,7 +179,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-
+        
     }
 
     @Override

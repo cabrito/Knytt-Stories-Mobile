@@ -32,6 +32,8 @@ public class KnyttStories extends Game {
 
 	// Used for the various fonts we'll encounter throughout the game
 
+
+
 	@Override
 	public void create () {
 		// Initialize our SpriteBatch and AssetManager
@@ -47,19 +49,19 @@ public class KnyttStories extends Game {
 		defaultParams.fontFileName = "fonts/lsans.ttf";
 		defaultParams.fontParameters.size = 12;
 		defaultParams.fontParameters.color = Color.BLACK;
-		defaultParams.fontParameters.mono = true;
+		//defaultParams.fontParameters.mono = true;
 
 		FreetypeFontLoader.FreeTypeFontLoaderParameter smallParams = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
 		smallParams.fontFileName = "fonts/lsans.ttf";
-		smallParams.fontParameters.size = 9;
+		smallParams.fontParameters.size = 12;
 		smallParams.fontParameters.color = Color.BLACK;
-		smallParams.fontParameters.mono = true;
+		//smallParams.fontParameters.mono = true;
 
 		FreetypeFontLoader.FreeTypeFontLoaderParameter smallParamsGray = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
 		smallParamsGray.fontFileName = "fonts/lsans.ttf";
-		smallParamsGray.fontParameters.size = 9;
+		smallParamsGray.fontParameters.size = 12;
 		smallParamsGray.fontParameters.color = Color.GRAY;
-		smallParamsGray.fontParameters.mono = true;
+		//smallParamsGray.fontParameters.mono = true;
 
 		// You HAVE to write ".ttf" even if that's not the real name of the font file.
 		assetManager.load("defaultFont.ttf", BitmapFont.class, defaultParams);

@@ -69,11 +69,9 @@ public class LevelSelectScreen implements Screen {
         buttonSkin.add("gui-button-level", game.assetManager.get("smallFont.ttf", BitmapFont.class));
         buttonSkin.add("description-font", game.assetManager.get("smallGrayFont.ttf", BitmapFont.class));
 
-        //GuiLevelButton levelBtn = new GuiLevelButton(juniIcon,"The Machine (Nifflas)", "A save-the-world adventure.", buttonSkin);
-        //GuiLevelButton levelBtn2 = new GuiLevelButton(juniIcon2,"Different Adventure (Test)", "These should say different things.", buttonSkin);
-
         // Make the table used in the scrollpane
         Table table = new Table();
+        table.left();
 
         FileHandle[] files = Gdx.files.external("Knytt Stories Mobile/").list();
         try {
@@ -93,7 +91,7 @@ public class LevelSelectScreen implements Screen {
 
                         // Make our button and add it to the scrollpane table
                         GuiLevelButton button = new GuiLevelButton(icon, name + " (" + author + ")",
-                                description,buttonSkin);
+                                description, buttonSkin);
                         button.addListener(new ChangeListener() {
                             // TODO: IMPLEMENT FILE SELECTION/CUTSCENES BEFORE GOING TO THE GAME
                             @Override
@@ -128,7 +126,7 @@ public class LevelSelectScreen implements Screen {
         }
 
         ScrollPane scrollPane = new ScrollPane(table);
-        scrollPane.setPosition(0f,KnyttStories.V_HEIGHT/2);
+        scrollPane.setPosition(50f,0);
         scrollPane.setSize(300,200);
 
         stage.addActor(scrollPane);
@@ -182,6 +180,7 @@ public class LevelSelectScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        stage.getViewport().update(width, height);
         viewport.update(width,height,true);
     }
 
