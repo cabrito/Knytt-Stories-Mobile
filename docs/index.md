@@ -25,7 +25,7 @@ The following items are not an exhaustive list, but things that I think are of i
 - Finish base modularization of all currently-completed components. Right now, tilesets and data assembly need to be modularized.
 - Upscale the resolution of the game and menu screen to be 720p+
 - Implement on-screen controls for Android and iOS.
-- Implement menu screen with level selection, and level extraction (downloading capabilities may be of immediate priority as well).
+- ~~Implement menu screen with level selection~~, and level extraction (downloading capabilities may be of immediate priority as well).
 - Implement Juni.
 - Revise onscreen controls for Juni.
 - Implement per-pixel collision of layer-3 with Juni.

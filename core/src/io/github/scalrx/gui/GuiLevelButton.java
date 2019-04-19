@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.Align;
  * GuiLevelButton.java
  * Created by: scalr at 5:39 PM, 4/9/19
  *
- * .
+ * File that defines the setup and appearance of a Level button in the GUI.
  *
  **************************************************************************************************/
 public class GuiLevelButton extends ImageTextButton {

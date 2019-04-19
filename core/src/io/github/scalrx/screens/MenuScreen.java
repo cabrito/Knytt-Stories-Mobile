@@ -179,7 +179,12 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-        
+        if(Gdx.app.getType() == Application.ApplicationType.Android) {
+            if(!game.getPermissions().isReadPermissionEnabled()) {
+            }
+            if(!game.getPermissions().isWritePermissionEnabled()) {
+            }
+        }
     }
 
     @Override

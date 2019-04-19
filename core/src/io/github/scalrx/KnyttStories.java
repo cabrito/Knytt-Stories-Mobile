@@ -30,9 +30,20 @@ public class KnyttStories extends Game {
 	public KsmMusic audio;
 	public KsmFiles files;
 
-	// Used for the various fonts we'll encounter throughout the game
-
-
+	// Desktop Constructor
+	public KnyttStories() {
+		super();
+	}
+	// Android Constructor
+	public KnyttStories(Permissions permissions) {
+		super();
+		this.permissions = permissions;
+	}
+	// For Android
+    private Permissions permissions;
+	public Permissions getPermissions() {
+    	return permissions;
+	}
 
 	@Override
 	public void create () {

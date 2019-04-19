@@ -27,6 +27,7 @@ import java.io.RandomAccessFile;
 
 import io.github.scalrx.KnyttStories;
 import io.github.scalrx.gui.OnscreenController;
+import io.github.scalrx.screendata.Tiler;
 
 public class KsmScreen implements Screen {
 
@@ -46,17 +47,10 @@ public class KsmScreen implements Screen {
     private byte backgroundID;    // Background picture
 
     // Assets for the particular KsmScreen we're on
-    private byte[][][] sceneryData = new byte[4][10][25];   // TODO: RENAME SINCE WE NEED TO IMPLEMENT OBJECTS ALSO!
+    private final Tiler tiler;
     private byte[][][] objectData = new byte[4][10][50];
-    private TiledMap tiledMap;
-    private TiledMapRenderer tiledMapRenderer;
-    private Texture tilesetA;
-    private Texture tilesetB;
-    private Texture bg;
 
     BitmapFont font = new BitmapFont();
-    private final int[] BACKGROUND_LAYER = {4};
-    private final int[] PRIMARY_LAYERS = {0,1,2,3};
 
     // Constructor
     public KsmScreen(final KnyttStories game, int xID, int yID) {
@@ -69,15 +63,11 @@ public class KsmScreen implements Screen {
         //viewport = new FitViewport(KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT, camera);
         viewport = new FitViewport(24*25, 24*10, camera);
         controller = new OnscreenController(game.batch);
+        tiler = new Tiler(game.assetManager, game.currWorld);
 
         // Assemble data and layers
         assembleData();
-        game.assetManager.load(game.files.tileset(tsetAID), Texture.class);
-        game.assetManager.finishLoading();
-        game.assetManager.load(game.files.tileset(tsetBID), Texture.class);
-        game.assetManager.finishLoading();
-        game.assetManager.load(game.files.gradient(backgroundID), Texture.class);
-        game.assetManager.finishLoading();
+
         assembleScenery();
 
         // Now that we have the musicID, atmosA, and atmosB bytes, try loading such audio files
@@ -104,16 +94,14 @@ public class KsmScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
 
-        tiledMapRenderer.setView(camera);
+        tiler.getTiledMapRenderer().setView(camera);
+        tiler.render();
 
         // Play game music and ambiance
         game.audio.playMusic(musicID, delta);
-        game.audio.playAmbiance(atmosAID,atmosBID);
+        game.audio.playAmbiance(atmosAID, atmosBID);
 
         // Render the KsmScreen in the desired order TODO: Leave space for Juni
-        tiledMapRenderer.render(BACKGROUND_LAYER);
-        // renderJuni();
-        tiledMapRenderer.render(PRIMARY_LAYERS);
         game.batch.begin();
 
         // Print the current KsmScreen coordinates in the bottom left of the screen.
@@ -173,12 +161,12 @@ public class KsmScreen implements Screen {
     public void dispose() {
         //texture.dispose();
 
-        tiledMap.dispose();
+        tiler.dispose();
         //tilesetA.dispose();
         //tilesetB.dispose();
-        game.assetManager.unload(game.files.tileset(tsetAID));
-        game.assetManager.unload(game.files.tileset(tsetBID));
-        game.assetManager.unload(game.files.gradient(backgroundID));
+        //game.assetManager.unload(game.files.tileset(tsetAID));
+        //game.assetManager.unload(game.files.tileset(tsetBID));
+        //game.assetManager.unload(game.files.gradient(backgroundID));
         //bg.dispose();
     }
 
@@ -186,67 +174,7 @@ public class KsmScreen implements Screen {
      * Methods for assembling the KsmScreen
      */
     private void assembleScenery() {
-        //game.assetManager.finishLoading();
-        //tilesetA = game.assetManager.get(game.files.tileset(tsetAID));
-        //tilesetB = game.assetManager.get(game.files.tileset(tsetBID));
-        //game.assetManager.finishLoading();
-
-        tilesetA = game.assetManager.get(game.files.tileset(tsetAID));
-        tilesetB = game.assetManager.get(game.files.tileset(tsetBID));
-
-        // Split up each tileset into 24x24 whole sections. Any section that is not whole will not be considered.
-        TextureRegion[][] splitTilesA = TextureRegion.split(tilesetA, 24, 24);
-        TextureRegion[][] splitTilesB = TextureRegion.split(tilesetB, 24, 24);
-
-        tiledMap = new TiledMap();
-
-        // Here, we interpret and assemble the tile information for Layers 0 - 3 (Scenery)
-        for (int layer = 0; layer < 4; layer++) {
-            //Create a new layer for us to press
-            TiledMapTileLayer sceneryLayer = new TiledMapTileLayer(25, 10, 24, 24);
-
-            // Fill out the scenery layer
-            for (int row = 0; row < 10; row++) {
-                for (int column = 0; column < 25; column++) {
-                    // Division for row, modulo for column:
-                    int tileNumber = sceneryData[layer][row][column] & 0xFF;
-                    int tilesetRow = tileNumber / 16;
-                    int tilesetColumn = tileNumber % 16;
-                    TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
-
-                    // Determine which tileset we need to pull from
-                    if(tileNumber <= 0x7F) {
-                        cell.setTile(new StaticTiledMapTile(splitTilesA[tilesetRow][tilesetColumn]));
-                        //System.out.println("Tileset A Attempted.");
-                    } else {
-                        //System.out.println("Tileset B Attempted.");
-                        cell.setTile(new StaticTiledMapTile(splitTilesB[tilesetRow - 8][tilesetColumn]));
-                    }
-					// Press the tile Cell into place (note: we set the columns horizontally!)
-                    sceneryLayer.setCell(column, 9 - row, cell);
-                }
-            }
-            //Add in the layer to be pressed
-            tiledMap.getLayers().add(sceneryLayer);
-        }
-
-        // Produce the "backgroundID" gradient layer. The gradient is a single "strip" png.
-        bg = game.assetManager.get(game.files.gradient(backgroundID));
-        TiledMapTileLayer bgLayer = new TiledMapTileLayer(600/bg.getWidth(),
-                240/bg.getHeight(), bg.getWidth(), bg.getHeight());
-        TiledMapTileLayer.Cell bgCell = new TiledMapTileLayer.Cell();
-        bgCell.setTile(new StaticTiledMapTile(new TextureRegion(bg)));
-
-        // Assemble each strip of the gradient into the layer
-        for(int i = 0; i < 25; i++) {
-            bgLayer.setCell(i, 0, bgCell);
-        }
-
-        // Press each strip into the layer
-        tiledMap.getLayers().add(bgLayer);
-
-        // Finish
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        tiler.generateTiledMap(xID, yID);
     }
 
     // -----METHODS FOR ASSEMBLING DATA FOR KsmScreen-----
@@ -264,7 +192,7 @@ public class KsmScreen implements Screen {
             for (int scnLayer = 0; scnLayer < 4; scnLayer++) {
                 for (int row = 0; row < 10; row++) {
                     for (int column = 0; column < 25; column++, cursorPosition++) {
-                        sceneryData[scnLayer][row][column] = mapFileBytes[cursorPosition];
+                        //sceneryData[scnLayer][row][column] = mapFileBytes[cursorPosition];
                     }
                 }
             }

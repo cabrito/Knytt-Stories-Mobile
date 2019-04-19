@@ -58,4 +58,8 @@ public class World {
     public MapFile getMap() {
         return map;
     }
+
+    public KsmFiles getFiles() {
+        return files;
+    }
 }
