@@ -25,10 +25,10 @@ public class KsmScreen implements Screen {
     private OnscreenController controller;
 
     // Attributes for the particular KsmScreen we're on
-    private int xID, yID;       // TODO: WHEN DO THESE NEED TO BE SET? CONVERT TO PAIR OBJECT
-    private byte atmosAID;        // Atmospheric sounds A
-    private byte atmosBID;        // Atmospheric sounds B
-    private byte musicID;         // Music for this KsmScreen
+    private int xID, yID;           // Identifies where we are in the world
+    private byte atmosAID;          // Atmospheric sounds A
+    private byte atmosBID;          // Atmospheric sounds B
+    private byte musicID;           // Music for this KsmScreen
 
     // Assets for the particular KsmScreen we're on
     private final Tiler tiler;
@@ -146,6 +146,7 @@ public class KsmScreen implements Screen {
     @Override
     public void dispose() {
         tiler.dispose();
+        objects.dispose();
     }
 
     /**

@@ -78,8 +78,11 @@ public class KsmMusic {
             }
         }
     }
+    /*public void playMusic(byte muid) {
 
-    // Load the ambiance track
+    }*/
+
+    ///////////////////////////////////////////////////////////////////// Load the ambiance track
     public void playAmbiance(byte atmosAID, byte atmosBID) {
         // Assuming we're not just sitting on the main menu or something...
         if(files != null) {
@@ -124,9 +127,9 @@ public class KsmMusic {
     }
 
     ///////////////////////////////////////////////////////////// Method for fading the music out
-    public void fadeMusic(float delta) {
+    /*public void fadeMusic(float delta) {
 
-    }
+    }*/
 
     ///////////////////////////////////////////////////////////////// Routines for stopping audio
     public void stopMusic() {
