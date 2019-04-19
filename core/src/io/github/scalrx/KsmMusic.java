@@ -123,7 +123,12 @@ public class KsmMusic {
         }
     }
 
-    // Routines for stopping audio
+    ///////////////////////////////////////////////////////////// Method for fading the music out
+    public void fadeMusic(float delta) {
+
+    }
+
+    ///////////////////////////////////////////////////////////////// Routines for stopping audio
     public void stopMusic() {
         if(music != null)
             music.stop();
