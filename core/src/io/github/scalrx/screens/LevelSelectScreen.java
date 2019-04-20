@@ -12,24 +12,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import org.ini4j.Wini;
 
-import java.io.File;
 import java.io.IOException;
 
 import io.github.scalrx.KnyttStories;
 import io.github.scalrx.World;
-import io.github.scalrx.gui.GuiLevelButton;
+import io.github.scalrx.gui.button.GuiButtonLevel;
 
 /***************************************************************************************************
  * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
@@ -90,7 +85,7 @@ public class LevelSelectScreen implements Screen {
                         Texture icon = game.assetManager.get(Gdx.files.external(fh.path() + "/Icon.png").path(), Texture.class);
 
                         // Make our button and add it to the scrollpane table
-                        GuiLevelButton button = new GuiLevelButton(icon, name + " (" + author + ")",
+                        GuiButtonLevel button = new GuiButtonLevel(icon, name + " (" + author + ")",
                                 description, buttonSkin);
                         button.addListener(new ChangeListener() {
                             // TODO: IMPLEMENT FILE SELECTION/CUTSCENES BEFORE GOING TO THE GAME
@@ -138,21 +133,6 @@ public class LevelSelectScreen implements Screen {
         game.assetManager.load("System/Gui_btn_level.png", Texture.class);
         game.assetManager.finishLoading();
     }
-
-    // Test implementation of ini4j
-    /*private void iniExample() throws IOException {
-        FileHandle[] files = Gdx.files.external("Knytt Stories Mobile/").list();
-        for(FileHandle fh : files) {
-            if(fh.isDirectory()) {
-                if(Gdx.files.external(fh.path() + "/World.ini").exists()) {
-                    Wini ini = new Wini(Gdx.files.external(fh.path() + "/World.ini").file());
-                    String name = ini.get("World", "Name", String.class);
-                    String author = ini.get("World", "Author", String.class);
-                    System.out.println("TEST: " + name + " - " + author);
-                }
-            }
-        }
-    }*/
 
     @Override
     public void show() {

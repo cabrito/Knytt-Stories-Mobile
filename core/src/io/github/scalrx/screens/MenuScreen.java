@@ -9,24 +9,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.scalrx.KnyttStories;
-import io.github.scalrx.World;
 import io.github.scalrx.KsmMusic;
-import io.github.scalrx.utilities.PixelPerfectViewport;
+import io.github.scalrx.gui.button.GuiButtonLarge;
 
 public class MenuScreen implements Screen {
 
@@ -69,54 +62,28 @@ public class MenuScreen implements Screen {
         /**     Assemble our GUI     */
         // Fill out the skin each of our buttons will use
         Skin menuBtnSkin = new Skin();
-        final float ICON_SIZE = 50;
-        menuBtnSkin.add("large-gui-button", guiButtonLarge);
-        menuBtnSkin.add("large-gui-button", game.assetManager.get("defaultFont.ttf", BitmapFont.class));
+        menuBtnSkin.add("gui-button-large", guiButtonLarge);
+        menuBtnSkin.add("gui-button-large", game.assetManager.get("defaultFont.ttf", BitmapFont.class));
 
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = menuBtnSkin.newDrawable("large-gui-button");
-        textButtonStyle.down = menuBtnSkin.newDrawable("large-gui-button", 0.0f,0.0f,0.0f,0.5f);
-        textButtonStyle.font = menuBtnSkin.getFont("large-gui-button");
+        GuiButtonLarge playButton = new GuiButtonLarge(playIcon, "Play", menuBtnSkin);
+        GuiButtonLarge tutorialButton = new GuiButtonLarge(tutorialIcon, "Tutorial", menuBtnSkin);
+        GuiButtonLarge installButton = new GuiButtonLarge(installIcon, "Install", menuBtnSkin);
+        GuiButtonLarge downloadButton = new GuiButtonLarge(downloadIcon, "Download", menuBtnSkin);
+        GuiButtonLarge settingsButton = new GuiButtonLarge(settingsIcon, "Settings", menuBtnSkin);
+        GuiButtonLarge aboutButton = new GuiButtonLarge(aboutIcon, "About", menuBtnSkin);
 
-        TextButton playButton = new TextButton("Play", textButtonStyle);
-        playButton.clearChildren();                     // Reorganize the layout of the ImageTextButton
-        playButton.add(new Image(playIcon)).size(ICON_SIZE).row();
-        playButton.add(playButton.getLabel());
+        // Set the position of the buttons
+        Table table = new Table();
+        table.left().bottom();
+        table.add(playButton).pad(30, 30, 15, 30);
+        table.add(tutorialButton).pad(30, 30, 15, 30).row();
+        table.add(installButton).pad(30, 30, 30, 30);
+        table.add(downloadButton).pad(30, 30, 30, 30).row();
+        table.add(settingsButton).pad(15, 30, 30, 30);
+        table.add(aboutButton).pad(15, 30, 30, 30);
 
-        TextButton tutorialButton = new TextButton("Tutorial", textButtonStyle);
-        tutorialButton.clearChildren();                     // Reorganize the layout of the ImageTextButton
-        tutorialButton.add(new Image(tutorialIcon)).size(ICON_SIZE).row();
-        tutorialButton.add(tutorialButton.getLabel());
-
-        TextButton installButton = new TextButton("Install", textButtonStyle);
-        installButton.clearChildren();                     // Reorganize the layout of the ImageTextButton
-        installButton.add(new Image(installIcon)).size(ICON_SIZE).row();
-        installButton.add(installButton.getLabel());
-
-        TextButton downloadButton = new TextButton("Download", textButtonStyle);
-        downloadButton.clearChildren();                     // Reorganize the layout of the ImageTextButton
-        downloadButton.add(new Image(downloadIcon)).size(ICON_SIZE).row();
-        downloadButton.add(downloadButton.getLabel());
-
-        TextButton settingsButton = new TextButton("Settings", textButtonStyle);
-        settingsButton.clearChildren();                     // Reorganize the layout of the ImageTextButton
-        settingsButton.add(new Image(settingsIcon)).size(ICON_SIZE).row();
-        settingsButton.add(settingsButton.getLabel());
-
-        TextButton aboutButton = new TextButton("About", textButtonStyle);
-        aboutButton.clearChildren();                     // Reorganize the layout of the ImageTextButton
-        aboutButton.add(new Image(aboutIcon)).size(ICON_SIZE).row();
-        aboutButton.add(aboutButton.getLabel());
-
-        // Set the position of the ImageTextButtons
         ksmGraphic.setScale(2f);
-        playButton.setPosition(394f,340f);
-        tutorialButton.setPosition(624f,340f);
-        installButton.setPosition(394f,185f);
-        downloadButton.setPosition(624f,185f);
-        settingsButton.setPosition(394f,30f);
-        aboutButton.setPosition(624f,30f);
-        ksmGraphic.setPosition(-128,0);
+
 
 
         // TODO: IT WORKS! Now decipher *why* it works...
@@ -144,14 +111,9 @@ public class MenuScreen implements Screen {
         });*/
 
 
-        // Lastly, add the container to the stage
-        stage.addActor(playButton);
-        stage.addActor(tutorialButton);
-        stage.addActor(installButton);
-        stage.addActor(downloadButton);
-        stage.addActor(settingsButton);
-        stage.addActor(aboutButton);
+        // Lastly, add the containers to the stage
         stage.addActor(ksmGraphic);
+        stage.addActor(table);
 
         // Load the various components of the GUI we expect to use
         this.game.assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));

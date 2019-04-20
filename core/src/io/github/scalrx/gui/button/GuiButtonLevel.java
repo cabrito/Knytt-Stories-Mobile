@@ -1,34 +1,29 @@
-package io.github.scalrx.gui;
+package io.github.scalrx.gui.button;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.utils.Align;
 
 /***************************************************************************************************
  * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
- * GuiLevelButton.java
+ * GuiButtonLevel.java
  * Created by: scalr at 5:39 PM, 4/9/19
  *
- * File that defines the setup and appearance of a Level button in the GUI.
+ * Streamlines the creation of a level button, typically used on the level selection screen.
  *
  **************************************************************************************************/
-public class GuiLevelButton extends ImageTextButton {
+public class GuiButtonLevel extends ImageTextButton {
     private final Label LEVEL_DESCRIPTION;
     private final Image ICON;
 
     // Constructor
-    public GuiLevelButton(final Texture icon, final String title, final String description, final Skin skin) {
+    public GuiButtonLevel(final Texture icon, final String title, final String description, final Skin skin) {
 
-        // Initialize a basic TextButton with the required information
+        // Initialize a basic ImageTextButton with the required information
         super(title, initSkin(skin));
         this.ICON = new Image(icon);
         LEVEL_DESCRIPTION = new Label(description, getSkin());
