@@ -22,44 +22,66 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  *
  **************************************************************************************************/
 
-public class KsmFiles {
-    /**     Constants     */
+public class KsmFiles
+{
+    // Constants
     private final String ksmDir = "Knytt Stories Mobile/";
     private final FileHandleResolver internal = new InternalFileHandleResolver();
     private final FileHandleResolver external = new ExternalFileHandleResolver();
     private final AssetManager assetManager;
 
-    /**     Members     */
+    // Members
     private String worldDir;                                // DO NOT rely on this going forward!!!
 
-    /**     Constructor     */
-    public KsmFiles(AssetManager assetManager) {
+    /***********************************************************************************************             Constructors */
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public KsmFiles(AssetManager assetManager)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         this.assetManager = assetManager;
     }
 
-    /**     World-related Methods     */
-    public void setWorldDir(String author, String worldName) {
+    /***********************************************************************************************         World-related methods */
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public void setWorldDir(String author, String worldName)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         this.worldDir = author + " - " + worldName + "/";
     }
 
-    public void resetWorldDir() {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public void resetWorldDir()
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         worldDir = null;
     }
 
-    public String getKsmDir() {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public String getKsmDir()
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         return ksmDir;
     }
 
-    public String getWorldDir() {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public String getWorldDir()
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         return worldDir;
     }
 
-    public String mapBin(boolean raw) {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public String mapBin(boolean raw)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         return raw ? (ksmDir + getWorldDir() + "Map.bin.raw") : (ksmDir + getWorldDir() + "Map.bin");
     }
 
-    /**     Music- and ambiance-related methods       */
-    public String music(byte muid) {
+    /***********************************************************************************************         Music-related methods */
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public String music(byte muid)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         // If the world directory hasn't been set yet, load normal music
         if(worldDir == null || worldDir.isEmpty()) {
             // Swap the music loader for the AssetManager to load internal music files
@@ -80,7 +102,10 @@ public class KsmFiles {
         }
     }
 
-    public String ambiance(byte amid) {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public String ambiance(byte amid)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         // If the world directory hasn't been set yet, load normal ambiance
         if(worldDir == null || worldDir.isEmpty()) {
             // Swap the music loader for the AssetManager to load internal ambiance files
@@ -102,8 +127,11 @@ public class KsmFiles {
         }
     }
 
-    /**     Tileset-related Methods     */
-    public String tileset(byte tsid) {
+    /***********************************************************************************************         Tileset-related Methods */
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public String tileset(byte tsid)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         // Swap the loader for external really quick for the following if-else statement...
         assetManager.setLoader(Texture.class, new TextureLoader(external));
 
@@ -120,7 +148,10 @@ public class KsmFiles {
     }
 
     // Custom Tilesets
-    public String gradient(byte gid) {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public String gradient(byte gid)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         // Swap the loader for external really quick for the following if-else statement...
         assetManager.setLoader(Texture.class, new TextureLoader(external));
 

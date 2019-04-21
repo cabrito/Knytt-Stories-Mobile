@@ -21,15 +21,21 @@ import io.github.scalrx.KnyttStories;
 import io.github.scalrx.KsmMusic;
 import io.github.scalrx.gui.button.GuiButtonLarge;
 
-public class MenuScreen implements Screen {
+public class MenuScreen implements Screen
+{
 
+	// Members
     private final KnyttStories game;
     private FitViewport viewport;
     private OrthographicCamera camera;
     private Stage stage;
 
+    /***********************************************************************************************			 Constructors */
     // Initialize our menu screen
-    public MenuScreen(final KnyttStories game) {
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    public MenuScreen(final KnyttStories game)
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         // Initialize our members
         this.game = game;
         camera = new OrthographicCamera();
@@ -125,8 +131,11 @@ public class MenuScreen implements Screen {
         game.audio.loadMusic((byte)20);
     }
 
-    /**     Methods     */
-    public void loadAssets() {
+    /***********************************************************************************************			 Methods */
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    private void loadAssets()
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         game.assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
         game.assetManager.load("System/Gui_btn_large.png", Texture.class);
         game.assetManager.load("System/icons/play_icon.png", Texture.class);
@@ -139,8 +148,12 @@ public class MenuScreen implements Screen {
         game.assetManager.finishLoading();
     }
 
+    /***********************************************************************************************			 LibGDX Methods */
+	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void show() {
+    public void show()
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         if(Gdx.app.getType() == Application.ApplicationType.Android) {
             if(!game.getPermissions().isReadPermissionEnabled()) {
             }
@@ -149,8 +162,11 @@ public class MenuScreen implements Screen {
         }
     }
 
+	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void render(float delta) {
+    public void render(float delta)
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         // Clear the screen for drawing the next frame
         Gdx.gl.glClearColor(1f, 1f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -173,29 +189,43 @@ public class MenuScreen implements Screen {
 
     }
 
+	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void resize(int width, int height) {
-        // TODO: Need to add a viewport
-        viewport.update(width,height,true);
+    public void resize(int width, int height)
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
+        viewport.update(width, height,true);
     }
 
+	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
+    public void pause()
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
 
     }
 
+	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void dispose() {
+    public void resume()
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
+
+    }
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
+    public void hide()
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
+
+    }
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
+    public void dispose()
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         game.assetManager.unload("System/Gui_btn_large.png");
         game.assetManager.unload("System/icons/play_icon.png");
         game.assetManager.unload("System/icons/tutorial_icon.png");

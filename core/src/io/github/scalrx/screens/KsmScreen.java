@@ -16,7 +16,8 @@ import io.github.scalrx.gui.OnscreenController;
 import io.github.scalrx.screendata.ObjectData;
 import io.github.scalrx.screendata.Tiler;
 
-public class KsmScreen implements Screen {
+public class KsmScreen implements Screen
+{
 
     // Set up how our level will display
     final KnyttStories game;
@@ -36,8 +37,11 @@ public class KsmScreen implements Screen {
 
     BitmapFont font = new BitmapFont();
 
-    // Constructor
-    public KsmScreen(final KnyttStories game, int xID, int yID) {
+    /***********************************************************************************************			 Constructors */
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    public KsmScreen(final KnyttStories game, int xID, int yID)
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         this.game = game;
         this.xID = xID;
         this.yID = yID;
@@ -66,13 +70,60 @@ public class KsmScreen implements Screen {
         }
     }
 
+	/*********************************************************************************************** Methods for assembling the screen */
+	//
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	private void createScene()
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
+		tiler.generateTiledMap(xID, yID);
+		objects.placeObjects(xID,yID);
+	}
+
+	// Used for setting the relevant audio. TODO: Can this be separated better?
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	private void setAudioBytes()
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
+		if(game.currWorld.getMap().screenOffsetExists(xID, yID)) {
+			final int LAYER_SIZE = 250;
+			final int OBJECT_LAYER_SIZE = LAYER_SIZE * 2;
+			final int NUMBER_OF_SCENE_LAYERS = 4;
+			final int NUMBER_OF_OBJECT_LAYERS = 4;
+
+			// Open Map.bin.raw as a byte array
+			FileHandle mapFile = Gdx.files.external(game.currWorld.getFiles().mapBin(true));
+			byte[] mapFileBytes = mapFile.readBytes();
+
+			// Seek the specific location in the Map file
+			int attributeLocation = game.currWorld.getMap().getScreenOffset(xID, yID) +
+					(LAYER_SIZE * NUMBER_OF_SCENE_LAYERS) + (OBJECT_LAYER_SIZE * NUMBER_OF_OBJECT_LAYERS);
+			int cursorPosition = attributeLocation + 2;
+			atmosAID = mapFileBytes[cursorPosition++];
+			atmosBID = mapFileBytes[cursorPosition++];
+			musicID = mapFileBytes[cursorPosition];
+		} else {
+			// Initialize audio attributes
+			atmosAID = 0;
+			atmosBID = 0;
+			musicID = 0;
+		}
+	}
+
+    /***********************************************************************************************			 LibGDX Methods */
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void show() {
+    public void show()
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
 
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void render(float delta) {
+    public void render(float delta)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         game.batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(0f / 255f, 0 / 255f, 0f / 255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -122,65 +173,45 @@ public class KsmScreen implements Screen {
         }
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void resize(int width, int height) {
+    public void resize(int width, int height)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         viewport.update(width, height);
         controller.resize(width, height);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void pause() {
+    public void pause()
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
 
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void resume() {
+    public void resume()
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
 
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void hide() {
+    public void hide()
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
 
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void dispose() {
+    public void dispose()
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         tiler.dispose();
         objects.dispose();
-    }
-
-    /**
-     * Methods for assembling the KsmScreen
-     */
-    private void createScene() {
-        tiler.generateTiledMap(xID, yID);
-        objects.placeObjects(xID,yID);
-    }
-
-    // -----METHODS FOR ASSEMBLING DATA FOR KsmScreen-----
-    private void setAudioBytes() {
-        if(game.currWorld.getMap().screenOffsetExists(xID, yID)) {
-            final int LAYER_SIZE = 250;
-            final int OBJECT_LAYER_SIZE = LAYER_SIZE * 2;
-            final int NUMBER_OF_SCENE_LAYERS = 4;
-            final int NUMBER_OF_OBJECT_LAYERS = 4;
-
-            // Open Map.bin.raw as a byte array
-            FileHandle mapFile = Gdx.files.external(game.currWorld.getFiles().mapBin(true));
-            byte[] mapFileBytes = mapFile.readBytes();
-
-            // Seek the specific location in the Map file
-            int attributeLocation = game.currWorld.getMap().getScreenOffset(xID, yID) +
-                    (LAYER_SIZE * NUMBER_OF_SCENE_LAYERS) + (OBJECT_LAYER_SIZE * NUMBER_OF_OBJECT_LAYERS);
-            int cursorPosition = attributeLocation + 2;
-            atmosAID = mapFileBytes[cursorPosition++];
-            atmosBID = mapFileBytes[cursorPosition++];
-            musicID = mapFileBytes[cursorPosition];
-        } else {
-            // Initialize audio attributes
-            atmosAID = 0;
-            atmosBID = 0;
-            musicID = 0;
-        }
     }
 }

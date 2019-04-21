@@ -12,7 +12,8 @@ import com.badlogic.gdx.audio.Music;
  *
  **************************************************************************************************/
 
-public class KsmMusic {
+public class KsmMusic
+{
 
     // Music and Ambiance
     private Music music;
@@ -23,27 +24,39 @@ public class KsmMusic {
     private final AssetManager assetManager;
     private final KsmFiles files;
 
-    /**     Constructor     */
-    public KsmMusic(final AssetManager assetManager, final KsmFiles files) {
+    /***********************************************************************************************			 Constructors */
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    public KsmMusic(final AssetManager assetManager, final KsmFiles files)
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         this.assetManager = assetManager;
         this.files = files;
     }
 
-    /**     Methods for handling music      */
+    /***********************************************************************************************		 Methods for handling music */
     // Call before loading music
-    public void loadMusic(byte muid) {
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    public void loadMusic(byte muid)
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         assetManager.load(files.music(muid), Music.class);
         assetManager.finishLoading();
     }
 
     // Call before loading ambiance
-    public void loadAmbience(byte amid) {
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    public void loadAmbience(byte amid)
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         assetManager.load(files.ambiance(amid), Music.class);
         assetManager.finishLoading();
     }
 
     // Plays music contextually
-    public void playMusic(byte muid, float delta) {
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    public void playMusic(byte muid, float delta)
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         if((muid & 0xFF) > 0) {
             if(music != null) {
                 if(music.isPlaying()) {
@@ -78,12 +91,12 @@ public class KsmMusic {
             }
         }
     }
-    /*public void playMusic(byte muid) {
 
-    }*/
-
-    ///////////////////////////////////////////////////////////////////// Load the ambiance track
-    public void playAmbiance(byte atmosAID, byte atmosBID) {
+    // Load the ambiance track
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    public void playAmbiance(byte atmosAID, byte atmosBID)
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         // Assuming we're not just sitting on the main menu or something...
         if(files != null) {
             // Logic for playing/stopping atmosA
@@ -126,12 +139,7 @@ public class KsmMusic {
         }
     }
 
-    ///////////////////////////////////////////////////////////// Method for fading the music out
-    /*public void fadeMusic(float delta) {
-
-    }*/
-
-    ///////////////////////////////////////////////////////////////// Routines for stopping audio
+    /***********************************************************************************************		 Routines for stopping audio */
     public void stopMusic() {
         if(music != null)
             music.stop();

@@ -13,11 +13,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
  * Streamlines the creation of a large button, typically used on the main menu.
  *
  **************************************************************************************************/
-public class GuiButtonLarge extends ImageTextButton {
+public class GuiButtonLarge extends ImageTextButton
+{
     private final Image ICON;
 
-    //////////////////////////////////////////////////////////////////////////////// Constructors
-    public GuiButtonLarge(final Texture icon, final String title, final Skin skin) {
+    /***********************************************************************************************			 Constructors */
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public GuiButtonLarge(final Texture icon, final String title, final Skin skin)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
 
         // Initialize a basic ImageTextButton with the required information
         super(title, initSkin(skin));
@@ -27,7 +31,11 @@ public class GuiButtonLarge extends ImageTextButton {
         rearrangeLayout();
     }
 
-    private void rearrangeLayout() {
+    /***********************************************************************************************			 Methods */
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    private void rearrangeLayout()
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         // Constants
         final int ICON_SIZE = 50;
 
@@ -36,7 +44,10 @@ public class GuiButtonLarge extends ImageTextButton {
         add(getLabel());
     }
 
-    private static Skin initSkin(Skin skin) {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    private static Skin initSkin(Skin skin)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         ImageTextButtonStyle imageTextButtonStyle = new ImageTextButtonStyle();
         imageTextButtonStyle.up = skin.newDrawable("gui-button-large");
         imageTextButtonStyle.down = skin.newDrawable("gui-button-large", 0.0f,0.0f,0.0f,0.5f);

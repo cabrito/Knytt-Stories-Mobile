@@ -16,12 +16,16 @@ import com.badlogic.gdx.utils.Align;
  * Streamlines the creation of a level button, typically used on the level selection screen.
  *
  **************************************************************************************************/
-public class GuiButtonLevel extends ImageTextButton {
+public class GuiButtonLevel extends ImageTextButton
+{
     private final Label LEVEL_DESCRIPTION;
     private final Image ICON;
 
-    // Constructor
-    public GuiButtonLevel(final Texture icon, final String title, final String description, final Skin skin) {
+    /*********************************************************************************************** 			Constructor */
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public GuiButtonLevel(final Texture icon, final String title, final String description, final Skin skin)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
 
         // Initialize a basic ImageTextButton with the required information
         super(title, initSkin(skin));
@@ -32,7 +36,11 @@ public class GuiButtonLevel extends ImageTextButton {
         rearrangeLayout();
     }
 
-    private void rearrangeLayout() {
+    /*********************************************************************************************** 			Methods */
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    private void rearrangeLayout()
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         // Constants
         final int ICON_SIZE = 30;
         final float PADDING = 2;
@@ -66,7 +74,10 @@ public class GuiButtonLevel extends ImageTextButton {
 
     }
 
-    private static Skin initSkin(Skin skin) {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    private static Skin initSkin(Skin skin)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         ImageTextButtonStyle imageTextButtonStyle = new ImageTextButtonStyle();
         imageTextButtonStyle.up = skin.newDrawable("gui-button-level");
         imageTextButtonStyle.down = skin.newDrawable("gui-button-level", 0.0f,0.0f,0.0f,0.5f);

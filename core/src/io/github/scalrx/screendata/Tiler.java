@@ -35,20 +35,26 @@ public class Tiler {
     private byte backgroundID;    // Background picture
     private byte[][][] sceneryData = new byte[4][10][25];
 
-    /////////////////////////////////////////////////////////////////////////// Helpful constants
+    // Helpful constants
     private final int[] BACKGROUND_LAYER = {4};
     private final int[] PRIMARY_LAYERS = {0, 1, 2, 3};
     private final AssetManager manager;
     private final World world;
 
-    //////////////////////////////////////////////////////////////////////////////// Constructors
-    public Tiler(final AssetManager manager, final World world) {
+    /***********************************************************************************************             Constructors */
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public Tiler(final AssetManager manager, final World world)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         this.manager = manager;
         this.world = world;
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////// Methods
-    public void generateTiledMap(int xID, int yID) {
+    /***********************************************************************************************             Methods */
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public void generateTiledMap(int xID, int yID)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         if(world.getMap().screenOffsetExists(xID, yID)) {
             generateData(xID, yID);
         } else {
@@ -122,7 +128,10 @@ public class Tiler {
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
-    private void generateData(int xID, int yID) {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    private void generateData(int xID, int yID)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         final int LAYER_SIZE = 250;
         final int OBJECT_LAYER_SIZE = LAYER_SIZE * 2;
         final int NUMBER_OF_OBJECT_LAYERS = 4;
@@ -154,17 +163,27 @@ public class Tiler {
         backgroundID = mapFileBytes[cursorPosition];
     }
 
-    ///////////////////////////////////////////////////////////////////////////// Getter Functions
-    public TiledMapRenderer getTiledMapRenderer() {
+    /***********************************************************************************************             Getter Functions */
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public TiledMapRenderer getTiledMapRenderer()
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         return tiledMapRenderer;
     }
 
-    ////////////////////////////////////////////////////////////////////////////// Utility Methods
-    public void render() {
+    /***********************************************************************************************             Utility Methods */
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public void render()
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         tiledMapRenderer.render(BACKGROUND_LAYER);
         tiledMapRenderer.render(PRIMARY_LAYERS);
     }
-    public void dispose() {
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public void dispose()
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         // Unload/dispose the resources since we're not using them.
         manager.unload(world.getFiles().tileset(tsetAID));
         manager.unload(world.getFiles().tileset(tsetBID));

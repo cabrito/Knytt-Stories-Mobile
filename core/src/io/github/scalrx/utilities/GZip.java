@@ -18,11 +18,19 @@ public class GZip {
 
     final String filepath;
 
-    // Constructor
-    public GZip(String filepath) {
+    /***********************************************************************************************             Constructor */
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public GZip(String filepath)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         this.filepath = filepath;
     }
-    public void decompress() {
+
+    /***********************************************************************************************            Methods */
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public void decompress()
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         byte[] buffer = new byte[1024];
         try {
             GZIPInputStream input = new GZIPInputStream(new FileInputStream(filepath));
@@ -40,7 +48,11 @@ public class GZip {
             e.printStackTrace();
         }
     }
-    public void compress() {
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public void compress()
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         byte[] buffer = new byte[1024];
         try {
             GZIPOutputStream output = new GZIPOutputStream(new FileOutputStream(filepath + ".gz"));

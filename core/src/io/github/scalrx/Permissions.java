@@ -14,7 +14,8 @@ import java.io.IOException;
  * requested.
  *
  **************************************************************************************************/
-public interface Permissions {
+public interface Permissions
+{
     boolean isReadPermissionEnabled();
     boolean isWritePermissionEnabled();
 }

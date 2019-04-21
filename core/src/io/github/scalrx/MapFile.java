@@ -22,14 +22,18 @@ import io.github.scalrx.utilities.Pair;
  *
  **************************************************************************************************/
 
-public class MapFile {
+public class MapFile
+{
 
-    /**     Members     */
+    // Members
     private final HashMap<Pair<Integer>, Integer> mapFileOffsets;
     private final KsmFiles files;
 
-    /**     Constructor     */
-    public MapFile(final KsmFiles files) {
+    /***********************************************************************************************             Constructors */
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public MapFile(final KsmFiles files)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         mapFileOffsets = new HashMap<Pair<Integer>, Integer>();
         this.files = files;
 
@@ -47,8 +51,12 @@ public class MapFile {
         createFileOffsets();
     }
 
+    /***********************************************************************************************             Methods */
     // Decompress the Map.bin file for optimization
-    private void decompress() {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    private void decompress()
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         String mapBinFile = files.mapBin(false);
         GZip rawFile = new GZip(mapBinFile);
         rawFile.decompress();
@@ -56,7 +64,10 @@ public class MapFile {
     }
 
     // Used for checking whether or not the map has changed/been updated    TODO: Actually have this print out the number, not the bytes
-    private void writeDateFile(String filepath) {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    private void writeDateFile(String filepath)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         try {
             FileOutputStream output = new FileOutputStream(filepath + ".dat");
             DataOutputStream dataOutput = new DataOutputStream(output);
@@ -68,7 +79,10 @@ public class MapFile {
         }
     }
 
-    private long getMapBinDatDate(String filepath) {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    private long getMapBinDatDate(String filepath)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         try {
             FileInputStream input = new FileInputStream(filepath + ".dat");
             DataInputStream dis = new DataInputStream(input);
@@ -80,16 +94,25 @@ public class MapFile {
     }
 
     // Get the Map file offset for the desired KsmScreen
-    public int getScreenOffset(int x, int y) {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public int getScreenOffset(int x, int y)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         return mapFileOffsets.get(new Pair<Integer>(x,y));
     }
 
-    public boolean screenOffsetExists(int x, int y) {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public boolean screenOffsetExists(int x, int y)
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         return mapFileOffsets.containsKey(new Pair<Integer>(x, y));
     }
 
     // Produce all of the file offsets in the Map file
-    private void createFileOffsets() {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    private void createFileOffsets()
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         // Get file information
         final long SCREEN_DATA_SIZE = 3006;
 
