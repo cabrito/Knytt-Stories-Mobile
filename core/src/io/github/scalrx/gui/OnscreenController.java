@@ -29,13 +29,18 @@ import io.github.scalrx.KnyttStories;
  * FILE DESCRIPTION GOES HERE.
  *
  **************************************************************************************************/
-public class OnscreenController {
+public class OnscreenController
+{
     private FitViewport viewport;
     private OrthographicCamera camera;
     private Stage stage;
     private boolean isLeftPressed, isRightPressed, isUpPressed, isDownPressed;
 
-    public OnscreenController(Batch batch) {
+    /***********************************************************************************************			 Constructors */
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    public OnscreenController(Batch batch)
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    {
         // Set the stage, figuratively and literally
         camera = new OrthographicCamera();
         viewport = new FitViewport(KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT, camera);
@@ -49,7 +54,7 @@ public class OnscreenController {
         Table table = new Table();
         table.left().bottom();
 
-        Image upImg = new Image(new Texture("System/icons/flatDark25.png"));
+        Image upImg = new Image(new Texture("System/buttons/icons/flatDark25.png"));
         upImg.setSize(50, 50);
         upImg.addListener(new InputListener() {
 
@@ -65,7 +70,7 @@ public class OnscreenController {
             }
         });
 
-        Image downImg = new Image(new Texture("System/icons/flatDark26.png"));
+        Image downImg = new Image(new Texture("System/buttons/icons/flatDark26.png"));
         downImg.setSize(50, 50);
         downImg.addListener(new InputListener() {
 
@@ -81,7 +86,7 @@ public class OnscreenController {
             }
         });
 
-        Image rightImg = new Image(new Texture("System/icons/flatDark24.png"));
+        Image rightImg = new Image(new Texture("System/buttons/icons/flatDark24.png"));
         rightImg.setSize(50, 50);
         rightImg.addListener(new InputListener() {
 
@@ -97,7 +102,7 @@ public class OnscreenController {
             }
         });
 
-        Image leftImg = new Image(new Texture("System/icons/flatDark23.png"));
+        Image leftImg = new Image(new Texture("System/buttons/icons/flatDark23.png"));
         leftImg.setSize(50, 50);
         leftImg.addListener(new InputListener() {
 
@@ -128,38 +133,62 @@ public class OnscreenController {
         stage.addActor(table);
     }
 
-    // Getters
-    public boolean isLeftPressed() {
+	/***********************************************************************************************			 Getters */
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    public boolean isLeftPressed()
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         return isLeftPressed;
     }
 
-    public boolean isRightPressed() {
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    public boolean isRightPressed()
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         return isRightPressed;
     }
 
-    public boolean isUpPressed() {
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    public boolean isUpPressed()
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         return isUpPressed;
     }
 
-    public boolean isDownPressed() {
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    public boolean isDownPressed()
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         return isDownPressed;
     }
 
-    // Resetter
-    public void resetTouch() {
+	/***********************************************************************************************			 Methods */
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    public void resetTouch()
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         isLeftPressed = isRightPressed = isUpPressed = isDownPressed = false;
     }
 
     // For screen resizing
-    public void resize(int width, int height) {
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    public void resize(int width, int height)
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         viewport.update(width, height);
     }
 
-    public void draw() {
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    public void draw()
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         stage.draw();
     }
 
-    public void dispose() {
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    public void dispose()
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
         stage.dispose();
     }
 }

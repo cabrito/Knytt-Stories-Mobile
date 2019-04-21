@@ -55,13 +55,13 @@ public class MenuScreen implements Screen
 
         loadAssets();
 
-        guiButtonLarge = game.assetManager.get("System/Gui_btn_large.png", Texture.class);
-        playIcon = game.assetManager.get("System/icons/play_icon.png");
-        tutorialIcon = game.assetManager.get("System/icons/tutorial_icon.png");
-        installIcon = game.assetManager.get("System/icons/install_icon.png");
-        downloadIcon = game.assetManager.get("System/icons/download_icon.png");
-        settingsIcon = game.assetManager.get("System/icons/settings_icon.png");
-        aboutIcon = game.assetManager.get("System/icons/about_icon.png");
+        guiButtonLarge = game.assetManager.get("System/buttons/Gui_btn_large.png", Texture.class);
+        playIcon = game.assetManager.get("System/buttons/icons/play_icon.png");
+        tutorialIcon = game.assetManager.get("System/buttons/icons/tutorial_icon.png");
+        installIcon = game.assetManager.get("System/buttons/icons/install_icon.png");
+        downloadIcon = game.assetManager.get("System/buttons/icons/download_icon.png");
+        settingsIcon = game.assetManager.get("System/buttons/icons/settings_icon.png");
+        aboutIcon = game.assetManager.get("System/buttons/icons/about_icon.png");
         graphic = game.assetManager.get("graphic.png");
         Image ksmGraphic = new Image(graphic);
 
@@ -123,7 +123,7 @@ public class MenuScreen implements Screen
 
         // Load the various components of the GUI we expect to use
         this.game.assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
-        this.game.assetManager.load(Gdx.files.internal("System/Gui_btn_medium.png").path(), Texture.class);
+        this.game.assetManager.load(Gdx.files.internal("System/buttons/Gui_btn_medium.png").path(), Texture.class);
 
         // TODO: For now, we initialize our currWorld so that we have something to play
 
@@ -137,13 +137,13 @@ public class MenuScreen implements Screen
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	{
         game.assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
-        game.assetManager.load("System/Gui_btn_large.png", Texture.class);
-        game.assetManager.load("System/icons/play_icon.png", Texture.class);
-        game.assetManager.load("System/icons/tutorial_icon.png", Texture.class);
-        game.assetManager.load("System/icons/install_icon.png", Texture.class);
-        game.assetManager.load("System/icons/download_icon.png", Texture.class);
-        game.assetManager.load("System/icons/settings_icon.png", Texture.class);
-        game.assetManager.load("System/icons/about_icon.png", Texture.class);
+        game.assetManager.load("System/buttons/Gui_btn_large.png", Texture.class);
+        game.assetManager.load("System/buttons/icons/play_icon.png", Texture.class);
+        game.assetManager.load("System/buttons/icons/tutorial_icon.png", Texture.class);
+        game.assetManager.load("System/buttons/icons/install_icon.png", Texture.class);
+        game.assetManager.load("System/buttons/icons/download_icon.png", Texture.class);
+        game.assetManager.load("System/buttons/icons/settings_icon.png", Texture.class);
+        game.assetManager.load("System/buttons/icons/about_icon.png", Texture.class);
         game.assetManager.load("graphic.png", Texture.class);                   // TODO: TEMPORARY. DELETE!!!!
         game.assetManager.finishLoading();
     }
@@ -226,13 +226,13 @@ public class MenuScreen implements Screen
     public void dispose()
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	{
-        game.assetManager.unload("System/Gui_btn_large.png");
-        game.assetManager.unload("System/icons/play_icon.png");
-        game.assetManager.unload("System/icons/tutorial_icon.png");
-        game.assetManager.unload("System/icons/install_icon.png");
-        game.assetManager.unload("System/icons/download_icon.png");
-        game.assetManager.unload("System/icons/settings_icon.png");
-        game.assetManager.unload("System/icons/about_icon.png");
+        game.assetManager.unload("System/buttons/Gui_btn_large.png");
+        game.assetManager.unload("System/buttons/icons/play_icon.png");
+        game.assetManager.unload("System/buttons/icons/tutorial_icon.png");
+        game.assetManager.unload("System/buttons/icons/install_icon.png");
+        game.assetManager.unload("System/buttons/icons/download_icon.png");
+        game.assetManager.unload("System/buttons/icons/settings_icon.png");
+        game.assetManager.unload("System/buttons/icons/about_icon.png");
         game.assetManager.unload("graphic.png");
         stage.dispose();
     }

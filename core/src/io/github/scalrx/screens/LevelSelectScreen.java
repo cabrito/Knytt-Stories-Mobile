@@ -55,7 +55,7 @@ public class LevelSelectScreen implements Screen
 
         // Load our assets we'll use
         loadAssets();
-        Texture guiBtnLevel = game.assetManager.get("System/Gui_btn_level.png", Texture.class);
+        Texture guiBtnLevel = game.assetManager.get("System/buttons/Gui_btn_level.png", Texture.class);
 
         // Prepare the stage for level selection
         stage = new Stage(viewport, game.batch);
@@ -137,7 +137,7 @@ public class LevelSelectScreen implements Screen
 	{
         // Load internal resources
         game.assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
-        game.assetManager.load("System/Gui_btn_level.png", Texture.class);
+        game.assetManager.load("System/buttons/Gui_btn_level.png", Texture.class);
         game.assetManager.finishLoading();
     }
 
@@ -210,7 +210,7 @@ public class LevelSelectScreen implements Screen
     public void dispose()
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	{
-        game.assetManager.unload("System/Gui_btn_level.png");
+        game.assetManager.unload("System/buttons/Gui_btn_level.png");
         stage.dispose();
     }
 }
