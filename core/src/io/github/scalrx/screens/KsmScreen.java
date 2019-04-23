@@ -4,7 +4,6 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import io.github.scalrx.KnyttStories;
 import io.github.scalrx.gui.OnscreenController;
+import io.github.scalrx.screendata.AudioData;
 import io.github.scalrx.screendata.ObjectData;
 import io.github.scalrx.screendata.Tiler;
 
@@ -34,6 +34,7 @@ public class KsmScreen implements Screen
     // Assets for the particular KsmScreen we're on
     private final Tiler tiler;
     private final ObjectData objects;
+    private final AudioData audioData;
 
     BitmapFont font = new BitmapFont();
 
@@ -53,61 +54,26 @@ public class KsmScreen implements Screen
         controller = new OnscreenController(game.batch);
         tiler = new Tiler(game.assetManager, game.currWorld);
         objects = new ObjectData(game.currWorld);
+        audioData = new AudioData(game.currWorld);
 
-        // Assemble data and layers
-        setAudioBytes();
-        createScene();
-
-        // Now that we have the musicID, atmosA, and atmosB bytes, try loading such audio files
-        if((musicID & 0xFF) > 0) {
-            game.audio.loadMusic(musicID);
-        }
-        if((atmosAID & 0xFF) > 0) {
-            game.audio.loadAmbience(atmosAID);
-        }
-        if((atmosBID & 0xFF) > 0) {
-            game.audio.loadAmbience(atmosBID);
-        }
+        // Assemble all the data for this screen from the Map.bin.raw file
+        initializeData();
     }
 
 	/*********************************************************************************************** Methods for assembling the screen */
-	//
+	// Initializes all of the data that this screen is going to need.
 	////////////////////////////////////////////////////////////////////////////////////////////////
-	private void createScene()
+	private void initializeData()
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	{
 		tiler.generateTiledMap(xID, yID);
 		objects.placeObjects(xID,yID);
-	}
 
-	// Used for setting the relevant audio. TODO: Can this be separated better?
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	private void setAudioBytes()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
-		if(game.currWorld.getMap().screenOffsetExists(xID, yID)) {
-			final int LAYER_SIZE = 250;
-			final int OBJECT_LAYER_SIZE = LAYER_SIZE * 2;
-			final int NUMBER_OF_SCENE_LAYERS = 4;
-			final int NUMBER_OF_OBJECT_LAYERS = 4;
-
-			// Open Map.bin.raw as a byte array
-			FileHandle mapFile = Gdx.files.external(game.currWorld.getFiles().mapBin(true));
-			byte[] mapFileBytes = mapFile.readBytes();
-
-			// Seek the specific location in the Map file
-			int attributeLocation = game.currWorld.getMap().getScreenOffset(xID, yID) +
-					(LAYER_SIZE * NUMBER_OF_SCENE_LAYERS) + (OBJECT_LAYER_SIZE * NUMBER_OF_OBJECT_LAYERS);
-			int cursorPosition = attributeLocation + 2;
-			atmosAID = mapFileBytes[cursorPosition++];
-			atmosBID = mapFileBytes[cursorPosition++];
-			musicID = mapFileBytes[cursorPosition];
-		} else {
-			// Initialize audio attributes
-			atmosAID = 0;
-			atmosBID = 0;
-			musicID = 0;
-		}
+		// Set the audio for this screen
+		audioData.setAudioBytes(xID, yID);
+		musicID = audioData.getMusicID();
+		atmosAID = audioData.getAtmosAID();
+		atmosBID = audioData.getAtmosBID();
 	}
 
     /***********************************************************************************************			 LibGDX Methods */
@@ -116,17 +82,8 @@ public class KsmScreen implements Screen
     public void show()
     ////////////////////////////////////////////////////////////////////////////////////////////////
     {
-    	// Check whether or not we need to manipulate the music
-    	if(!game.audio.isSongPlaying(musicID))
-    	{
-			if(!game.audio.getMusic().isPlaying())
-			{
-				game.audio.playMusic(musicID);
-			} else {
-				game.audio.setFading(true);
-			}
-		}
-		game.audio.playAmbiance(atmosAID, atmosBID);
+    	// Handle all audio for this screen: do we need to fade out or play something immediately?
+		game.audio.prepareScreenAudio(musicID, atmosAID, atmosBID);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -137,6 +94,7 @@ public class KsmScreen implements Screen
     	// Handle audio fading if necessary
 		game.audio.handleFadeout(delta, musicID);
 
+		// Clear the screen for the next frame
         game.batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(0f / 255f, 0 / 255f, 0f / 255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -144,7 +102,6 @@ public class KsmScreen implements Screen
 
         tiler.getTiledMapRenderer().setView(camera);
         tiler.render();
-
 
         // Render the KsmScreen in the desired order TODO: Leave space for Juni
         game.batch.begin();

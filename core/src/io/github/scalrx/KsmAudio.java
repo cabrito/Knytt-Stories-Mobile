@@ -129,6 +129,30 @@ public class KsmAudio
 		}
     }
 
+    public void prepareScreenAudio(byte musicID, byte atmosAID, byte atmosBID)
+	{
+		// Now that we have the musicID, atmosA, and atmosB bytes, try loading such audio files
+		if((musicID & 0xFF) > 0)
+			loadMusic(musicID);
+		if((atmosAID & 0xFF) > 0)
+			loadAmbience(atmosAID);
+		if((atmosBID & 0xFF) > 0)
+			loadAmbience(atmosBID);
+
+		// Check whether or not we need to manipulate the music
+		if(!isSongPlaying(musicID))
+		{
+			if(!music.isPlaying())
+			{
+				playMusic(musicID);
+			} else {
+				setFading(true);
+			}
+		}
+
+		playAmbiance(atmosAID, atmosBID);
+	}
+
     /***********************************************************************************************	Routines for manipulating audio */
     ////////////////////////////////////////////////////////////////////////////////////////////////
     public boolean isFading()
