@@ -15,7 +15,8 @@ public enum JuniState
 	RUNNING,
 	CLIMBING,
 	JUMPING,
-	FALLING
+	FALLING,
+	DEAD
 
 	// Add more as necessary...
 }
