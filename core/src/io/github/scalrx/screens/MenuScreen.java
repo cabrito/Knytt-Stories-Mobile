@@ -18,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.scalrx.KnyttStories;
-import io.github.scalrx.KsmMusic;
+import io.github.scalrx.KsmAudio;
 import io.github.scalrx.gui.button.GuiButtonLarge;
 
 public class MenuScreen implements Screen
@@ -127,7 +127,7 @@ public class MenuScreen implements Screen
 
         // TODO: For now, we initialize our currWorld so that we have something to play
 
-        this.game.audio = new KsmMusic(game.assetManager, game.files);
+        this.game.audio = new KsmAudio(game.assetManager, game.files);
         game.audio.loadMusic((byte)20);
     }
 
@@ -154,6 +154,7 @@ public class MenuScreen implements Screen
     public void show()
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	{
+	    game.audio.playMusic((byte)20);
         if(Gdx.app.getType() == Application.ApplicationType.Android) {
             if(!game.getPermissions().isReadPermissionEnabled()) {
             }
@@ -179,8 +180,6 @@ public class MenuScreen implements Screen
         game.batch.begin();
 
         // Make sure to only draw if we have all the assets loaded appropriately.
-        if(game.assetManager.update())
-            game.audio.playMusic((byte)20, delta);
 
         // End all drawing from the SpriteBatch
         game.batch.end();

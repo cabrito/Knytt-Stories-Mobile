@@ -104,12 +104,14 @@ public class LevelSelectScreen implements Screen
                                     game.currWorld.setAuthor(author);
                                     game.currWorld.setWorldName(name);
                                     game.currWorld.initMap();
+
+                                    // Temporary. For when we actually load a world. You must stop audio BEFORE setting the screen
+                                    game.audio.stopMusic();
+                                    game.audio.stopAmbience();
                                     game.setScreen(new KsmScreen(game, xID, yID));
                                     //game.audio.setFiles(game.currWorld.files);
 
-                                    // Temporary. For when we actually load a world
-                                    game.audio.stopMusic();
-                                    game.audio.stopAmbience();
+
                                     dispose();
                                 } catch (IOException e) {
                                     e.printStackTrace();

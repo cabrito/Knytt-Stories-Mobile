@@ -28,7 +28,7 @@ public class KnyttStories extends Game
 	public World currWorld;
 
 	// Used for handling all the music and ambiance.
-	public KsmMusic audio;
+	public KsmAudio audio;
 	public KsmFiles files;
 
 	/***********************************************************************************************			 Constructors */

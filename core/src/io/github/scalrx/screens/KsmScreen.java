@@ -116,7 +116,17 @@ public class KsmScreen implements Screen
     public void show()
     ////////////////////////////////////////////////////////////////////////////////////////////////
     {
-
+    	// Check whether or not we need to manipulate the music
+    	if(!game.audio.isSongPlaying(musicID))
+    	{
+			if(!game.audio.getMusic().isPlaying())
+			{
+				game.audio.playMusic(musicID);
+			} else {
+				game.audio.setFading(true);
+			}
+		}
+		game.audio.playAmbiance(atmosAID, atmosBID);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -124,6 +134,9 @@ public class KsmScreen implements Screen
     public void render(float delta)
     ////////////////////////////////////////////////////////////////////////////////////////////////
     {
+    	// Handle audio fading if necessary
+		game.audio.handleFadeout(delta, musicID);
+
         game.batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(0f / 255f, 0 / 255f, 0f / 255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -132,9 +145,6 @@ public class KsmScreen implements Screen
         tiler.getTiledMapRenderer().setView(camera);
         tiler.render();
 
-        // Play game music and ambiance
-        game.audio.playMusic(musicID, delta);
-        game.audio.playAmbiance(atmosAID, atmosBID);
 
         // Render the KsmScreen in the desired order TODO: Leave space for Juni
         game.batch.begin();
