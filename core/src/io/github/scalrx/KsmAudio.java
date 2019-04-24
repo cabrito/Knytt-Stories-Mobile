@@ -71,7 +71,7 @@ public class KsmAudio
 				if (music != null)
 				{
 					music.stop();
-					music.dispose();
+					files.resources().dispose(music);
 				}
 
 				// And then play the new track
@@ -96,7 +96,7 @@ public class KsmAudio
 				if(!assetManager.get(files.ambiance(atmosAID), Music.class).isPlaying()) {
 					if(atmosA != null) {
 						atmosA.stop();
-						atmosA.dispose();
+						files.resources().dispose(atmosA);
 					}
 					atmosA = assetManager.get(files.ambiance(atmosAID), Music.class);
 					atmosA.setLooping(true);
@@ -115,7 +115,7 @@ public class KsmAudio
 				if(!assetManager.get(files.ambiance(atmosBID), Music.class).isPlaying()) {
 					if(atmosB != null) {
 						atmosB.stop();
-						atmosB.dispose();
+						files.resources().dispose(atmosB);
 					}
 					atmosB = assetManager.get(files.ambiance(atmosBID), Music.class);
 					atmosB.setLooping(true);
@@ -184,7 +184,6 @@ public class KsmAudio
 
 			} else {
 				music.stop();
-				music.dispose();
 				fading = false;
 			}
 		} else {

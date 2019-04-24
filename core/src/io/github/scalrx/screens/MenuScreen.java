@@ -38,6 +38,7 @@ public class MenuScreen implements Screen
 	Texture downloadIcon;
 	Texture settingsIcon;
 	Texture aboutIcon;
+	Texture graphic;
 
     /***********************************************************************************************			 Constructors */
     // Initialize our menu screen
@@ -60,7 +61,6 @@ public class MenuScreen implements Screen
         downloadIcon = game.files.resources().icon("download");
         settingsIcon  = game.files.resources().icon("settings");
         aboutIcon = game.files.resources().icon("about");
-        Texture graphic;
         loadAssets();
 
         graphic = game.assetManager.get("graphic.png", Texture.class);
