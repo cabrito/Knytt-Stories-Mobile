@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 /***************************************************************************************************
  * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
- * GuiButtonLarge.java
+ * button.java
  * Created by: scalr at 11:48 AM, 4/20/19
  *
  * Streamlines the creation of a large button, typically used on the main menu.

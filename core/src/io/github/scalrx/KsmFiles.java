@@ -29,6 +29,7 @@ public class KsmFiles
     private final FileHandleResolver internal = new InternalFileHandleResolver();
     private final FileHandleResolver external = new ExternalFileHandleResolver();
     private final AssetManager assetManager;
+    private final KsmResources res;
 
     // Members
     private String worldDir;                                // DO NOT rely on this going forward!!!
@@ -39,6 +40,7 @@ public class KsmFiles
     ////////////////////////////////////////////////////////////////////////////////////////////////
     {
         this.assetManager = assetManager;
+        this.res = new KsmResources(assetManager);
     }
 
     /***********************************************************************************************         World-related methods */
@@ -70,7 +72,14 @@ public class KsmFiles
         return worldDir;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	public KsmResources resources()
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	{
+		return res;
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
     public String mapBin(boolean raw)
     ////////////////////////////////////////////////////////////////////////////////////////////////
     {

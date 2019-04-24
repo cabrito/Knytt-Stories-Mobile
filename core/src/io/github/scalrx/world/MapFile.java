@@ -1,4 +1,4 @@
-package io.github.scalrx;
+package io.github.scalrx.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+import io.github.scalrx.KsmFiles;
 import io.github.scalrx.utilities.GZip;
 import io.github.scalrx.utilities.Pair;
 
@@ -63,7 +64,7 @@ public class MapFile
         writeDateFile(mapBinFile);
     }
 
-    // Used for checking whether or not the map has changed/been updated    TODO: Actually have this print out the number, not the bytes
+    // Used for checking whether or not the map has changed/been updated
     ////////////////////////////////////////////////////////////////////////////////////////////////
     private void writeDateFile(String filepath)
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,6 +73,7 @@ public class MapFile
             FileOutputStream output = new FileOutputStream(filepath + ".dat");
             DataOutputStream dataOutput = new DataOutputStream(output);
             dataOutput.writeLong(Gdx.files.external(filepath).lastModified());
+            // TODO: Actually have this print out the number, not the bytes
             dataOutput.close();
 
         } catch (IOException e) {

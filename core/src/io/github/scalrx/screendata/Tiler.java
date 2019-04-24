@@ -11,8 +11,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 
-import io.github.scalrx.KsmFiles;
-import io.github.scalrx.World;
+import io.github.scalrx.world.World;
 
 /***************************************************************************************************
  * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)

@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 
 import io.github.scalrx.screens.MenuScreen;
+import io.github.scalrx.utilities.Permissions;
+import io.github.scalrx.world.World;
 
 public class KnyttStories extends Game
 {

@@ -1,4 +1,6 @@
-package io.github.scalrx;
+package io.github.scalrx.world;
+
+import io.github.scalrx.KsmFiles;
 
 /***************************************************************************************************
  * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)

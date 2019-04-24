@@ -3,7 +3,7 @@ package io.github.scalrx.screendata;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
-import io.github.scalrx.World;
+import io.github.scalrx.world.World;
 
 /***************************************************************************************************
  * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)

@@ -1,4 +1,4 @@
-package io.github.scalrx;
+package io.github.scalrx.utilities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.GdxRuntimeException;

@@ -21,9 +21,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.ini4j.Wini;
 
 import java.io.IOException;
+import java.util.List;
 
 import io.github.scalrx.KnyttStories;
-import io.github.scalrx.World;
+import io.github.scalrx.world.World;
 import io.github.scalrx.gui.button.GuiButtonLevel;
 
 /***************************************************************************************************
@@ -42,6 +43,9 @@ public class LevelSelectScreen implements Screen
     private OrthographicCamera camera;
     private Stage stage;
 
+    // Button textures
+	private Texture guiBtnLevel;
+
     /***********************************************************************************************			 Constructors */
     ////////////////////////////////////////////////////////////////////////////////////////////////
     public LevelSelectScreen(final KnyttStories game)
@@ -50,12 +54,12 @@ public class LevelSelectScreen implements Screen
         // Prepare our variables
         this.game = game;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, KnyttStories.V_WIDTH,KnyttStories.V_HEIGHT);
+        camera.setToOrtho(false, KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT);
         viewport = new FitViewport(KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT, camera);
 
         // Load our assets we'll use
         loadAssets();
-        Texture guiBtnLevel = game.assetManager.get("System/buttons/Gui_btn_level.png", Texture.class);
+        guiBtnLevel = game.files.resources().button("level");
 
         // Prepare the stage for level selection
         stage = new Stage(viewport, game.batch);
@@ -138,9 +142,6 @@ public class LevelSelectScreen implements Screen
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	{
         // Load internal resources
-        game.assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
-        game.assetManager.load("System/buttons/Gui_btn_level.png", Texture.class);
-        game.assetManager.finishLoading();
     }
 
     /***********************************************************************************************			 LibGDX Methods */
@@ -212,7 +213,8 @@ public class LevelSelectScreen implements Screen
     public void dispose()
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	{
-        game.assetManager.unload("System/buttons/Gui_btn_level.png");
+		/* TODO: Right now, there's a memory leak with the Level icons. Allow them to be accessed here, rather than just the constructor */
+        game.files.resources().dispose(guiBtnLevel);
         stage.dispose();
     }
 }

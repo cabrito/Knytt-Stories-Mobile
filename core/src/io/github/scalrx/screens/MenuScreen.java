@@ -30,6 +30,15 @@ public class MenuScreen implements Screen
     private OrthographicCamera camera;
     private Stage stage;
 
+    // Textures
+	Texture guiButtonLarge;
+	Texture playIcon;
+	Texture tutorialIcon;
+	Texture installIcon;
+	Texture downloadIcon;
+	Texture settingsIcon;
+	Texture aboutIcon;
+
     /***********************************************************************************************			 Constructors */
     // Initialize our menu screen
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,30 +48,22 @@ public class MenuScreen implements Screen
         // Initialize our members
         this.game = game;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, KnyttStories.V_WIDTH,KnyttStories.V_HEIGHT);
+        camera.setToOrtho(false, KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT);
         viewport = new FitViewport(KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT, camera);
         stage = new Stage(viewport, game.batch);
         Gdx.input.setInputProcessor(stage);
 
-        Texture guiButtonLarge;
-        Texture playIcon;
-        Texture tutorialIcon;
-        Texture installIcon;
-        Texture downloadIcon;
-        Texture settingsIcon;
-        Texture aboutIcon;
+        guiButtonLarge = game.files.resources().button("large");
+        playIcon = game.files.resources().icon("play");
+        tutorialIcon = game.files.resources().icon("tutorial");
+        installIcon = game.files.resources().icon("install");
+        downloadIcon = game.files.resources().icon("download");
+        settingsIcon  = game.files.resources().icon("settings");
+        aboutIcon = game.files.resources().icon("about");
         Texture graphic;
-
         loadAssets();
 
-        guiButtonLarge = game.assetManager.get("System/buttons/Gui_btn_large.png", Texture.class);
-        playIcon = game.assetManager.get("System/buttons/icons/play_icon.png");
-        tutorialIcon = game.assetManager.get("System/buttons/icons/tutorial_icon.png");
-        installIcon = game.assetManager.get("System/buttons/icons/install_icon.png");
-        downloadIcon = game.assetManager.get("System/buttons/icons/download_icon.png");
-        settingsIcon = game.assetManager.get("System/buttons/icons/settings_icon.png");
-        aboutIcon = game.assetManager.get("System/buttons/icons/about_icon.png");
-        graphic = game.assetManager.get("graphic.png");
+        graphic = game.assetManager.get("graphic.png", Texture.class);
         Image ksmGraphic = new Image(graphic);
 
         /**     Assemble our GUI     */
@@ -123,9 +124,6 @@ public class MenuScreen implements Screen
 
         // Load the various components of the GUI we expect to use
         this.game.assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
-        this.game.assetManager.load(Gdx.files.internal("System/buttons/Gui_btn_medium.png").path(), Texture.class);
-
-        // TODO: For now, we initialize our currWorld so that we have something to play
 
         this.game.audio = new KsmAudio(game.assetManager, game.files);
         game.audio.loadMusic((byte)20);
@@ -137,13 +135,6 @@ public class MenuScreen implements Screen
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	{
         game.assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
-        game.assetManager.load("System/buttons/Gui_btn_large.png", Texture.class);
-        game.assetManager.load("System/buttons/icons/play_icon.png", Texture.class);
-        game.assetManager.load("System/buttons/icons/tutorial_icon.png", Texture.class);
-        game.assetManager.load("System/buttons/icons/install_icon.png", Texture.class);
-        game.assetManager.load("System/buttons/icons/download_icon.png", Texture.class);
-        game.assetManager.load("System/buttons/icons/settings_icon.png", Texture.class);
-        game.assetManager.load("System/buttons/icons/about_icon.png", Texture.class);
         game.assetManager.load("graphic.png", Texture.class);                   // TODO: TEMPORARY. DELETE!!!!
         game.assetManager.finishLoading();
     }
@@ -156,9 +147,13 @@ public class MenuScreen implements Screen
 	{
 	    game.audio.playMusic((byte)20);
         if(Gdx.app.getType() == Application.ApplicationType.Android) {
-            if(!game.getPermissions().isReadPermissionEnabled()) {
+            if(!game.getPermissions().isReadPermissionEnabled())
+            {
+            	// Maybe say something to the user about needing permissions
             }
-            if(!game.getPermissions().isWritePermissionEnabled()) {
+            if(!game.getPermissions().isWritePermissionEnabled())
+            {
+				// Maybe say something to the user about needing permissions
             }
         }
     }
@@ -225,13 +220,13 @@ public class MenuScreen implements Screen
     public void dispose()
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	{
-        game.assetManager.unload("System/buttons/Gui_btn_large.png");
-        game.assetManager.unload("System/buttons/icons/play_icon.png");
-        game.assetManager.unload("System/buttons/icons/tutorial_icon.png");
-        game.assetManager.unload("System/buttons/icons/install_icon.png");
-        game.assetManager.unload("System/buttons/icons/download_icon.png");
-        game.assetManager.unload("System/buttons/icons/settings_icon.png");
-        game.assetManager.unload("System/buttons/icons/about_icon.png");
+		game.files.resources().dispose(playIcon);
+		game.files.resources().dispose(installIcon);
+		game.files.resources().dispose(tutorialIcon);
+		game.files.resources().dispose(downloadIcon);
+		game.files.resources().dispose(settingsIcon);
+		game.files.resources().dispose(aboutIcon);
+		game.files.resources().dispose(guiButtonLarge);
         game.assetManager.unload("graphic.png");
         stage.dispose();
     }
