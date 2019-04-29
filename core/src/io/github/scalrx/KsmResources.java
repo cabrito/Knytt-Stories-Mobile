@@ -21,7 +21,6 @@
 
 package io.github.scalrx;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -29,12 +28,12 @@ import com.badlogic.gdx.graphics.Texture;
 
 public final class KsmResources {
 	private final AssetManager assetManager;
+	private final String buttonDir = "System/buttons/";
+	private final String iconDir = buttonDir + "icons/";
 
 	public KsmResources(final AssetManager assetManager) {
 		this.assetManager = assetManager;
 	}
-
-	private final String buttonDir = "System/buttons/";
 
 	public Texture button(final String TYPE) {
 		final String filepath = buttonDir + "Gui_btn_" + TYPE + ".png";
@@ -43,8 +42,6 @@ public final class KsmResources {
 		assetManager.finishLoading();
 		return assetManager.get(filepath, Texture.class);
 	}
-
-	private final String iconDir = buttonDir + "icons/";
 
 	public Texture icon(final String TYPE) {
 		final String filepath = iconDir + TYPE + "_icon.png";

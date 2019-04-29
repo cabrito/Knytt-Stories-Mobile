@@ -40,8 +40,8 @@ public final class GZip {
 			FileHandle output = Gdx.files.external(filepath + ".raw");
 
 			int totalSize;
-			while((totalSize = input.read(buffer)) > 0 ) {
-				output.writeBytes(buffer,0, totalSize, true);
+			while ((totalSize = input.read(buffer)) > 0) {
+				output.writeBytes(buffer, 0, totalSize, true);
 			}
 			input.close();
 		} catch (IOException e) {
@@ -57,7 +57,7 @@ public final class GZip {
 			FileInputStream input = new FileInputStream(filepath);
 
 			int totalSize;
-			while((totalSize = input.read(buffer)) > 0 ) {
+			while ((totalSize = input.read(buffer)) > 0) {
 				output.write(buffer, 0, totalSize);
 			}
 

@@ -37,20 +37,20 @@ import io.github.scalrx.world.World;
 
 public class KnyttStories extends Game {
 
+	// Attributes we use for rendering a screen in a Knytt Stories level
+	public static final int V_WIDTH = 854;
+	public static final int V_HEIGHT = 480;
 	// Declare the resources our program will use during its lifecycle
 	public SpriteBatch batch;
 	public AssetManager assetManager;
-
-	// Attributes we use for rendering a screen in a Knytt Stories level
-	public static final int V_WIDTH	= 854;
-	public static final int V_HEIGHT = 480;
-
 	// World object
 	public World currWorld;
 
 	// Used for handling all the music and ambiance.
 	public KsmAudio audio;
 	public KsmFiles files;
+	// For Android
+	private Permissions permissions;
 
 	// Desktop Constructor
 	public KnyttStories() {
@@ -63,14 +63,12 @@ public class KnyttStories extends Game {
 		this.permissions = permissions;
 	}
 
-	// For Android
-	private Permissions permissions;
 	public Permissions getPermissions() {
-    	return permissions;
+		return permissions;
 	}
 
 	@Override
-	public void create () {
+	public void create() {
 		// Initialize our SpriteBatch and AssetManager
 		batch = new SpriteBatch();
 		assetManager = new AssetManager();
@@ -108,12 +106,12 @@ public class KnyttStories extends Game {
 	}
 
 	@Override
-	public void render () {
+	public void render() {
 		super.render();
 	}
 
 	@Override
-	public void dispose () {
+	public void dispose() {
 		batch.dispose();
 		assetManager.dispose();
 	}

@@ -20,12 +20,8 @@
 
 package io.github.scalrx.utilities;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.GdxRuntimeException;
-
-import java.io.IOException;
-
 public interface Permissions {
-    boolean isReadPermissionEnabled();
-    boolean isWritePermissionEnabled();
+	boolean isReadPermissionEnabled();
+
+	boolean isWritePermissionEnabled();
 }

@@ -26,34 +26,34 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class GuiButtonLarge extends ImageTextButton {
-    private final Image ICON;
+	private final Image ICON;
 
-    public GuiButtonLarge(final Texture icon, final String title, final Skin skin) {
+	public GuiButtonLarge(final Texture icon, final String title, final Skin skin) {
 
-        // Initialize a basic ImageTextButton with the required information
-        super(title, initSkin(skin));
-        this.ICON = new Image(icon);
+		// Initialize a basic ImageTextButton with the required information
+		super(title, initSkin(skin));
+		this.ICON = new Image(icon);
 
-        // Produce the correct layout
-        rearrangeLayout();
-    }
+		// Produce the correct layout
+		rearrangeLayout();
+	}
 
-    private void rearrangeLayout() {
-        // Constants
-        final int ICON_SIZE = 50;
+	private static Skin initSkin(Skin skin) {
+		ImageTextButtonStyle imageTextButtonStyle = new ImageTextButtonStyle();
+		imageTextButtonStyle.up = skin.newDrawable("gui-button-large");
+		imageTextButtonStyle.down = skin.newDrawable("gui-button-large", 0.0f, 0.0f, 0.0f, 0.5f);
+		imageTextButtonStyle.font = skin.getFont("gui-button-large");
+		imageTextButtonStyle.font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		skin.add("default", imageTextButtonStyle);
+		return skin;
+	}
 
-        clearChildren();
-        add(ICON).size(ICON_SIZE).row();
-        add(getLabel());
-    }
+	private void rearrangeLayout() {
+		// Constants
+		final int ICON_SIZE = 50;
 
-    private static Skin initSkin(Skin skin) {
-        ImageTextButtonStyle imageTextButtonStyle = new ImageTextButtonStyle();
-        imageTextButtonStyle.up = skin.newDrawable("gui-button-large");
-        imageTextButtonStyle.down = skin.newDrawable("gui-button-large", 0.0f,0.0f,0.0f,0.5f);
-        imageTextButtonStyle.font = skin.getFont("gui-button-large");
-        imageTextButtonStyle.font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        skin.add("default", imageTextButtonStyle);
-        return skin;
-    }
+		clearChildren();
+		add(ICON).size(ICON_SIZE).row();
+		add(getLabel());
+	}
 }
