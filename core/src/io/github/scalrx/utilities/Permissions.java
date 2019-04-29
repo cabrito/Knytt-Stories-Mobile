@@ -1,10 +1,3 @@
-package io.github.scalrx.utilities;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.GdxRuntimeException;
-
-import java.io.IOException;
-
 /*
  * Permissions.java
  * Allows us to grab permissions from Android.
@@ -24,6 +17,13 @@ import java.io.IOException;
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+package io.github.scalrx.utilities;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+
+import java.io.IOException;
 
 public interface Permissions {
     boolean isReadPermissionEnabled();

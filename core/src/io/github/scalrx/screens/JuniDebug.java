@@ -1,7 +1,3 @@
-package io.github.scalrx.screens;
-
-import com.badlogic.gdx.Screen;
-
 /*
  * JuniDebug.java
  * This file is meant to be a debugging playground for testing the various aspects of Juni, and is
@@ -22,6 +18,10 @@ import com.badlogic.gdx.Screen;
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+package io.github.scalrx.screens;
+
+import com.badlogic.gdx.Screen;
 
 public class JuniDebug implements Screen {
 	public JuniDebug() {

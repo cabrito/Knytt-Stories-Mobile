@@ -1,10 +1,3 @@
-package io.github.scalrx.screendata;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-
-import io.github.scalrx.world.World;
-
 /*
  * ObjectData.java
  * A small container for gathering and storing object data, to be used with KsmScreen.
@@ -24,6 +17,13 @@ import io.github.scalrx.world.World;
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+package io.github.scalrx.screendata;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+
+import io.github.scalrx.world.World;
 
 public class ObjectData {
 

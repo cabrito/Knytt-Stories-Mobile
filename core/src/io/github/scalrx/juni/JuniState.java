@@ -1,5 +1,3 @@
-package io.github.scalrx.juni;
-
 /*
  * JuniState.java
  * All of the various states that Juni can be in.
@@ -19,6 +17,8 @@ package io.github.scalrx.juni;
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+package io.github.scalrx.juni;
 
 public enum JuniState {
 	IDLE,

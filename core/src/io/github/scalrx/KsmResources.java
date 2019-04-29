@@ -1,13 +1,5 @@
-package io.github.scalrx;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.TextureLoader;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-import com.badlogic.gdx.graphics.Texture;
-
 /*
- * World.java
+ * KsmResources.java
  * For use in conjunction with the AssetManager to make loading resources much cleaner, while making
  * this obscured file much messier.
  * Created by: scalr on 4/23/2019.
@@ -26,6 +18,14 @@ import com.badlogic.gdx.graphics.Texture;
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+package io.github.scalrx;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.TextureLoader;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.graphics.Texture;
 
 public final class KsmResources {
 	private final AssetManager assetManager;

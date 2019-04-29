@@ -1,7 +1,3 @@
-package io.github.scalrx.juni;
-
-import com.badlogic.gdx.Screen;
-
 /*
  * Juni.java
  * This handles all the various mechanics of our main heroine, Juni.
@@ -21,6 +17,10 @@ import com.badlogic.gdx.Screen;
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+package io.github.scalrx.juni;
+
+import com.badlogic.gdx.Screen;
 
 public class Juni {
 	private JuniState state;

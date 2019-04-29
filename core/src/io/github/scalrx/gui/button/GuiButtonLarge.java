@@ -1,13 +1,6 @@
-package io.github.scalrx.gui.button;
-
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-
 /*
  * GuiButtonLarge.java
- * Streamlines the cration of a large button, typically used on the main menu.
+ * Streamlines the creation of a large button, typically used on the main menu.
  * Created by: scalr on 4/20/2019.
  *
  * Knytt Stories Mobile
@@ -24,6 +17,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+package io.github.scalrx.gui.button;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class GuiButtonLarge extends ImageTextButton {
     private final Image ICON;

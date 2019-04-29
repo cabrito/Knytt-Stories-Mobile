@@ -1,8 +1,3 @@
-package io.github.scalrx;
-
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
-
 /*
  * KsmAudio.java
  * Handles all of the music- and ambiance-related goodies for Knytt Stories Mobile.
@@ -22,6 +17,11 @@ import com.badlogic.gdx.audio.Music;
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+package io.github.scalrx;
+
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 
 public class KsmAudio {
 

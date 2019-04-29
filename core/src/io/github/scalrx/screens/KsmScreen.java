@@ -1,21 +1,3 @@
-package io.github.scalrx.screens;
-
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-
-import io.github.scalrx.KnyttStories;
-import io.github.scalrx.gui.OnscreenController;
-import io.github.scalrx.screendata.AudioData;
-import io.github.scalrx.screendata.ObjectData;
-import io.github.scalrx.screendata.Tiler;
-
 /*
  * KsmScreen.java
  * Handles the displaying of any particular screen, loaded from the Map.bin file.
@@ -35,6 +17,24 @@ import io.github.scalrx.screendata.Tiler;
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+package io.github.scalrx.screens;
+
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
+import io.github.scalrx.KnyttStories;
+import io.github.scalrx.gui.OnscreenController;
+import io.github.scalrx.screendata.AudioData;
+import io.github.scalrx.screendata.ObjectData;
+import io.github.scalrx.screendata.Tiler;
 
 public class KsmScreen implements Screen {
 

@@ -1,5 +1,3 @@
-package io.github.scalrx.utilities;
-
 /*
  * Pair.java
  * Implementation of an ordered pair, used for referencing a specific Map.bin coordinate.
@@ -19,6 +17,8 @@ package io.github.scalrx.utilities;
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+package io.github.scalrx.utilities;
 
 public final class Pair<T> {
     private final T x, y;
