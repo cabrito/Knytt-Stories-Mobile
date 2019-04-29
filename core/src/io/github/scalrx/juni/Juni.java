@@ -23,10 +23,10 @@ package io.github.scalrx.juni;
 import com.badlogic.gdx.Screen;
 
 public class Juni {
-	private JuniState state;
+    private JuniState state;
 
-	public Juni(Screen screen, int x, int y) {
-		this.state = JuniState.IDLE;
-	}
+    public Juni(Screen screen, int x, int y) {
+        this.state = JuniState.IDLE;
+    }
 
 }

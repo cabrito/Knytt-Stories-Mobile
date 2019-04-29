@@ -92,7 +92,7 @@ public class MapFile {
 
     // Get the Map file offset for the desired KsmScreen
     public int getScreenOffset(int x, int y) {
-        return mapFileOffsets.get(new Pair<Integer>(x,y));
+        return mapFileOffsets.get(new Pair<Integer>(x, y));
     }
 
     public boolean screenOffsetExists(int x, int y) {
@@ -117,7 +117,7 @@ public class MapFile {
 
             int cursorPosition = 0;
 
-            while(cursorPosition < mapFileBytes.length) {
+            while (cursorPosition < mapFileBytes.length) {
                 for (int charPos = 0; ; charPos++, cursorPosition++) {
                     if ((mapFileBytes[cursorPosition] & 0xFF) == 'x') {
                         if (charPos != 0) {
@@ -142,13 +142,13 @@ public class MapFile {
                             Y = coordVal;
                         break;
                     } else {
-                            break;  // ?????????
+                        break;  // ?????????
                     }
                 }
                 offset = cursorPosition + 5;
 
                 // Once the inner while loop ends, we need to take note of the submap coordinates and its file offset
-                mapFileOffsets.put(new Pair<Integer>(X,Y), offset);
+                mapFileOffsets.put(new Pair<Integer>(X, Y), offset);
 
                 // Skip to the next level header
                 cursorPosition += (5 + SCREEN_DATA_SIZE);

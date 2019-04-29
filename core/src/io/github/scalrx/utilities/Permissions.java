@@ -21,7 +21,7 @@
 package io.github.scalrx.utilities;
 
 public interface Permissions {
-	boolean isReadPermissionEnabled();
+    boolean isReadPermissionEnabled();
 
-	boolean isWritePermissionEnabled();
+    boolean isWritePermissionEnabled();
 }

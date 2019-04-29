@@ -31,42 +31,42 @@ import java.util.zip.GZIPOutputStream;
 
 public final class GZip {
 
-	public static void decompress(final String filepath) {
-		byte[] buffer = new byte[1024];
-		try {
-			FileHandle fh = Gdx.files.external(filepath);
-			GZIPInputStream input = new GZIPInputStream(fh.read());
+    public static void decompress(final String filepath) {
+        byte[] buffer = new byte[1024];
+        try {
+            FileHandle fh = Gdx.files.external(filepath);
+            GZIPInputStream input = new GZIPInputStream(fh.read());
 
-			FileHandle output = Gdx.files.external(filepath + ".raw");
+            FileHandle output = Gdx.files.external(filepath + ".raw");
 
-			int totalSize;
-			while ((totalSize = input.read(buffer)) > 0) {
-				output.writeBytes(buffer, 0, totalSize, true);
-			}
-			input.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+            int totalSize;
+            while ((totalSize = input.read(buffer)) > 0) {
+                output.writeBytes(buffer, 0, totalSize, true);
+            }
+            input.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public static void compress(final String filepath) {
-		byte[] buffer = new byte[1024];
-		try {
-			GZIPOutputStream output = new GZIPOutputStream(new FileOutputStream(filepath + ".gz"));
+    public static void compress(final String filepath) {
+        byte[] buffer = new byte[1024];
+        try {
+            GZIPOutputStream output = new GZIPOutputStream(new FileOutputStream(filepath + ".gz"));
 
-			FileInputStream input = new FileInputStream(filepath);
+            FileInputStream input = new FileInputStream(filepath);
 
-			int totalSize;
-			while ((totalSize = input.read(buffer)) > 0) {
-				output.write(buffer, 0, totalSize);
-			}
+            int totalSize;
+            while ((totalSize = input.read(buffer)) > 0) {
+                output.write(buffer, 0, totalSize);
+            }
 
-			input.close();
-			output.finish();
-			output.close();
+            input.close();
+            output.finish();
+            output.close();
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

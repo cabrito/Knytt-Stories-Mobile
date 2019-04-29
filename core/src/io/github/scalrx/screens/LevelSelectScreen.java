@@ -47,154 +47,154 @@ import io.github.scalrx.world.World;
 
 public class LevelSelectScreen implements Screen {
 
-	private final KnyttStories game;
-	private FitViewport viewport;
-	private OrthographicCamera camera;
-	private Stage stage;
+    private final KnyttStories game;
+    private FitViewport viewport;
+    private OrthographicCamera camera;
+    private Stage stage;
 
-	// Button textures
-	private Texture guiBtnLevel;
+    // Button textures
+    private Texture guiBtnLevel;
 
-	public LevelSelectScreen(final KnyttStories game) {
-		// Prepare our variables
-		this.game = game;
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT);
-		viewport = new FitViewport(KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT, camera);
+    public LevelSelectScreen(final KnyttStories game) {
+        // Prepare our variables
+        this.game = game;
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT);
+        viewport = new FitViewport(KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT, camera);
 
-		// Load our assets we'll use
-		loadAssets();
-		guiBtnLevel = game.files.resources().button("level");
+        // Load our assets we'll use
+        loadAssets();
+        guiBtnLevel = game.files.resources().button("level");
 
-		// Prepare the stage for level selection
-		stage = new Stage(viewport, game.batch);
-		Gdx.input.setInputProcessor(stage);
+        // Prepare the stage for level selection
+        stage = new Stage(viewport, game.batch);
+        Gdx.input.setInputProcessor(stage);
 
-		// Create the look for each element in the scrollpane
-		Skin buttonSkin = new Skin();
-		final float BUTTON_SPACING = 5f;
-		buttonSkin.add("gui-button-level", guiBtnLevel);
-		buttonSkin.add("gui-button-level", game.assetManager.get("smallFont.ttf", BitmapFont.class));
-		buttonSkin.add("description-font", game.assetManager.get("smallGrayFont.ttf", BitmapFont.class));
+        // Create the look for each element in the scrollpane
+        Skin buttonSkin = new Skin();
+        final float BUTTON_SPACING = 5f;
+        buttonSkin.add("gui-button-level", guiBtnLevel);
+        buttonSkin.add("gui-button-level", game.assetManager.get("smallFont.ttf", BitmapFont.class));
+        buttonSkin.add("description-font", game.assetManager.get("smallGrayFont.ttf", BitmapFont.class));
 
-		// Make the table used in the scrollpane
-		Table table = new Table();
-		table.left();
+        // Make the table used in the scrollpane
+        Table table = new Table();
+        table.left();
 
-		FileHandle[] files = Gdx.files.external("Knytt Stories Mobile/").list();
-		try {
-			for (final FileHandle fh : files) {
-				if (fh.isDirectory()) {
-					if (Gdx.files.external(fh.path() + "/World.ini").exists()) {
-						Wini ini = new Wini(Gdx.files.external(fh.path() + "/World.ini").file());
-						final String name = ini.get("World", "Name", String.class);
-						final String author = ini.get("World", "Author", String.class);
-						final String description = ini.get("World", "Description", String.class);
+        FileHandle[] files = Gdx.files.external("Knytt Stories Mobile/").list();
+        try {
+            for (final FileHandle fh : files) {
+                if (fh.isDirectory()) {
+                    if (Gdx.files.external(fh.path() + "/World.ini").exists()) {
+                        Wini ini = new Wini(Gdx.files.external(fh.path() + "/World.ini").file());
+                        final String name = ini.get("World", "Name", String.class);
+                        final String author = ini.get("World", "Author", String.class);
+                        final String description = ini.get("World", "Description", String.class);
 
-						// Load stuff
-						game.assetManager.setLoader(Texture.class, new TextureLoader(new ExternalFileHandleResolver()));
-						game.assetManager.load(Gdx.files.external(fh.path() + "/Icon.png").path(), Texture.class);
-						game.assetManager.finishLoading();
-						Texture icon = game.assetManager.get(Gdx.files.external(fh.path() + "/Icon.png").path(), Texture.class);
+                        // Load stuff
+                        game.assetManager.setLoader(Texture.class, new TextureLoader(new ExternalFileHandleResolver()));
+                        game.assetManager.load(Gdx.files.external(fh.path() + "/Icon.png").path(), Texture.class);
+                        game.assetManager.finishLoading();
+                        Texture icon = game.assetManager.get(Gdx.files.external(fh.path() + "/Icon.png").path(), Texture.class);
 
-						// Make our button and add it to the scrollpane table
-						GuiButtonLevel button = new GuiButtonLevel(icon, name + " (" + author + ")",
-								description, buttonSkin);
-						button.addListener(new ChangeListener() {
-							// TODO: IMPLEMENT FILE SELECTION/CUTSCENES BEFORE GOING TO THE GAME
-							@Override
-							public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-								try {
-									Wini ini = new Wini(Gdx.files.external(fh.path() + "/DefaultSavegame.ini").file());
-									int xID = ini.get("Positions", "X Map", int.class);
-									int yID = ini.get("Positions", "Y Map", int.class);
+                        // Make our button and add it to the scrollpane table
+                        GuiButtonLevel button = new GuiButtonLevel(icon, name + " (" + author + ")",
+                                description, buttonSkin);
+                        button.addListener(new ChangeListener() {
+                            // TODO: IMPLEMENT FILE SELECTION/CUTSCENES BEFORE GOING TO THE GAME
+                            @Override
+                            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                                try {
+                                    Wini ini = new Wini(Gdx.files.external(fh.path() + "/DefaultSavegame.ini").file());
+                                    int xID = ini.get("Positions", "X Map", int.class);
+                                    int yID = ini.get("Positions", "Y Map", int.class);
 
-									game.currWorld = new World(game.files);
-									game.currWorld.setAuthor(author);
-									game.currWorld.setWorldName(name);
-									game.currWorld.initMap();
+                                    game.currWorld = new World(game.files);
+                                    game.currWorld.setAuthor(author);
+                                    game.currWorld.setWorldName(name);
+                                    game.currWorld.initMap();
 
-									// Temporary. For when we actually load a world. You must stop audio BEFORE setting the screen
-									game.audio.stopMusic();
-									game.audio.stopAmbience();
-									game.setScreen(new KsmScreen(game, xID, yID));
-									//game.audio.setFiles(game.currWorld.files);
+                                    // Temporary. For when we actually load a world. You must stop audio BEFORE setting the screen
+                                    game.audio.stopMusic();
+                                    game.audio.stopAmbience();
+                                    game.setScreen(new KsmScreen(game, xID, yID));
+                                    //game.audio.setFiles(game.currWorld.files);
 
 
-									dispose();
-								} catch (IOException e) {
-									e.printStackTrace();
-								}
-							}
-						});
-						table.add(button).padBottom(BUTTON_SPACING).row();
-					}
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+                                    dispose();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        table.add(button).padBottom(BUTTON_SPACING).row();
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		ScrollPane scrollPane = new ScrollPane(table);
-		scrollPane.setPosition(50f, 0);
-		scrollPane.setSize(300, 200);
+        ScrollPane scrollPane = new ScrollPane(table);
+        scrollPane.setPosition(50f, 0);
+        scrollPane.setSize(300, 200);
 
-		stage.addActor(scrollPane);
-	}
+        stage.addActor(scrollPane);
+    }
 
-	private void loadAssets() {
-		// Load internal resources
-	}
+    private void loadAssets() {
+        // Load internal resources
+    }
 
-	@Override
-	public void show() {
+    @Override
+    public void show() {
 
-	}
+    }
 
-	@Override
-	public void render(float delta) {
-		// Clear the screen for drawing the next frame
-		Gdx.gl.glClearColor(1f, 1f, 1f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    @Override
+    public void render(float delta) {
+        // Clear the screen for drawing the next frame
+        Gdx.gl.glClearColor(1f, 1f, 1f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		// Update the camera for any movement that may occur
-		viewport.getCamera().update();
-		game.batch.setProjectionMatrix(viewport.getCamera().combined);
+        // Update the camera for any movement that may occur
+        viewport.getCamera().update();
+        game.batch.setProjectionMatrix(viewport.getCamera().combined);
 
-		// Begin drawing our GUI to the screen
-		game.batch.begin();
+        // Begin drawing our GUI to the screen
+        game.batch.begin();
 
-		// End all drawing from the SpriteBatch
-		game.batch.end();
-		stage.act();
-		stage.draw();
-	}
+        // End all drawing from the SpriteBatch
+        game.batch.end();
+        stage.act();
+        stage.draw();
+    }
 
-	@Override
-	public void resize(int width, int height) {
-		stage.getViewport().update(width, height);
-		viewport.update(width, height, true);
-	}
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height);
+        viewport.update(width, height, true);
+    }
 
-	@Override
-	public void pause() {
+    @Override
+    public void pause() {
 
-	}
+    }
 
-	@Override
-	public void resume() {
+    @Override
+    public void resume() {
 
-	}
+    }
 
-	@Override
-	public void hide() {
+    @Override
+    public void hide() {
 
-	}
+    }
 
-	@Override
-	public void dispose() {
-		/* TODO: Right now, there's a memory leak with the Level icons. Allow them to be accessed here, rather than just the constructor */
-		game.files.resources().dispose(guiBtnLevel);
-		stage.dispose();
-	}
+    @Override
+    public void dispose() {
+        /* TODO: Right now, there's a memory leak with the Level icons. Allow them to be accessed here, rather than just the constructor */
+        game.files.resources().dispose(guiBtnLevel);
+        stage.dispose();
+    }
 }

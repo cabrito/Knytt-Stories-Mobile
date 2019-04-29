@@ -21,13 +21,13 @@
 package io.github.scalrx.juni;
 
 public enum JuniState {
-	IDLE,
-	WALKING,
-	RUNNING,
-	CLIMBING,
-	JUMPING,
-	FALLING,
-	DEAD
+    IDLE,
+    WALKING,
+    RUNNING,
+    CLIMBING,
+    JUMPING,
+    FALLING,
+    DEAD
 
-	// Add more as necessary...
+    // Add more as necessary...
 }

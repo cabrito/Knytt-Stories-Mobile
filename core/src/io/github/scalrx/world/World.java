@@ -23,14 +23,13 @@ import io.github.scalrx.KsmFiles;
  */
 
 public class World {
+    private final KsmFiles files;
     // World information
     private String worldName;
     private String author;
     private int size;
-
     // Map information
     private MapFile map;
-    private final KsmFiles files;
 
     public World(final KsmFiles files) {
         // Initialize the files directory specific to the specified world
@@ -41,7 +40,7 @@ public class World {
         return worldName;
     }
 
-	public void setWorldName(String worldName) {
+    public void setWorldName(String worldName) {
         this.worldName = worldName;
     }
 

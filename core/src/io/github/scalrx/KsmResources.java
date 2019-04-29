@@ -27,33 +27,33 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
 
 public final class KsmResources {
-	private final AssetManager assetManager;
-	private final String buttonDir = "System/buttons/";
-	private final String iconDir = buttonDir + "icons/";
+    private final AssetManager assetManager;
+    private final String buttonDir = "System/buttons/";
+    private final String iconDir = buttonDir + "icons/";
 
-	public KsmResources(final AssetManager assetManager) {
-		this.assetManager = assetManager;
-	}
+    public KsmResources(final AssetManager assetManager) {
+        this.assetManager = assetManager;
+    }
 
-	public Texture button(final String TYPE) {
-		final String filepath = buttonDir + "Gui_btn_" + TYPE + ".png";
-		assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
-		assetManager.load(filepath, Texture.class);
-		assetManager.finishLoading();
-		return assetManager.get(filepath, Texture.class);
-	}
+    public Texture button(final String TYPE) {
+        final String filepath = buttonDir + "Gui_btn_" + TYPE + ".png";
+        assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
+        assetManager.load(filepath, Texture.class);
+        assetManager.finishLoading();
+        return assetManager.get(filepath, Texture.class);
+    }
 
-	public Texture icon(final String TYPE) {
-		final String filepath = iconDir + TYPE + "_icon.png";
-		assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
-		assetManager.load(filepath, Texture.class);
-		assetManager.finishLoading();
-		return assetManager.get(filepath);
-	}
+    public Texture icon(final String TYPE) {
+        final String filepath = iconDir + TYPE + "_icon.png";
+        assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
+        assetManager.load(filepath, Texture.class);
+        assetManager.finishLoading();
+        return assetManager.get(filepath);
+    }
 
-	// Used for completely unloading the resource we pass into it
-	public <T> void dispose(final T resource) {
-		String filename = assetManager.getAssetFileName(resource);
-		assetManager.unload(filename);
-	}
+    // Used for completely unloading the resource we pass into it
+    public <T> void dispose(final T resource) {
+        String filename = assetManager.getAssetFileName(resource);
+        assetManager.unload(filename);
+    }
 }
