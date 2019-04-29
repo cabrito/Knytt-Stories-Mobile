@@ -11,19 +11,29 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-/***************************************************************************************************
- * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
+/*
  * KsmFiles.java
- * Created by: scalr at 2:04 PM, 3/30/19
- *
  * Redo of the class that handles all of the filesystem calls for Knytt Stories Mobile. In
  * particular, this is response to Android needing AssetManager to swap between Internal and
  * External loaders; the previous attempt had to be scrapped for this reason.
+ * Created by: scalr on 3/30/2019.
  *
- **************************************************************************************************/
+ * Knytt Stories Mobile
+ * https://github.com/scalrx
+ * Copyright (c) 2019 by scalr.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+ * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
-public class KsmFiles
-{
+public class KsmFiles {
     // Constants
     private final String ksmDir = "Knytt Stories Mobile/";
     private final FileHandleResolver internal = new InternalFileHandleResolver();
@@ -34,63 +44,36 @@ public class KsmFiles
     // Members
     private String worldDir;                                // DO NOT rely on this going forward!!!
 
-    /***********************************************************************************************             Constructors */
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public KsmFiles(AssetManager assetManager)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public KsmFiles(AssetManager assetManager) {
         this.assetManager = assetManager;
         this.res = new KsmResources(assetManager);
     }
 
-    /***********************************************************************************************         World-related methods */
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public void setWorldDir(String author, String worldName)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public void setWorldDir(String author, String worldName) {
         this.worldDir = author + " - " + worldName + "/";
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public void resetWorldDir()
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public void resetWorldDir() {
         worldDir = null;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public String getKsmDir()
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public String getKsmDir() {
         return ksmDir;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public String getWorldDir()
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public String getWorldDir() {
         return worldDir;
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	public KsmResources resources()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+	public KsmResources resources() {
 		return res;
 	}
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public String mapBin(boolean raw)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public String mapBin(boolean raw) {
         return raw ? (ksmDir + getWorldDir() + "Map.bin.raw") : (ksmDir + getWorldDir() + "Map.bin");
     }
 
-    /***********************************************************************************************         Music-related methods */
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public String music(byte muid)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public String music(byte muid) {
         // If the world directory hasn't been set yet, load normal music
         if(worldDir == null || worldDir.isEmpty()) {
             // Swap the music loader for the AssetManager to load internal music files
@@ -111,10 +94,7 @@ public class KsmFiles
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public String ambiance(byte amid)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public String ambiance(byte amid) {
         // If the world directory hasn't been set yet, load normal ambiance
         if(worldDir == null || worldDir.isEmpty()) {
             // Swap the music loader for the AssetManager to load internal ambiance files
@@ -136,11 +116,7 @@ public class KsmFiles
         }
     }
 
-    /***********************************************************************************************         Tileset-related Methods */
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public String tileset(byte tsid)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public String tileset(byte tsid) {
         // Swap the loader for external really quick for the following if-else statement...
         assetManager.setLoader(Texture.class, new TextureLoader(external));
 
@@ -157,10 +133,7 @@ public class KsmFiles
     }
 
     // Custom Tilesets
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public String gradient(byte gid)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public String gradient(byte gid) {
         // Swap the loader for external really quick for the following if-else statement...
         assetManager.setLoader(Texture.class, new TextureLoader(external));
 

@@ -16,8 +16,27 @@ import io.github.scalrx.screendata.AudioData;
 import io.github.scalrx.screendata.ObjectData;
 import io.github.scalrx.screendata.Tiler;
 
-public class KsmScreen implements Screen
-{
+/*
+ * KsmScreen.java
+ * Handles the displaying of any particular screen, loaded from the Map.bin file.
+ * Created by: scalr on 3/30/2019.
+ *
+ * Knytt Stories Mobile
+ * https://github.com/scalrx
+ * Copyright (c) 2019 by scalr.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+ * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+public class KsmScreen implements Screen {
 
     // Set up how our level will display
     final KnyttStories game;
@@ -38,11 +57,7 @@ public class KsmScreen implements Screen
 
     BitmapFont font = new BitmapFont();
 
-    /***********************************************************************************************			 Constructors */
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public KsmScreen(final KnyttStories game, int xID, int yID)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public KsmScreen(final KnyttStories game, int xID, int yID) {
         this.game = game;
         this.xID = xID;
         this.yID = yID;
@@ -60,12 +75,7 @@ public class KsmScreen implements Screen
         initializeData();
     }
 
-	/*********************************************************************************************** Methods for assembling the screen */
-	// Initializes all of the data that this screen is going to need.
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	private void initializeData()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+	private void initializeData() {
 		tiler.generateTiledMap(xID, yID);
 		objects.placeObjects(xID,yID);
 
@@ -76,21 +86,14 @@ public class KsmScreen implements Screen
 		atmosBID = audioData.getAtmosBID();
 	}
 
-    /***********************************************************************************************			 LibGDX Methods */
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void show()
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public void show() {
     	// Handle all audio for this screen: do we need to fade out or play something immediately?
 		game.audio.prepareScreenAudio(musicID, atmosAID, atmosBID);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void render(float delta)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public void render(float delta) {
     	// Handle audio fading if necessary
 		game.audio.handleFadeout(delta, musicID);
 
@@ -140,44 +143,29 @@ public class KsmScreen implements Screen
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void resize(int width, int height)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public void resize(int width, int height) {
         viewport.update(width, height);
         controller.resize(width, height);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void pause()
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public void pause() {
 
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void resume()
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public void resume() {
 
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void hide()
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public void hide() {
 
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void dispose()
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public void dispose() {
         tiler.dispose();
         objects.dispose();
     }

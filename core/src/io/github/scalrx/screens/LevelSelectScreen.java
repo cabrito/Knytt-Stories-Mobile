@@ -27,16 +27,27 @@ import io.github.scalrx.KnyttStories;
 import io.github.scalrx.world.World;
 import io.github.scalrx.gui.button.GuiButtonLevel;
 
-/***************************************************************************************************
- * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
+/*
  * LevelSelectScreen.java
- * Created by: scalr at 11:40 AM, 4/9/19
+ * Screen which displays the selection of levels the player may choose.
+ * Created by: scalr on 4/9/2019.
  *
- * Used for selecting which level the user wishes to play.
+ * Knytt Stories Mobile
+ * https://github.com/scalrx
+ * Copyright (c) 2019 by scalr.
  *
- **************************************************************************************************/
-public class LevelSelectScreen implements Screen
-{
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+ * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+public class LevelSelectScreen implements Screen {
 
     private final KnyttStories game;
     private FitViewport viewport;
@@ -46,11 +57,7 @@ public class LevelSelectScreen implements Screen
     // Button textures
 	private Texture guiBtnLevel;
 
-    /***********************************************************************************************			 Constructors */
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public LevelSelectScreen(final KnyttStories game)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public LevelSelectScreen(final KnyttStories game) {
         // Prepare our variables
         this.game = game;
         camera = new OrthographicCamera();
@@ -137,27 +144,17 @@ public class LevelSelectScreen implements Screen
         stage.addActor(scrollPane);
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    private void loadAssets()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    private void loadAssets() {
         // Load internal resources
     }
 
-    /***********************************************************************************************			 LibGDX Methods */
-	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void show()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void show() {
 
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void render(float delta)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void render(float delta) {
         // Clear the screen for drawing the next frame
         Gdx.gl.glClearColor(1f, 1f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -175,44 +172,29 @@ public class LevelSelectScreen implements Screen
         stage.draw();
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void resize(int width, int height)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void resize(int width, int height) {
         stage.getViewport().update(width, height);
         viewport.update(width,height,true);
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void pause()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void pause() {
 
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void resume()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void resume() {
 
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void hide()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void hide() {
 
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void dispose()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void dispose() {
 		/* TODO: Right now, there's a memory leak with the Level icons. Allow them to be accessed here, rather than just the constructor */
         game.files.resources().dispose(guiBtnLevel);
         stage.dispose();

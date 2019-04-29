@@ -14,27 +14,33 @@ import io.github.scalrx.KsmFiles;
 import io.github.scalrx.utilities.GZip;
 import io.github.scalrx.utilities.Pair;
 
-/***************************************************************************************************
- * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
+/*
  * MapFile.java
- * Created by: scalr at 4:03 PM, 3/30/19
+ * Handles all routines related to the Map.bin (and Map.bin.raw) files for the currently-loaded world.
+ * Created by: scalr on 3/30/2019.
  *
- * Handles all routines related to the Map.bin and Map.bin.raw files for the currently-loaded World.
+ * Knytt Stories Mobile
+ * https://github.com/scalrx
+ * Copyright (c) 2019 by scalr.
  *
- **************************************************************************************************/
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+ * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
-public class MapFile
-{
+public class MapFile {
 
     // Members
     private final HashMap<Pair<Integer>, Integer> mapFileOffsets;
     private final KsmFiles files;
 
-    /***********************************************************************************************             Constructors */
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public MapFile(final KsmFiles files)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public MapFile(final KsmFiles files) {
         mapFileOffsets = new HashMap<Pair<Integer>, Integer>();
         this.files = files;
 
@@ -52,23 +58,15 @@ public class MapFile
         createFileOffsets();
     }
 
-    /***********************************************************************************************             Methods */
     // Decompress the Map.bin file for optimization
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    private void decompress()
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    private void decompress() {
         String mapBinFile = files.mapBin(false);
-        GZip rawFile = new GZip(mapBinFile);
-        rawFile.decompress();
+        GZip.decompress(mapBinFile);
         writeDateFile(mapBinFile);
     }
 
     // Used for checking whether or not the map has changed/been updated
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    private void writeDateFile(String filepath)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    private void writeDateFile(String filepath) {
         try {
             FileOutputStream output = new FileOutputStream(filepath + ".dat");
             DataOutputStream dataOutput = new DataOutputStream(output);
@@ -81,10 +79,7 @@ public class MapFile
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    private long getMapBinDatDate(String filepath)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    private long getMapBinDatDate(String filepath) {
         try {
             FileInputStream input = new FileInputStream(filepath + ".dat");
             DataInputStream dis = new DataInputStream(input);
@@ -96,25 +91,16 @@ public class MapFile
     }
 
     // Get the Map file offset for the desired KsmScreen
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public int getScreenOffset(int x, int y)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public int getScreenOffset(int x, int y) {
         return mapFileOffsets.get(new Pair<Integer>(x,y));
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public boolean screenOffsetExists(int x, int y)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public boolean screenOffsetExists(int x, int y) {
         return mapFileOffsets.containsKey(new Pair<Integer>(x, y));
     }
 
     // Produce all of the file offsets in the Map file
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    private void createFileOffsets()
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    private void createFileOffsets() {
         // Get file information
         final long SCREEN_DATA_SIZE = 3006;
 

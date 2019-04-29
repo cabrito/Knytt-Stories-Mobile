@@ -11,7 +11,7 @@ buildscript {
     }
     dependencies {
         classpath 'org.wisepersist:gwt-gradle-plugin:1.0.6'
-        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'com.android.tools.build:gradle:3.4.0'
         classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.5'
 
 
@@ -43,7 +43,7 @@ allprojects {
 }
 
 project(":desktop") {
-    apply plugin: "java"
+    apply plugin: "java-library"
 
 
     dependencies {
@@ -86,7 +86,7 @@ project(":android") {
 }
 
 project(":ios") {
-    apply plugin: "java"
+    apply plugin: "java-library"
     apply plugin: "robovm"
 
 
@@ -118,7 +118,7 @@ project(":html") {
 }
 
 project(":core") {
-    apply plugin: "java"
+    apply plugin: "java-library"
 
 
     dependencies {

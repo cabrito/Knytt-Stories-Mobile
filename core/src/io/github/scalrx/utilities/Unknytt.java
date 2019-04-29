@@ -1,21 +1,36 @@
 package io.github.scalrx.utilities;
 
-/***************************************************************************************************
- * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
- * Unknytt.java
- * Created by: scalr at 12:21 PM, 4/8/19
- *
- * A tool written to extract .knytt.bin files.
- * Based upon unknytt.py from the Nifflas forums:
- * http://madewokherd.nfshost.com/unknytt.tar.gz
- * https://pastebin.com/kb0MwTuJ
- *
- **************************************************************************************************/
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 
 import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+/*
+ * Unknytt.java
+ * Tool written to extract .knytt.bin files, based upon unknytt.py from the Nifflas forums:
+ * http://madewokherd.nfshost.com/unknytt.tar.gz
+ * https://pastebin.com/kb0MwTuJ
+ *
+ * Created by: scalr on 4/8/2019.
+ *
+ * Knytt Stories Mobile
+ * https://github.com/scalrx
+ * Copyright (c) 2019 by scalr.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+ * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 public final class Unknytt {
 
@@ -28,12 +43,15 @@ public final class Unknytt {
 
         // Make directory of the World name
         String worldDir = ksmDir + worldName + "/";
-        new File(worldDir).mkdirs();
+        FileHandle createDirectory = Gdx.files.external(worldDir);
+        createDirectory.mkdirs();
 
         // Extract files in while loop passing in this dir
         while(extractFile(knyttBinFile, worldDir)) {
             continue;
         }
+
+        GZip.decompress(worldDir + "Map.bin");
     }
 
     // Collects information about the header of the incoming data
@@ -69,31 +87,33 @@ public final class Unknytt {
 
     // The heart of the code, which extracts a file to the appropriate location
     private static boolean extractFile(DataInputStream data, String destDir) throws IOException {
+		// Check to make sure we haven't reached the end of the file
+		if(data.available() == 0)
+			return false;
 
         // Try to read in name and size
         try {
             String filename = readHeaderName(data).replace("\\","/");   // Replace necessary due to Windows filepath format
-            int bytesToWrite = readHeaderSize(data);
+			int bytesToWrite = readHeaderSize(data);
 
             // Construct output filepath
             String outputFilepath = destDir + filename;
 
             // Make output file
-            File file = new File(outputFilepath);
-            file.getParentFile().mkdirs();  // Make the directories (if they don't already exist)
-            FileOutputStream outputFile = new FileOutputStream(file, false);
+			FileHandle outputFile = Gdx.files.external(outputFilepath);
+			outputFile.file().getParentFile().mkdirs();
 
             // Write the buffer
             while(bytesToWrite > 0) {
                 byte[] buffer = new byte[Math.min(bytesToWrite, 4096)];
                 data.read(buffer, 0, buffer.length);
                 // write buffer data into output file
-                outputFile.write(buffer);
+                outputFile.writeBytes(buffer, true);
                 bytesToWrite -= buffer.length;
             }
-            outputFile.close();
 
             // File extracted successfully!
+            System.out.println("Extracted " + filename);
             return true;
         } catch(NullPointerException e) {
             e.printStackTrace();

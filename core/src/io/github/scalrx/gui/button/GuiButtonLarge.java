@@ -5,23 +5,30 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-/***************************************************************************************************
- * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
- * button.java
- * Created by: scalr at 11:48 AM, 4/20/19
+/*
+ * GuiButtonLarge.java
+ * Streamlines the cration of a large button, typically used on the main menu.
+ * Created by: scalr on 4/20/2019.
  *
- * Streamlines the creation of a large button, typically used on the main menu.
+ * Knytt Stories Mobile
+ * https://github.com/scalrx
+ * Copyright (c) 2019 by scalr.
  *
- **************************************************************************************************/
-public class GuiButtonLarge extends ImageTextButton
-{
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+ * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+public class GuiButtonLarge extends ImageTextButton {
     private final Image ICON;
 
-    /***********************************************************************************************			 Constructors */
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public GuiButtonLarge(final Texture icon, final String title, final Skin skin)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public GuiButtonLarge(final Texture icon, final String title, final Skin skin) {
 
         // Initialize a basic ImageTextButton with the required information
         super(title, initSkin(skin));
@@ -31,11 +38,7 @@ public class GuiButtonLarge extends ImageTextButton
         rearrangeLayout();
     }
 
-    /***********************************************************************************************			 Methods */
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    private void rearrangeLayout()
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    private void rearrangeLayout() {
         // Constants
         final int ICON_SIZE = 50;
 
@@ -44,10 +47,7 @@ public class GuiButtonLarge extends ImageTextButton
         add(getLabel());
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    private static Skin initSkin(Skin skin)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    private static Skin initSkin(Skin skin) {
         ImageTextButtonStyle imageTextButtonStyle = new ImageTextButtonStyle();
         imageTextButtonStyle.up = skin.newDrawable("gui-button-large");
         imageTextButtonStyle.down = skin.newDrawable("gui-button-large", 0.0f,0.0f,0.0f,0.5f);

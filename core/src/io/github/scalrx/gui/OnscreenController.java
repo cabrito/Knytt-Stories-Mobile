@@ -21,26 +21,33 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.scalrx.KnyttStories;
 
-/***************************************************************************************************
- * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
- * FILE NAME GOES HERE.java
- * Created by: scalr at 7:17 PM, 4/2/19
+/*
+ * OnscreenController.java
+ * Handles the relevant logic for displaying a controller on the screen.
+ * Created by: scalr on 4/2/2019.
  *
- * FILE DESCRIPTION GOES HERE.
+ * Knytt Stories Mobile
+ * https://github.com/scalrx
+ * Copyright (c) 2019 by scalr.
  *
- **************************************************************************************************/
-public class OnscreenController
-{
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+ * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+public class OnscreenController {
     private FitViewport viewport;
     private OrthographicCamera camera;
     private Stage stage;
     private boolean isLeftPressed, isRightPressed, isUpPressed, isDownPressed;
 
-    /***********************************************************************************************			 Constructors */
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public OnscreenController(Batch batch)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public OnscreenController(Batch batch) {
         // Set the stage, figuratively and literally
         camera = new OrthographicCamera();
         viewport = new FitViewport(KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT, camera);
@@ -133,62 +140,36 @@ public class OnscreenController
         stage.addActor(table);
     }
 
-	/***********************************************************************************************			 Getters */
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public boolean isLeftPressed()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public boolean isLeftPressed() {
         return isLeftPressed;
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public boolean isRightPressed()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public boolean isRightPressed() {
         return isRightPressed;
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public boolean isUpPressed()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public boolean isUpPressed() {
         return isUpPressed;
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public boolean isDownPressed()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public boolean isDownPressed() {
         return isDownPressed;
     }
 
-	/***********************************************************************************************			 Methods */
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public void resetTouch()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void resetTouch() {
         isLeftPressed = isRightPressed = isUpPressed = isDownPressed = false;
     }
 
     // For screen resizing
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public void resize(int width, int height)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void resize(int width, int height) {
         viewport.update(width, height);
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public void draw()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void draw() {
         stage.draw();
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public void dispose()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void dispose() {
         stage.dispose();
     }
 }

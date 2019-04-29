@@ -15,8 +15,27 @@ import io.github.scalrx.screens.MenuScreen;
 import io.github.scalrx.utilities.Permissions;
 import io.github.scalrx.world.World;
 
-public class KnyttStories extends Game
-{
+/*
+ * KnyttStories.java
+ * Entry point into the Knytt Stories Mobile game core.
+ * Created by: scalr on 12/27/2018.
+ *
+ * Knytt Stories Mobile
+ * https://github.com/scalrx
+ * Copyright (c) 2018 by scalr.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+ * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+public class KnyttStories extends Game {
 
 	// Declare the resources our program will use during its lifecycle
 	public SpriteBatch batch;
@@ -33,39 +52,25 @@ public class KnyttStories extends Game
 	public KsmAudio audio;
 	public KsmFiles files;
 
-	/***********************************************************************************************			 Constructors */
 	// Desktop Constructor
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	public KnyttStories()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+	public KnyttStories() {
 		super();
 	}
 
 	// Android Constructor
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	public KnyttStories(Permissions permissions)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+	public KnyttStories(Permissions permissions) {
 		super();
 		this.permissions = permissions;
 	}
 
 	// For Android
 	private Permissions permissions;
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	public Permissions getPermissions()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+	public Permissions getPermissions() {
     	return permissions;
 	}
 
-	/***********************************************************************************************			 LibGDX Methods */
-	////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public void create ()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+	public void create () {
 		// Initialize our SpriteBatch and AssetManager
 		batch = new SpriteBatch();
 		assetManager = new AssetManager();
@@ -102,19 +107,13 @@ public class KnyttStories extends Game
 		this.setScreen(new MenuScreen(this));
 	}
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public void render ()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+	public void render () {
 		super.render();
 	}
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
-	public void dispose ()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+	public void dispose () {
 		batch.dispose();
 		assetManager.dispose();
 	}

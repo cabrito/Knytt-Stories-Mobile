@@ -3,17 +3,27 @@ package io.github.scalrx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 
-/***************************************************************************************************
- * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
+/*
  * KsmAudio.java
- * Created by: scalr at 3:48 PM, 3/30/19
+ * Handles all of the music- and ambiance-related goodies for Knytt Stories Mobile.
+ * Created by: scalr on 3/30/2019.
  *
- * Handles all of the music-related goodies for Knytt Stories Mobile.
+ * Knytt Stories Mobile
+ * https://github.com/scalrx
+ * Copyright (c) 2019 by scalr.
  *
- **************************************************************************************************/
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+ * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
-public class KsmAudio
-{
+public class KsmAudio {
 
     // Music and Ambiance
     private Music music;
@@ -27,49 +37,32 @@ public class KsmAudio
     // Is the music supposed to be fading out?
 	private boolean fading;
 
-    /***********************************************************************************************			 Constructors */
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public KsmAudio(final AssetManager assetManager, final KsmFiles files)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public KsmAudio(final AssetManager assetManager, final KsmFiles files) {
         this.assetManager = assetManager;
         this.files = files;
         this.fading = false;
     }
 
-    /***********************************************************************************************		 Methods for handling music */
     // Call before loading music
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public void loadMusic(byte muid)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void loadMusic(byte muid) {
         assetManager.load(files.music(muid), Music.class);
         assetManager.finishLoading();
     }
 
     // Call before loading ambiance
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public void loadAmbience(byte amid)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void loadAmbience(byte amid) {
         assetManager.load(files.ambiance(amid), Music.class);
         assetManager.finishLoading();
     }
 
     // Revision of the music subsystem
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	public void playMusic(byte muid)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+	public void playMusic(byte muid) {
 		// Assuming we're dealing with *some* audio track
-		if((muid & 0xFF) > 0)
-		{
+		if((muid & 0xFF) > 0) {
 			// Try to play it
-			if (assetManager.isLoaded(files.music(muid)))
-			{
+			if (assetManager.isLoaded(files.music(muid))) {
 				// Immediately stop anything that WAS playing (if needed)
-				if (music != null)
-				{
+				if (music != null) {
 					music.stop();
 					files.resources().dispose(music);
 				}
@@ -86,10 +79,7 @@ public class KsmAudio
 	}
 
     // Load the ambiance track
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public void playAmbiance(byte atmosAID, byte atmosBID)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void playAmbiance(byte atmosAID, byte atmosBID) {
 		// Logic for playing/stopping atmosA
 		if((atmosAID & 0xFF) > 0) {
 			if(assetManager.isLoaded(files.ambiance(atmosAID))) {
@@ -129,8 +119,7 @@ public class KsmAudio
 		}
     }
 
-    public void prepareScreenAudio(byte musicID, byte atmosAID, byte atmosBID)
-	{
+    public void prepareScreenAudio(byte musicID, byte atmosAID, byte atmosBID) {
 		// Now that we have the musicID, atmosA, and atmosB bytes, try loading such audio files
 		if((musicID & 0xFF) > 0)
 			loadMusic(musicID);
@@ -140,10 +129,8 @@ public class KsmAudio
 			loadAmbience(atmosBID);
 
 		// Check whether or not we need to manipulate the music
-		if(!isSongPlaying(musicID))
-		{
-			if(!music.isPlaying())
-			{
+		if(!isSongPlaying(musicID)) {
+			if(!music.isPlaying()) {
 				playMusic(musicID);
 			} else {
 				setFading(true);
@@ -153,33 +140,21 @@ public class KsmAudio
 		playAmbiance(atmosAID, atmosBID);
 	}
 
-    /***********************************************************************************************	Routines for manipulating audio */
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public boolean isFading()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public boolean isFading() {
 		return fading;
 	}
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	public void setFading(boolean fading)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+	public void setFading(boolean fading) {
     	this.fading = fading;
 	}
 
 	// Logic for *HOW* to perform a music fadeout
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	public void fadeMusic(float delta)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+	public void fadeMusic(float delta) {
 		float currentVolume = music.getVolume();
 		final float SCALE_FACTOR = 0.35f;
 		final float THRESHOLD = 0.02f;
-		if(music.isPlaying())
-		{
-			if(currentVolume >= THRESHOLD)
-			{
+		if(music.isPlaying()) {
+			if(currentVolume >= THRESHOLD) {
 				music.setVolume(currentVolume - (SCALE_FACTOR * delta));
 
 			} else {
@@ -192,47 +167,33 @@ public class KsmAudio
 	}
 
 	// Logic for *WHEN* to perform a music fadeout, and what to do afterwards.
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	public void handleFadeout(float delta, byte muid)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
-		if(isFading())
-		{
+	public void handleFadeout(float delta, byte muid) {
+		if(isFading()) {
 			fadeMusic(delta);
 		}
 		else {
-			if(!music.isPlaying() && (muid > 0))
-			{
+			if(!music.isPlaying() && (muid > 0)) {
 				playMusic(muid);
 			}
 		}
 	}
 
 	// Much cleaner, more generic way to stop each individual audio
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public void stopMusic()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void stopMusic() {
         if(music != null)
             music.stop();
     }
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public void stopAmbience()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+
+    public void stopAmbience() {
         if(atmosA != null)
             atmosA.stop();
         if(atmosB != null)
             atmosB.stop();
     }
 
-	/***********************************************************************************************	Getters */
-	public boolean isSongPlaying(byte muid)
-	{
-		if(music.isPlaying() && (muid > 0))
-		{
-			if(assetManager.get(files.music(muid), Music.class).isPlaying())
-			{
+	public boolean isSongPlaying(byte muid) {
+		if(music.isPlaying() && (muid > 0)) {
+			if(assetManager.get(files.music(muid), Music.class).isPlaying()) {
 				return true;
 			} else {
 				return false;

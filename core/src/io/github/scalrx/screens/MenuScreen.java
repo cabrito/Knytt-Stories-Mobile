@@ -17,12 +17,38 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import org.ini4j.Wini;
+
+import java.io.DataInputStream;
+import java.io.IOException;
+
 import io.github.scalrx.KnyttStories;
 import io.github.scalrx.KsmAudio;
 import io.github.scalrx.gui.button.GuiButtonLarge;
+import io.github.scalrx.utilities.Unknytt;
+import io.github.scalrx.world.World;
 
-public class MenuScreen implements Screen
-{
+/*
+ * MenuScreen.java
+ * The main menu that displayed upon launching of the game.
+ * Created by: scalr on 12/27/2018.
+ *
+ * Knytt Stories Mobile
+ * https://github.com/scalrx
+ * Copyright (c) 2018 by scalr.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+ * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+public class MenuScreen implements Screen {
 
 	// Members
     private final KnyttStories game;
@@ -40,12 +66,8 @@ public class MenuScreen implements Screen
 	Texture aboutIcon;
 	Texture graphic;
 
-    /***********************************************************************************************			 Constructors */
     // Initialize our menu screen
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    public MenuScreen(final KnyttStories game)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public MenuScreen(final KnyttStories game) {
         // Initialize our members
         this.game = game;
         camera = new OrthographicCamera();
@@ -104,6 +126,57 @@ public class MenuScreen implements Screen
             }
         });
 
+        tutorialButton.addListener(new ChangeListener()
+		{
+			@Override
+			public void changed(ChangeEvent event, Actor actor)
+			{
+				//TODO: This is broken. Find a way to check permissions and immediately move to the Tutorial
+				// Check to see if the tutorial exists
+				if(Gdx.files.isExternalStorageAvailable()) {
+					if(Gdx.app.getType() == Application.ApplicationType.Android) {
+						if(!game.getPermissions().isReadPermissionEnabled()) {
+							return;
+						}
+						if(!game.getPermissions().isWritePermissionEnabled()) {
+							return;
+						}
+					}
+					if(!Gdx.files.external("Knytt Stories Mobile/Nifflas - Tutorial/Map.bin.raw").exists()) {
+						try {
+							DataInputStream dis = new DataInputStream(Gdx.files.internal("System/Nifflas - Tutorial.knytt.bin").read());
+							Unknytt.unknytt(dis, game.files.getKsmDir());
+
+							try {
+								Wini ini = new Wini(Gdx.files.external("Knytt Stories Mobile/Nifflas - Tutorial/DefaultSavegame.ini").file());
+								int xID = ini.get("Positions","X Map", int.class);
+								int yID = ini.get("Positions", "Y Map", int.class);
+
+								game.currWorld = new World(game.files);
+								game.currWorld.setAuthor("Nifflas");
+								game.currWorld.setWorldName("Tutorial");
+								game.currWorld.initMap();
+
+								// Temporary. For when we actually load a world. You must stop audio BEFORE setting the screen
+								game.audio.stopMusic();
+								game.audio.stopAmbience();
+								game.setScreen(new KsmScreen(game, xID, yID));
+
+								dispose();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+
+			}
+		});
+
+
+
         /*playButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -129,40 +202,27 @@ public class MenuScreen implements Screen
         game.audio.loadMusic((byte)20);
     }
 
-    /***********************************************************************************************			 Methods */
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    private void loadAssets()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    private void loadAssets() {
         game.assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
         game.assetManager.load("graphic.png", Texture.class);                   // TODO: TEMPORARY. DELETE!!!!
         game.assetManager.finishLoading();
     }
 
-    /***********************************************************************************************			 LibGDX Methods */
-	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void show()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void show() {
 	    game.audio.playMusic((byte)20);
         if(Gdx.app.getType() == Application.ApplicationType.Android) {
-            if(!game.getPermissions().isReadPermissionEnabled())
-            {
+            if(!game.getPermissions().isReadPermissionEnabled()) {
             	// Maybe say something to the user about needing permissions
             }
-            if(!game.getPermissions().isWritePermissionEnabled())
-            {
+            if(!game.getPermissions().isWritePermissionEnabled()) {
 				// Maybe say something to the user about needing permissions
             }
         }
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void render(float delta)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void render(float delta) {
         // Clear the screen for drawing the next frame
         Gdx.gl.glClearColor(1f, 1f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -183,43 +243,28 @@ public class MenuScreen implements Screen
 
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void resize(int width, int height)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void resize(int width, int height) {
         viewport.update(width, height,true);
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void pause()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void pause() {
 
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void resume()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void resume() {
 
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void hide()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void hide() {
 
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void dispose()
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
+    public void dispose() {
 		game.files.resources().dispose(playIcon);
 		game.files.resources().dispose(installIcon);
 		game.files.resources().dispose(tutorialIcon);

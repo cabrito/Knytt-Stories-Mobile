@@ -5,36 +5,38 @@ import com.badlogic.gdx.files.FileHandle;
 
 import io.github.scalrx.world.World;
 
-/***************************************************************************************************
- * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
+/*
  * ObjectData.java
- * Created by: scalr at 4:57 PM, 4/19/19
+ * A small container for gathering and storing object data, to be used with KsmScreen.
+ * Created by: scalr on 4/19/2019.
  *
- * Used for gathering and storing object data.
+ * Knytt Stories Mobile
+ * https://github.com/scalrx
+ * Copyright (c) 2019 by scalr.
  *
- **************************************************************************************************/
-public class ObjectData
-{
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+ * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
-    ///////////////////////////////////////////////// Members that directly influence the objects
+public class ObjectData {
+
     private byte[][][] objectData = new byte[4][10][50];
 
-    /////////////////////////////////////////////////////////////////////////// Helpful constants
+    // Helpful constants
     private final World world;
 
-    /***********************************************************************************************             Constructors */
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public ObjectData(final World world)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public ObjectData(final World world) {
         this.world = world;
     }
 
-    /***********************************************************************************************             Methods */
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public void placeObjects(int xID, int yID)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public void placeObjects(int xID, int yID) {
         if(world.getMap().screenOffsetExists(xID, yID)) {
             generateData(xID, yID);
         } else {
@@ -42,10 +44,7 @@ public class ObjectData
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    private void generateData(int xID, int yID)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    private void generateData(int xID, int yID) {
         final int LAYER_SIZE = 250;
         final int NUMBER_OF_LAYERS = 4;
 
@@ -74,10 +73,6 @@ public class ObjectData
             }
         }
     }
-
-    /***********************************************************************************************             Getter Functions */
-
-    /***********************************************************************************************             Utility Methods */
     public void render() {
 
     }

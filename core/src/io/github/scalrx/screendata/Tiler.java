@@ -13,14 +13,26 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 
 import io.github.scalrx.world.World;
 
-/***************************************************************************************************
- * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
+/*
  * Tiler.java
- * Created by: scalr at 10:20 PM, 4/14/19
+ * Module that handles the tileset rendering and information for any particular KsmScreen.
+ * Created by: scalr on 4/14/2019.
  *
- * Module that handles the tileset rendering and information for any particular screen.
+ * Knytt Stories Mobile
+ * https://github.com/scalrx
+ * Copyright (c) 2019 by scalr.
  *
- **************************************************************************************************/
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+ * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 public class Tiler {
 
     ///////////////////////////////////////////////// Members that directly influence the imagery
@@ -40,20 +52,12 @@ public class Tiler {
     private final AssetManager manager;
     private final World world;
 
-    /***********************************************************************************************             Constructors */
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public Tiler(final AssetManager manager, final World world)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public Tiler(final AssetManager manager, final World world) {
         this.manager = manager;
         this.world = world;
     }
 
-    /***********************************************************************************************             Methods */
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public void generateTiledMap(int xID, int yID)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public void generateTiledMap(int xID, int yID) {
         if(world.getMap().screenOffsetExists(xID, yID)) {
             generateData(xID, yID);
         } else {
@@ -127,10 +131,7 @@ public class Tiler {
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    private void generateData(int xID, int yID)
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    private void generateData(int xID, int yID) {
         final int LAYER_SIZE = 250;
         final int OBJECT_LAYER_SIZE = LAYER_SIZE * 2;
         final int NUMBER_OF_OBJECT_LAYERS = 4;
@@ -162,27 +163,16 @@ public class Tiler {
         backgroundID = mapFileBytes[cursorPosition];
     }
 
-    /***********************************************************************************************             Getter Functions */
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public TiledMapRenderer getTiledMapRenderer()
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public TiledMapRenderer getTiledMapRenderer() {
         return tiledMapRenderer;
     }
 
-    /***********************************************************************************************             Utility Methods */
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public void render()
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public void render() {
         tiledMapRenderer.render(BACKGROUND_LAYER);
         tiledMapRenderer.render(PRIMARY_LAYERS);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public void dispose()
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    {
+    public void dispose() {
         // Unload/dispose the resources since we're not using them.
         manager.unload(world.getFiles().tileset(tsetAID));
         manager.unload(world.getFiles().tileset(tsetBID));

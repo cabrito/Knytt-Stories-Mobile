@@ -5,34 +5,39 @@ import com.badlogic.gdx.files.FileHandle;
 
 import io.github.scalrx.world.World;
 
-/***************************************************************************************************
- * Knytt Stories Mobile      (https://www.github.com/scalrx/knytt-stories-mobile)
+/*
  * AudioData.java
- * Created by: scalr at 4:33 PM, 4/23/19
- *
  * A small container designed to help facilitate the audio system when loading maps.
+ * Created by: scalr on 4/23/2019.
  *
- **************************************************************************************************/
-public class AudioData
-{
+ * Knytt Stories Mobile
+ * https://github.com/scalrx
+ * Copyright (c) 2019 by scalr.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+ * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR  A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+public class AudioData {
 	private byte musicID;
 	private byte atmosAID;
 	private byte atmosBID;
 	private World world;
 
-	/***********************************************************************************************			Constructors */
 	public AudioData(final World world)
 	{
 		this.world = world;
 	}
 
-	/***********************************************************************************************			Methods */
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	public void setAudioBytes(int xID, int yID)
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	{
-		if(world.getMap().screenOffsetExists(xID, yID))
-		{
+	public void setAudioBytes(int xID, int yID) {
+		if(world.getMap().screenOffsetExists(xID, yID)) {
 			final int LAYER_SIZE = 250;
 			final int OBJECT_LAYER_SIZE = LAYER_SIZE * 2;
 			final int NUMBER_OF_SCENE_LAYERS = 4;
@@ -57,7 +62,6 @@ public class AudioData
 		}
 	}
 
-	/***********************************************************************************************			Getters and setters */
 	public byte getMusicID()
 	{
 		return musicID;
