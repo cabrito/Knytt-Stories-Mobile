@@ -172,7 +172,7 @@ public class Tiler {
     }
 
     public void dispose() {
-        // Unload/dispose the resources since we're not using them.
+        // Unload/dispose the getResources since we're not using them.
         manager.unload(world.getFiles().tileset(tsetAID));
         manager.unload(world.getFiles().tileset(tsetBID));
         manager.unload(world.getFiles().gradient(backgroundID));

@@ -1,6 +1,6 @@
 /*
  * KsmResources.java
- * For use in conjunction with the AssetManager to make loading resources much cleaner, while making
+ * For use in conjunction with the AssetManager to make loading getResources much cleaner, while making
  * this obscured file much messier.
  * Created by: scalr on 4/23/2019.
  *

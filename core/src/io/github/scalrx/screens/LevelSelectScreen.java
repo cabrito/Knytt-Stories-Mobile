@@ -64,7 +64,7 @@ public class LevelSelectScreen implements Screen {
 
         // Load our assets we'll use
         loadAssets();
-        guiBtnLevel = game.files.resources().button("level");
+        guiBtnLevel = game.files.getResources().button("level");
 
         // Prepare the stage for level selection
         stage = new Stage(viewport, game.batch);
@@ -143,7 +143,7 @@ public class LevelSelectScreen implements Screen {
     }
 
     private void loadAssets() {
-        // Load internal resources
+        // Load internal getResources
     }
 
     @Override
@@ -194,7 +194,7 @@ public class LevelSelectScreen implements Screen {
     @Override
     public void dispose() {
         /* TODO: Right now, there's a memory leak with the Level icons. Allow them to be accessed here, rather than just the constructor */
-        game.files.resources().dispose(guiBtnLevel);
+        game.files.getResources().dispose(guiBtnLevel);
         stage.dispose();
     }
 }

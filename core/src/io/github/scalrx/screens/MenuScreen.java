@@ -75,13 +75,13 @@ public class MenuScreen implements Screen {
         stage = new Stage(viewport, game.batch);
         Gdx.input.setInputProcessor(stage);
 
-        guiButtonLarge = game.files.resources().button("large");
-        playIcon = game.files.resources().icon("play");
-        tutorialIcon = game.files.resources().icon("tutorial");
-        installIcon = game.files.resources().icon("install");
-        downloadIcon = game.files.resources().icon("download");
-        settingsIcon = game.files.resources().icon("settings");
-        aboutIcon = game.files.resources().icon("about");
+        guiButtonLarge = game.files.getResources().button("large");
+        playIcon = game.files.getResources().icon("play");
+        tutorialIcon = game.files.getResources().icon("tutorial");
+        installIcon = game.files.getResources().icon("install");
+        downloadIcon = game.files.getResources().icon("download");
+        settingsIcon = game.files.getResources().icon("settings");
+        aboutIcon = game.files.getResources().icon("about");
         loadAssets();
 
         graphic = game.assetManager.get("graphic.png", Texture.class);
@@ -261,13 +261,13 @@ public class MenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        game.files.resources().dispose(playIcon);
-        game.files.resources().dispose(installIcon);
-        game.files.resources().dispose(tutorialIcon);
-        game.files.resources().dispose(downloadIcon);
-        game.files.resources().dispose(settingsIcon);
-        game.files.resources().dispose(aboutIcon);
-        game.files.resources().dispose(guiButtonLarge);
+        game.files.getResources().dispose(playIcon);
+        game.files.getResources().dispose(installIcon);
+        game.files.getResources().dispose(tutorialIcon);
+        game.files.getResources().dispose(downloadIcon);
+        game.files.getResources().dispose(settingsIcon);
+        game.files.getResources().dispose(aboutIcon);
+        game.files.getResources().dispose(guiButtonLarge);
         game.assetManager.unload("graphic.png");
         stage.dispose();
     }

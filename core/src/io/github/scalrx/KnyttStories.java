@@ -40,7 +40,7 @@ public class KnyttStories extends Game {
     // Attributes we use for rendering a screen in a Knytt Stories level
     public static final int V_WIDTH = 854;
     public static final int V_HEIGHT = 480;
-    // Declare the resources our program will use during its lifecycle
+    // Declare the getResources our program will use during its lifecycle
     public SpriteBatch batch;
     public AssetManager assetManager;
     // World object

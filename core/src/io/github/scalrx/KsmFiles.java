@@ -64,7 +64,7 @@ public class KsmFiles {
         return worldDir;
     }
 
-    public KsmResources resources() {
+    public KsmResources getResources() {
         return res;
     }
 

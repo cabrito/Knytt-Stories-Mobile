@@ -78,6 +78,6 @@ public class ObjectData {
     }
 
     public void dispose() {
-        // Unload/dispose the resources since we're not using them anymore
+        // Unload/dispose the getResources since we're not using them anymore
     }
 }
