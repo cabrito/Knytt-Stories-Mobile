@@ -6,26 +6,28 @@ Knytt Stories Mobile (KSM) is a port of the Windows game [Knytt Stories by Niffl
 
 ### How to Play
 
-Currently, Knytt Stories Mobile functionality is limited to viewing level scenery of regular Knytt Stories levels only. Knytt Stories+ levels are *not currently supported*.
+Currently, regular Knytt Stories levels and the tutorial can be played. The tutorial level is built-in to the game, meaning you'll be able to immediately start playing!
 
 #### Desktop:
 
-On desktop, create a folder in your home directory named `Knytt Stories Mobile`. Inside this directory, place *already extracted* Knytt Stories level folders. (**NOTE**: If you need a tool to extract a .knytt.bin file, use the Unknytt.java tool located in this GitHub repository at */core/src/io/github/scalrx/utilities/Unknytt.java* and follow the directions in the file. This functionality is expected to be integrated into the actual game within the next few revisions.) At this time, KSM is hardcoded to load **The Machine** by Nifflas; however any regular Knytt Stories level should work. *A level selection screen is high priority, in progress, and should be implemented within the near future*.
+If you would like to play a custom level, create a directory in your user folder (In `~/` on Linux, and your personal folder on Windows) called `Knytt Stories Mobile` (if it isn't already created). In this directory, place extracted Knytt Stories level folders. At this point, you may start the game and play the level.
 
 Use the arrow keys on the keyboard to navigate the screens.
 
 #### Android:
 
-On Android, create a folder in the root of your phone's storage titled `Knytt Stories Mobile`. If your phone has internal storage, this will be the default. Otherwise, use the SD card. Place an *already extracted* Knytt Stories level inside the `Knytt Stories Mobile folder`. (If you need a tool to extract a .knyttt.bin file, see the instructions above in Desktop) Afterwards, you will need to manually enable Storage permissions for the app `Knytt Stories Mobile` in the device settings. From here, you may launch the game.
+If you would like to play a custom level, create a directory in your device's root folder called `Knytt Stories Mobile` (if it isn't already created). In this directory, place extracted Knytt Stories level folders. At this point, you may start the game and play the level.
+
+Use the arrow keys on the keyboard to navigate the screens.
 
 ### To do list:
 
-The following items are not an exhaustive list, but things that I think are of importance for game functionality. The list will be updated from time to time, so check back to see what is and isn't working.
+Currently, the most that can be done is viewing of the levels and the music that accompanies it. There are actively on-going plans to flesh out the "gameplay" aspect of this game, don't worry! The following items are not an exhaustive list, but things that I think are of importance for game functionality. The list will be updated from time to time, so check back to see what is and isn't working.
 
-- Finish base modularization of all currently-completed components. Right now, tilesets and data assembly need to be modularized.
+- ~~Finish base modularization of all currently-completed components. Right now, tilesets and data assembly need to be modularized.~~ **(Done!)**
 - Upscale the resolution of the game and menu screen to be 720p+
-- Implement on-screen controls for Android and iOS.
-- Implement menu screen with level selection, and level extraction (downloading capabilities may be of immediate priority as well).
+- ~~Implement on-screen controls for Android and iOS.~~ **(Done!)**
+- ~~Implement menu screen with level selection~~, and level ~~extraction~~ (downloading capabilities may be of immediate priority as well). **Partly done. Extraction is functional, and so the next step is to implement networking to download levels.**
 - Implement Juni.
 - Revise onscreen controls for Juni.
 - Implement per-pixel collision of layer-3 with Juni.
