@@ -20,6 +20,7 @@
 
 package io.github.scalrx;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 
@@ -165,7 +166,8 @@ public class KsmAudio {
     }
 
     // Logic for *WHEN* to perform a music fadeout, and what to do afterwards.
-    public void handleFadeout(float delta, byte muid) {
+    public void handleFadeout(byte muid) {
+        float delta = Gdx.graphics.getDeltaTime();
         if (isFading()) {
             fadeMusic(delta);
         } else {

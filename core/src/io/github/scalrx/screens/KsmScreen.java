@@ -92,7 +92,7 @@ public class KsmScreen implements Screen {
     @Override
     public void render(float delta) {
         // Handle audio fading if necessary
-        game.audio.handleFadeout(delta, musicID);
+        game.audio.handleFadeout(musicID);
 
         // Clear the screen for the next frame
         game.batch.setProjectionMatrix(camera.combined);
