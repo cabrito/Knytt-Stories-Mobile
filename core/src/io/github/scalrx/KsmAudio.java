@@ -54,7 +54,12 @@ public class KsmAudio {
         assetManager.finishLoading();
     }
 
-    // Revision of the music subsystem
+    /**
+     * Plays a {@link Music} object immediately. If this method is called while a world is loaded,
+     * it will attempt to load the requested {@link Music} from the {@link io.github.scalrx.world.World},
+     * provided one exists. Otherwise, it loads from the default tracks.
+     * @param muid  A byte primitive, valid ranges from 1 - 255.
+     */
     public void playMusic(byte muid) {
         // Assuming we're dealing with *some* audio track
         if ((muid & 0xFF) > 0) {
@@ -77,7 +82,14 @@ public class KsmAudio {
         }
     }
 
-    // Load the ambiance track
+    /**
+     * Plays both atmospheric ambiance tracks simultaneously. If this method is called while a world
+     * is loaded, it will attempt to load the requested {@link Music} from the
+     * {@link io.github.scalrx.world.World}, provided one exists. Otherwise, it loads from the
+     * default tracks.
+     * @param atmosAID  A byte primitive, valid ranges from 1 - 255.
+     * @param atmosBID  A byte primitive, valid ranges from 1 - 255.
+     */
     public void playAmbiance(byte atmosAID, byte atmosBID) {
         // Logic for playing/stopping atmosA
         if ((atmosAID & 0xFF) > 0) {
@@ -118,6 +130,14 @@ public class KsmAudio {
         }
     }
 
+    /**
+     * Loads music and atmospheric ambiance for the given {@link io.github.scalrx.screens.KsmScreen},
+     * and attempts to play them. If the current music playing is not the desired music, the music
+     * is queued up and prepares the current music to start fading.
+     * @param musicID       A byte primitive, valid range from 1 - 255.
+     * @param atmosAID      A byte primitive, valid range from 1 - 255.
+     * @param atmosBID      A byte primitive, valid range from 1 - 255.
+     */
     public void prepareScreenAudio(byte musicID, byte atmosAID, byte atmosBID) {
         // Now that we have the musicID, atmosA, and atmosB bytes, try loading such audio files
         if ((musicID & 0xFF) > 0)
@@ -139,19 +159,31 @@ public class KsmAudio {
         playAmbiance(atmosAID, atmosBID);
     }
 
+    /**
+     * Determines whether the current {@link Music} track is fading or not.
+     * @return
+     */
     public boolean isFading() {
         return fading;
     }
 
+    /**
+     * Sets the current {@link Music} track to fade.
+     * @param fading
+     */
     public void setFading(boolean fading) {
         this.fading = fading;
     }
 
-    // Logic for *HOW* to perform a music fadeout
-    public void fadeMusic(float delta) {
+    /**
+     * Logic for *HOW* to handle a music fadeout
+     */
+    public void fadeMusic() {
+        float delta = Gdx.graphics.getDeltaTime();
         float currentVolume = music.getVolume();
-        final float SCALE_FACTOR = 0.35f;
-        final float THRESHOLD = 0.02f;
+        float SCALE_FACTOR = 0.35f;
+        float THRESHOLD = 0.02f;
+
         if (music.isPlaying()) {
             if (currentVolume >= THRESHOLD) {
                 music.setVolume(currentVolume - (SCALE_FACTOR * delta));
@@ -165,11 +197,13 @@ public class KsmAudio {
         }
     }
 
-    // Logic for *WHEN* to perform a music fadeout, and what to do afterwards.
+    /**
+     * Logic for *WHEN* to handle a music fadeout.
+     * @param muid
+     */
     public void handleFadeout(byte muid) {
-        float delta = Gdx.graphics.getDeltaTime();
         if (isFading()) {
-            fadeMusic(delta);
+            fadeMusic();
         } else {
             if (!music.isPlaying() && (muid > 0)) {
                 playMusic(muid);
