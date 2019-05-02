@@ -16,7 +16,7 @@ Use the arrow keys on the keyboard to navigate the screens.
 
 #### Android:
 
-On Android, create a folder in the root of your phone's storage titled `Knytt Stories Mobile`. If your phone has internal storage, this will be the default. Otherwise, use the SD card. Place an *already extracted* Knytt Stories level inside the `Knytt Stories Mobile folder`. Afterwards, you will need to manually enable Storage permissions for the app `Knytt Stories Mobile` in the device settings. From here, you may launch the game. Use the on-screen controls to navigate through the world.
+On Android, create a folder in the root of your phone's storage titled `Knytt Stories Mobile`. If your phone has internal storage, this will be the default. Otherwise, use the SD card. Place an *already extracted* Knytt Stories level inside the `Knytt Stories Mobile folder`. Afterwards, you will need to manually enable Storage androidApi for the app `Knytt Stories Mobile` in the device settings. From here, you may launch the game. Use the on-screen controls to navigate through the world.
 
 ### To do list:
 

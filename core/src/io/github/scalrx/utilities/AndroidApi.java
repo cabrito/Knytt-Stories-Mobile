@@ -1,5 +1,5 @@
 /*
- * Permissions.java
+ * AndroidApi.java
  * Allows us to grab permissions from Android.
  * Created by: scalr on 4/11/2019.
  *
@@ -20,7 +20,7 @@
 
 package io.github.scalrx.utilities;
 
-public interface Permissions {
+public interface AndroidApi {
     boolean isReadPermissionEnabled();
 
     boolean isWritePermissionEnabled();

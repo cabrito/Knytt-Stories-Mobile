@@ -32,7 +32,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 
 import io.github.scalrx.screens.MenuScreen;
-import io.github.scalrx.utilities.Permissions;
+import io.github.scalrx.utilities.AndroidApi;
 import io.github.scalrx.world.World;
 
 public class KnyttStories extends Game {
@@ -50,7 +50,7 @@ public class KnyttStories extends Game {
     public KsmAudio audio;
     public KsmFiles files;
     // For Android
-    private Permissions permissions;
+    private AndroidApi androidApi;
 
     // Desktop Constructor
     public KnyttStories() {
@@ -58,13 +58,13 @@ public class KnyttStories extends Game {
     }
 
     // Android Constructor
-    public KnyttStories(Permissions permissions) {
+    public KnyttStories(AndroidApi androidApi) {
         super();
-        this.permissions = permissions;
+        this.androidApi = androidApi;
     }
 
-    public Permissions getPermissions() {
-        return permissions;
+    public AndroidApi getAndroidApi() {
+        return androidApi;
     }
 
     @Override

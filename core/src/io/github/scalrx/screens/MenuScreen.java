@@ -127,14 +127,14 @@ public class MenuScreen implements Screen {
         tutorialButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //TODO: This is broken. Find a way to check permissions and immediately move to the Tutorial
+                // TODO: This is broken. Find a way to check permissions and immediately move to the Tutorial
                 // Check to see if the tutorial exists
                 if (Gdx.files.isExternalStorageAvailable()) {
                     if (Gdx.app.getType() == Application.ApplicationType.Android) {
-                        if (!game.getPermissions().isReadPermissionEnabled()) {
+                        if (!game.getAndroidApi().isReadPermissionEnabled()) {
                             return;
                         }
-                        if (!game.getPermissions().isWritePermissionEnabled()) {
+                        if (!game.getAndroidApi().isWritePermissionEnabled()) {
                             return;
                         }
                     }
@@ -208,10 +208,10 @@ public class MenuScreen implements Screen {
     public void show() {
         game.audio.playMusic((byte) 20);
         if (Gdx.app.getType() == Application.ApplicationType.Android) {
-            if (!game.getPermissions().isReadPermissionEnabled()) {
+            if (!game.getAndroidApi().isReadPermissionEnabled()) {
                 // Maybe say something to the user about needing permissions
             }
-            if (!game.getPermissions().isWritePermissionEnabled()) {
+            if (!game.getAndroidApi().isWritePermissionEnabled()) {
                 // Maybe say something to the user about needing permissions
             }
         }

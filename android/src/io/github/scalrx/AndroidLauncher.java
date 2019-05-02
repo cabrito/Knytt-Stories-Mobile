@@ -8,9 +8,9 @@ import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
-import io.github.scalrx.utilities.Permissions;
+import io.github.scalrx.utilities.AndroidApi;
 
-public class AndroidLauncher extends AndroidApplication implements Permissions
+public class AndroidLauncher extends AndroidApplication implements AndroidApi
 {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
