@@ -25,20 +25,24 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.scalrx.KnyttStories;
 
-public class GuiGame {
+public class GuiGame
+{
     // Members
     private Stage stage;
 
     // Constructor
-    public GuiGame() {
-       stage = new Stage(new FitViewport(KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT));
+    public GuiGame()
+    {
+        stage = new Stage(new FitViewport(KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT));
     }
 
-    public void resize(int width, int height) {
+    public void resize(int width, int height)
+    {
         stage.getViewport().update(width, height, true);
     }
 
-    public void dispose() {
+    public void dispose()
+    {
         stage.dispose();
     }
 }

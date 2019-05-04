@@ -25,18 +25,22 @@ import com.badlogic.gdx.files.FileHandle;
 
 import io.github.scalrx.world.World;
 
-public class AudioData {
+public class AudioData
+{
     private byte musicID;
     private byte atmosAID;
     private byte atmosBID;
     private World world;
 
-    public AudioData(final World world) {
+    public AudioData(final World world)
+    {
         this.world = world;
     }
 
-    public void setAudioBytes(int xID, int yID) {
-        if (world.getMap().screenOffsetExists(xID, yID)) {
+    public void setAudioBytes(int xID, int yID)
+    {
+        if (world.getMap().screenOffsetExists(xID, yID))
+        {
             final int LAYER_SIZE = 250;
             final int OBJECT_LAYER_SIZE = LAYER_SIZE * 2;
             final int NUMBER_OF_SCENE_LAYERS = 4;
@@ -53,7 +57,8 @@ public class AudioData {
             atmosAID = mapFileBytes[cursorPosition++];
             atmosBID = mapFileBytes[cursorPosition++];
             musicID = mapFileBytes[cursorPosition];
-        } else {
+        } else
+        {
             // Initialize audio attributes
             atmosAID = 0;
             atmosBID = 0;
@@ -61,15 +66,18 @@ public class AudioData {
         }
     }
 
-    public byte getMusicID() {
+    public byte getMusicID()
+    {
         return musicID;
     }
 
-    public byte getAtmosAID() {
+    public byte getAtmosAID()
+    {
         return atmosAID;
     }
 
-    public byte getAtmosBID() {
+    public byte getAtmosBID()
+    {
         return atmosBID;
     }
 }

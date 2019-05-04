@@ -33,13 +33,15 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import io.github.scalrx.KnyttStories;
 
-public class OnscreenController {
+public class OnscreenController
+{
     private FitViewport viewport;
     private OrthographicCamera camera;
     private Stage stage;
     private boolean isLeftPressed, isRightPressed, isUpPressed, isDownPressed;
 
-    public OnscreenController(Batch batch) {
+    public OnscreenController(Batch batch)
+    {
         // Set the stage, figuratively and literally
         camera = new OrthographicCamera();
         viewport = new FitViewport(KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT, camera);
@@ -55,64 +57,76 @@ public class OnscreenController {
 
         Image upImg = new Image(new Texture("System/buttons/icons/flatDark25.png"));
         upImg.setSize(50, 50);
-        upImg.addListener(new InputListener() {
+        upImg.addListener(new InputListener()
+        {
 
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
                 isUpPressed = true;
                 return true;
             }
 
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
                 isUpPressed = false;
             }
         });
 
         Image downImg = new Image(new Texture("System/buttons/icons/flatDark26.png"));
         downImg.setSize(50, 50);
-        downImg.addListener(new InputListener() {
+        downImg.addListener(new InputListener()
+        {
 
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
                 isDownPressed = true;
                 return true;
             }
 
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
                 isDownPressed = false;
             }
         });
 
         Image rightImg = new Image(new Texture("System/buttons/icons/flatDark24.png"));
         rightImg.setSize(50, 50);
-        rightImg.addListener(new InputListener() {
+        rightImg.addListener(new InputListener()
+        {
 
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
                 isRightPressed = true;
                 return true;
             }
 
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
                 isRightPressed = false;
             }
         });
 
         Image leftImg = new Image(new Texture("System/buttons/icons/flatDark23.png"));
         leftImg.setSize(50, 50);
-        leftImg.addListener(new InputListener() {
+        leftImg.addListener(new InputListener()
+        {
 
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
                 isLeftPressed = true;
                 return true;
             }
 
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
                 isLeftPressed = false;
             }
         });
@@ -132,36 +146,44 @@ public class OnscreenController {
         stage.addActor(table);
     }
 
-    public boolean isLeftPressed() {
+    public boolean isLeftPressed()
+    {
         return isLeftPressed;
     }
 
-    public boolean isRightPressed() {
+    public boolean isRightPressed()
+    {
         return isRightPressed;
     }
 
-    public boolean isUpPressed() {
+    public boolean isUpPressed()
+    {
         return isUpPressed;
     }
 
-    public boolean isDownPressed() {
+    public boolean isDownPressed()
+    {
         return isDownPressed;
     }
 
-    public void resetTouch() {
+    public void resetTouch()
+    {
         isLeftPressed = isRightPressed = isUpPressed = isDownPressed = false;
     }
 
     // For screen resizing
-    public void resize(int width, int height) {
+    public void resize(int width, int height)
+    {
         viewport.update(width, height);
     }
 
-    public void draw() {
+    public void draw()
+    {
         stage.draw();
     }
 
-    public void dispose() {
+    public void dispose()
+    {
         stage.dispose();
     }
 }

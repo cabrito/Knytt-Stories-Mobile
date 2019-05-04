@@ -20,7 +20,8 @@
 
 package io.github.scalrx.juni;
 
-public enum JuniState {
+public enum JuniState
+{
     IDLE,
     WALKING,
     RUNNING,

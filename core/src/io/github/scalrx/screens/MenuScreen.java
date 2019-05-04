@@ -48,7 +48,8 @@ import io.github.scalrx.gui.button.GuiButtonLarge;
 import io.github.scalrx.utilities.Unknytt;
 import io.github.scalrx.world.World;
 
-public class MenuScreen implements Screen {
+public class MenuScreen implements Screen
+{
 
     // Members
     private final KnyttStories game;
@@ -66,7 +67,8 @@ public class MenuScreen implements Screen {
     private Stage stage;
 
     // Initialize our menu screen
-    public MenuScreen(final KnyttStories game) {
+    public MenuScreen(final KnyttStories game)
+    {
         // Initialize our members
         this.game = game;
         camera = new OrthographicCamera();
@@ -116,34 +118,45 @@ public class MenuScreen implements Screen {
         // TODO: IT WORKS! Now decipher *why* it works...
         // Now, add items to the columns...
 
-        playButton.addListener(new ChangeListener() {
+        playButton.addListener(new ChangeListener()
+        {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void changed(ChangeEvent event, Actor actor)
+            {
                 game.setScreen(new LevelSelectScreen(game));
                 dispose();
             }
         });
 
-        tutorialButton.addListener(new ChangeListener() {
+        tutorialButton.addListener(new ChangeListener()
+        {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void changed(ChangeEvent event, Actor actor)
+            {
                 // TODO: This is broken. Find a way to check permissions and immediately move to the Tutorial
                 // Check to see if the tutorial exists
-                if (Gdx.files.isExternalStorageAvailable()) {
-                    if (Gdx.app.getType() == Application.ApplicationType.Android) {
-                        if (!game.getAndroidApi().isReadPermissionEnabled()) {
+                if (Gdx.files.isExternalStorageAvailable())
+                {
+                    if (Gdx.app.getType() == Application.ApplicationType.Android)
+                    {
+                        if (!game.getAndroidApi().isReadPermissionEnabled())
+                        {
                             return;
                         }
-                        if (!game.getAndroidApi().isWritePermissionEnabled()) {
+                        if (!game.getAndroidApi().isWritePermissionEnabled())
+                        {
                             return;
                         }
                     }
-                    if (!Gdx.files.external("Knytt Stories Mobile/Nifflas - Tutorial/Map.bin.raw").exists()) {
-                        try {
+                    if (!Gdx.files.external("Knytt Stories Mobile/Nifflas - Tutorial/Map.bin.raw").exists())
+                    {
+                        try
+                        {
                             DataInputStream dis = new DataInputStream(Gdx.files.internal("System/Nifflas - Tutorial.knytt.bin").read());
                             Unknytt.unknytt(dis, game.files.getKsmDir());
 
-                            try {
+                            try
+                            {
                                 Wini ini = new Wini(Gdx.files.external("Knytt Stories Mobile/Nifflas - Tutorial/DefaultSavegame.ini").file());
                                 int xID = ini.get("Positions", "X Map", int.class);
                                 int yID = ini.get("Positions", "Y Map", int.class);
@@ -159,10 +172,12 @@ public class MenuScreen implements Screen {
                                 game.setScreen(new KsmScreen(game, xID, yID));
 
                                 dispose();
-                            } catch (IOException e) {
+                            } catch (IOException e)
+                            {
                                 e.printStackTrace();
                             }
-                        } catch (IOException e) {
+                        } catch (IOException e)
+                        {
                             e.printStackTrace();
                         }
                     }
@@ -198,27 +213,33 @@ public class MenuScreen implements Screen {
         game.audio.loadMusic((byte) 20);
     }
 
-    private void loadAssets() {
+    private void loadAssets()
+    {
         game.assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
         game.assetManager.load("graphic.png", Texture.class);                   // TODO: TEMPORARY. DELETE!!!!
         game.assetManager.finishLoading();
     }
 
     @Override
-    public void show() {
+    public void show()
+    {
         game.audio.playMusic((byte) 20);
-        if (Gdx.app.getType() == Application.ApplicationType.Android) {
-            if (!game.getAndroidApi().isReadPermissionEnabled()) {
+        if (Gdx.app.getType() == Application.ApplicationType.Android)
+        {
+            if (!game.getAndroidApi().isReadPermissionEnabled())
+            {
                 // Maybe say something to the user about needing permissions
             }
-            if (!game.getAndroidApi().isWritePermissionEnabled()) {
+            if (!game.getAndroidApi().isWritePermissionEnabled())
+            {
                 // Maybe say something to the user about needing permissions
             }
         }
     }
 
     @Override
-    public void render(float delta) {
+    public void render(float delta)
+    {
         // Clear the screen for drawing the next frame
         Gdx.gl.glClearColor(1f, 1f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -240,27 +261,32 @@ public class MenuScreen implements Screen {
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(int width, int height)
+    {
         viewport.update(width, height, true);
     }
 
     @Override
-    public void pause() {
+    public void pause()
+    {
 
     }
 
     @Override
-    public void resume() {
+    public void resume()
+    {
 
     }
 
     @Override
-    public void hide() {
+    public void hide()
+    {
 
     }
 
     @Override
-    public void dispose() {
+    public void dispose()
+    {
         game.files.getResources().dispose(playIcon);
         game.files.getResources().dispose(installIcon);
         game.files.getResources().dispose(tutorialIcon);

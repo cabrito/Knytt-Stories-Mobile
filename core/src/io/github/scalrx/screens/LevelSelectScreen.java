@@ -45,7 +45,8 @@ import io.github.scalrx.KnyttStories;
 import io.github.scalrx.gui.button.GuiButtonLevel;
 import io.github.scalrx.world.World;
 
-public class LevelSelectScreen implements Screen {
+public class LevelSelectScreen implements Screen
+{
 
     private final KnyttStories game;
     private FitViewport viewport;
@@ -55,7 +56,8 @@ public class LevelSelectScreen implements Screen {
     // Button textures
     private Texture guiBtnLevel;
 
-    public LevelSelectScreen(final KnyttStories game) {
+    public LevelSelectScreen(final KnyttStories game)
+    {
         // Prepare our variables
         this.game = game;
         camera = new OrthographicCamera();
@@ -82,10 +84,14 @@ public class LevelSelectScreen implements Screen {
         table.left();
 
         FileHandle[] files = Gdx.files.external("Knytt Stories Mobile/").list();
-        try {
-            for (final FileHandle fh : files) {
-                if (fh.isDirectory()) {
-                    if (Gdx.files.external(fh.path() + "/World.ini").exists()) {
+        try
+        {
+            for (final FileHandle fh : files)
+            {
+                if (fh.isDirectory())
+                {
+                    if (Gdx.files.external(fh.path() + "/World.ini").exists())
+                    {
                         Wini ini = new Wini(Gdx.files.external(fh.path() + "/World.ini").file());
                         final String name = ini.get("World", "Name", String.class);
                         final String author = ini.get("World", "Author", String.class);
@@ -100,11 +106,14 @@ public class LevelSelectScreen implements Screen {
                         // Make our button and add it to the scrollpane table
                         GuiButtonLevel button = new GuiButtonLevel(icon, name + " (" + author + ")",
                                 description, buttonSkin);
-                        button.addListener(new ChangeListener() {
+                        button.addListener(new ChangeListener()
+                        {
                             // TODO: IMPLEMENT FILE SELECTION/CUTSCENES BEFORE GOING TO THE GAME
                             @Override
-                            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                                try {
+                            public void changed(ChangeListener.ChangeEvent event, Actor actor)
+                            {
+                                try
+                                {
                                     Wini ini = new Wini(Gdx.files.external(fh.path() + "/DefaultSavegame.ini").file());
                                     int xID = ini.get("Positions", "X Map", int.class);
                                     int yID = ini.get("Positions", "Y Map", int.class);
@@ -122,7 +131,8 @@ public class LevelSelectScreen implements Screen {
 
 
                                     dispose();
-                                } catch (IOException e) {
+                                } catch (IOException e)
+                                {
                                     e.printStackTrace();
                                 }
                             }
@@ -131,7 +141,8 @@ public class LevelSelectScreen implements Screen {
                     }
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
 
@@ -142,17 +153,20 @@ public class LevelSelectScreen implements Screen {
         stage.addActor(scrollPane);
     }
 
-    private void loadAssets() {
+    private void loadAssets()
+    {
         // Load internal getResources
     }
 
     @Override
-    public void show() {
+    public void show()
+    {
 
     }
 
     @Override
-    public void render(float delta) {
+    public void render(float delta)
+    {
         // Clear the screen for drawing the next frame
         Gdx.gl.glClearColor(1f, 1f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -171,28 +185,33 @@ public class LevelSelectScreen implements Screen {
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(int width, int height)
+    {
         stage.getViewport().update(width, height);
         viewport.update(width, height, true);
     }
 
     @Override
-    public void pause() {
+    public void pause()
+    {
 
     }
 
     @Override
-    public void resume() {
+    public void resume()
+    {
 
     }
 
     @Override
-    public void hide() {
+    public void hide()
+    {
 
     }
 
     @Override
-    public void dispose() {
+    public void dispose()
+    {
         /* TODO: Right now, there's a memory leak with the Level icons. Allow them to be accessed here, rather than just the constructor */
         game.files.getResources().dispose(guiBtnLevel);
         stage.dispose();

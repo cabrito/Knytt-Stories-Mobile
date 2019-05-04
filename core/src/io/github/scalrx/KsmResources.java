@@ -26,16 +26,19 @@ import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
 
-public final class KsmResources {
+public final class KsmResources
+{
     private final AssetManager assetManager;
     private final String buttonDir = "System/buttons/";
     private final String iconDir = buttonDir + "icons/";
 
-    public KsmResources(final AssetManager assetManager) {
+    public KsmResources(final AssetManager assetManager)
+    {
         this.assetManager = assetManager;
     }
 
-    public Texture button(final String TYPE) {
+    public Texture button(final String TYPE)
+    {
         final String filepath = buttonDir + "Gui_btn_" + TYPE + ".png";
         assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
         assetManager.load(filepath, Texture.class);
@@ -43,7 +46,8 @@ public final class KsmResources {
         return assetManager.get(filepath, Texture.class);
     }
 
-    public Texture icon(final String TYPE) {
+    public Texture icon(final String TYPE)
+    {
         final String filepath = iconDir + TYPE + "_icon.png";
         assetManager.setLoader(Texture.class, new TextureLoader(new InternalFileHandleResolver()));
         assetManager.load(filepath, Texture.class);
@@ -52,7 +56,8 @@ public final class KsmResources {
     }
 
     // Used for completely unloading the resource we pass into it
-    public <T> void dispose(final T resource) {
+    public <T> void dispose(final T resource)
+    {
         String filename = assetManager.getAssetFileName(resource);
         assetManager.unload(filename);
     }

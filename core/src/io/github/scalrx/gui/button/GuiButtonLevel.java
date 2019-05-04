@@ -28,11 +28,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 
-public class GuiButtonLevel extends ImageTextButton {
+public class GuiButtonLevel extends ImageTextButton
+{
     private final Label LEVEL_DESCRIPTION;
     private final Image ICON;
 
-    public GuiButtonLevel(final Texture icon, final String title, final String description, final Skin skin) {
+    public GuiButtonLevel(final Texture icon, final String title, final String description, final Skin skin)
+    {
 
         // Initialize a basic ImageTextButton with the required information
         super(title, initSkin(skin));
@@ -43,7 +45,8 @@ public class GuiButtonLevel extends ImageTextButton {
         rearrangeLayout();
     }
 
-    private static Skin initSkin(Skin skin) {
+    private static Skin initSkin(Skin skin)
+    {
         ImageTextButtonStyle imageTextButtonStyle = new ImageTextButtonStyle();
         imageTextButtonStyle.up = skin.newDrawable("gui-button-level");
         imageTextButtonStyle.down = skin.newDrawable("gui-button-level", 0.0f, 0.0f, 0.0f, 0.5f);
@@ -57,7 +60,8 @@ public class GuiButtonLevel extends ImageTextButton {
         return skin;
     }
 
-    private void rearrangeLayout() {
+    private void rearrangeLayout()
+    {
         // Constants
         final int ICON_SIZE = 30;
         final float PADDING = 2;

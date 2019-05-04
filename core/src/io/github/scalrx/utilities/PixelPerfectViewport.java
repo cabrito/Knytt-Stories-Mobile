@@ -17,16 +17,19 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
  *
  **************************************************************************************************/
 
-public class PixelPerfectViewport extends FitViewport {
+public class PixelPerfectViewport extends FitViewport
+{
 
     /**
      * Constructors
      */
-    public PixelPerfectViewport(float worldWidth, float worldHeight) {
+    public PixelPerfectViewport(float worldWidth, float worldHeight)
+    {
         super(worldWidth, worldHeight);
     }
 
-    public PixelPerfectViewport(float worldWidth, float worldHeight, Camera camera) {
+    public PixelPerfectViewport(float worldWidth, float worldHeight, Camera camera)
+    {
         super(worldWidth, worldHeight, camera);
     }
 
@@ -35,7 +38,8 @@ public class PixelPerfectViewport extends FitViewport {
      */
     // Must be called so that the screen is updated accordingly on window resize or on respective display.
     @Override
-    public void update(int screenWidth, int screenHeight, boolean centerCamera) {
+    public void update(int screenWidth, int screenHeight, boolean centerCamera)
+    {
 
         // First, find the ratios of the screen dimensions to the world dimensions to decide which needs to be corrected.
         float widthRatio = screenWidth / getWorldWidth();

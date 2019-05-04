@@ -29,35 +29,43 @@ import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-public final class GZip {
+public final class GZip
+{
 
-    public static void decompress(final String filepath) {
+    public static void decompress(final String filepath)
+    {
         byte[] buffer = new byte[1024];
-        try {
+        try
+        {
             FileHandle fh = Gdx.files.external(filepath);
             GZIPInputStream input = new GZIPInputStream(fh.read());
 
             FileHandle output = Gdx.files.external(filepath + ".raw");
 
             int totalSize;
-            while ((totalSize = input.read(buffer)) > 0) {
+            while ((totalSize = input.read(buffer)) > 0)
+            {
                 output.writeBytes(buffer, 0, totalSize, true);
             }
             input.close();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
     }
 
-    public static void compress(final String filepath) {
+    public static void compress(final String filepath)
+    {
         byte[] buffer = new byte[1024];
-        try {
+        try
+        {
             GZIPOutputStream output = new GZIPOutputStream(new FileOutputStream(filepath + ".gz"));
 
             FileInputStream input = new FileInputStream(filepath);
 
             int totalSize;
-            while ((totalSize = input.read(buffer)) > 0) {
+            while ((totalSize = input.read(buffer)) > 0)
+            {
                 output.write(buffer, 0, totalSize);
             }
 
@@ -65,7 +73,8 @@ public final class GZip {
             output.finish();
             output.close();
 
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
     }

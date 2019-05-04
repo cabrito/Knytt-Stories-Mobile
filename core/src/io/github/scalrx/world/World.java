@@ -22,7 +22,8 @@ import io.github.scalrx.KsmFiles;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class World {
+public class World
+{
     private final KsmFiles files;
     // World information
     private String worldName;
@@ -31,45 +32,55 @@ public class World {
     // Map information
     private MapFile map;
 
-    public World(final KsmFiles files) {
+    public World(final KsmFiles files)
+    {
         // Initialize the files directory specific to the specified world
         this.files = files;
     }
 
-    public String getWorldName() {
+    public String getWorldName()
+    {
         return worldName;
     }
 
-    public void setWorldName(String worldName) {
+    public void setWorldName(String worldName)
+    {
         this.worldName = worldName;
     }
 
-    public String getAuthor() {
+    public String getAuthor()
+    {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(String author)
+    {
         this.author = author;
     }
 
-    public int getSize() {
+    public int getSize()
+    {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(int size)
+    {
         this.size = size;
     }
 
-    public void initMap() {
+    public void initMap()
+    {
         files.setWorldDir(author, worldName);
         map = new MapFile(files);
     }
 
-    public MapFile getMap() {
+    public MapFile getMap()
+    {
         return map;
     }
 
-    public KsmFiles getFiles() {
+    public KsmFiles getFiles()
+    {
         return files;
     }
 }

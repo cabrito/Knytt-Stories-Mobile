@@ -1,6 +1,6 @@
 /*
  * AndroidApi.java
- * Allows us to grab permissions from Android.
+ * Allows us to grab information related to the Android OS.
  * Created by: scalr on 4/11/2019.
  *
  * Knytt Stories Mobile
@@ -20,7 +20,9 @@
 
 package io.github.scalrx.utilities;
 
-public interface AndroidApi {
+public interface AndroidApi
+{
+    // Filesystem calls
     boolean isReadPermissionEnabled();
 
     boolean isWritePermissionEnabled();

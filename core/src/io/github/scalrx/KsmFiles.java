@@ -32,7 +32,8 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 
-public class KsmFiles {
+public class KsmFiles
+{
     // Constants
     private final String ksmDir = "Knytt Stories Mobile/";
     private final FileHandleResolver internal = new InternalFileHandleResolver();
@@ -43,38 +44,47 @@ public class KsmFiles {
     // Members
     private String worldDir;                                // DO NOT rely on this going forward!!!
 
-    public KsmFiles(AssetManager assetManager) {
+    public KsmFiles(AssetManager assetManager)
+    {
         this.assetManager = assetManager;
         this.res = new KsmResources(assetManager);
     }
 
-    public void setWorldDir(String author, String worldName) {
+    public void setWorldDir(String author, String worldName)
+    {
         this.worldDir = author + " - " + worldName + "/";
     }
 
-    public void resetWorldDir() {
+    public void resetWorldDir()
+    {
         worldDir = null;
     }
 
-    public String getKsmDir() {
+    public String getKsmDir()
+    {
         return ksmDir;
     }
 
-    public String getWorldDir() {
+    public String getWorldDir()
+    {
         return worldDir;
     }
 
-    public KsmResources getResources() {
+    public KsmResources getResources()
+    {
         return res;
     }
 
-    public String mapBin(boolean raw) {
+    public String mapBin(boolean raw)
+    {
         return raw ? (ksmDir + getWorldDir() + "Map.bin.raw") : (ksmDir + getWorldDir() + "Map.bin");
     }
 
-    public String music(byte muid) {
+    public String music(byte muid)
+    {
         // If the world directory hasn't been set yet, load normal music
-        if (worldDir == null || worldDir.isEmpty()) {
+        if (worldDir == null || worldDir.isEmpty())
+        {
             // Swap the music loader for the AssetManager to load internal music files
             assetManager.setLoader(Music.class, new MusicLoader(internal));
             return "Data/Music/Song" + (muid & 0xFF) + ".ogg";
@@ -86,16 +96,19 @@ public class KsmFiles {
         // If there is music for this screen, provide it
         if (Gdx.files.external(ksmDir + getWorldDir() + "Music/Song" + (muid & 0xFF) + ".ogg").exists())
             return ksmDir + getWorldDir() + "Music/Song" + (muid & 0xFF) + ".ogg";
-        else {
+        else
+        {
             // Swap the music loader back to load internal music files
             assetManager.setLoader(Music.class, new MusicLoader(internal));
             return "Data/Music/Song" + (muid & 0xFF) + ".ogg";
         }
     }
 
-    public String ambiance(byte amid) {
+    public String ambiance(byte amid)
+    {
         // If the world directory hasn't been set yet, load normal ambiance
-        if (worldDir == null || worldDir.isEmpty()) {
+        if (worldDir == null || worldDir.isEmpty())
+        {
             // Swap the music loader for the AssetManager to load internal ambiance files
             assetManager.setLoader(Music.class, new MusicLoader(internal));
             return "Data/Ambiance/Ambi" + (amid & 0xFF) + ".ogg";
@@ -105,25 +118,30 @@ public class KsmFiles {
         assetManager.setLoader(Music.class, new MusicLoader(external));
 
         // If there is ambiance for this screen, provide it
-        if (Gdx.files.external(ksmDir + getWorldDir() + "Ambiance/Ambi" + (amid & 0xFF) + ".ogg").exists()) {
+        if (Gdx.files.external(ksmDir + getWorldDir() + "Ambiance/Ambi" + (amid & 0xFF) + ".ogg").exists())
+        {
             return ksmDir + getWorldDir() + "Ambiance/Ambi" + (amid & 0xFF) + ".ogg";
-        } else {
+        } else
+        {
             // Swap the music loader back to load internal ambiance files
             assetManager.setLoader(Music.class, new MusicLoader(internal));
             return "Data/Ambiance/Ambi" + (amid & 0xFF) + ".ogg";
         }
     }
 
-    public String tileset(byte tsid) {
+    public String tileset(byte tsid)
+    {
         // Swap the loader for external really quick for the following if-else statement...
         assetManager.setLoader(Texture.class, new TextureLoader(external));
 
         // Provide custom tileset filepath if available
-        if (Gdx.files.external(ksmDir + getWorldDir() + "Tilesets/Tileset" + (tsid & 0xFF) + ".png").exists()) {
+        if (Gdx.files.external(ksmDir + getWorldDir() + "Tilesets/Tileset" + (tsid & 0xFF) + ".png").exists())
+        {
             return ksmDir + getWorldDir() + "Tilesets/Tileset" + (tsid & 0xFF) + ".png";
         }
         // Otherwise, use vanilla tilesets instead
-        else {
+        else
+        {
             // Swap the texture loader back to load internal ambiance files
             assetManager.setLoader(Texture.class, new TextureLoader(internal));
             return "Data/Tilesets/Tileset" + (tsid & 0xFF) + ".png";
@@ -131,16 +149,19 @@ public class KsmFiles {
     }
 
     // Custom Tilesets
-    public String gradient(byte gid) {
+    public String gradient(byte gid)
+    {
         // Swap the loader for external really quick for the following if-else statement...
         assetManager.setLoader(Texture.class, new TextureLoader(external));
 
         // Provide custom gradients filepath if available
-        if (Gdx.files.external(ksmDir + getWorldDir() + "Gradients/Gradient" + (gid & 0xFF) + ".png").exists()) {
+        if (Gdx.files.external(ksmDir + getWorldDir() + "Gradients/Gradient" + (gid & 0xFF) + ".png").exists())
+        {
             return ksmDir + getWorldDir() + "Gradients/Gradient" + (gid & 0xFF) + ".png";
         }
         // Otherwise, use vanilla gradients instead
-        else {
+        else
+        {
             // Swap the texture loader back to load internal ambiance files
             assetManager.setLoader(Texture.class, new TextureLoader(internal));
             return "Data/Gradients/Gradient" + (gid & 0xFF) + ".png";

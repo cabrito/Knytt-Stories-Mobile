@@ -33,7 +33,8 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 
 import io.github.scalrx.world.World;
 
-public class Tiler {
+public class Tiler
+{
 
     // Helpful constants
     private final int[] BACKGROUND_LAYER = {4};
@@ -51,15 +52,19 @@ public class Tiler {
     private byte backgroundID;    // Background picture
     private byte[][][] sceneryData = new byte[4][10][25];
 
-    public Tiler(final AssetManager manager, final World world) {
+    public Tiler(final AssetManager manager, final World world)
+    {
         this.manager = manager;
         this.world = world;
     }
 
-    public void generateTiledMap(int xID, int yID) {
-        if (world.getMap().screenOffsetExists(xID, yID)) {
+    public void generateTiledMap(int xID, int yID)
+    {
+        if (world.getMap().screenOffsetExists(xID, yID))
+        {
             generateData(xID, yID);
-        } else {
+        } else
+        {
             tsetAID = 0;
             tsetBID = 0;
             backgroundID = 0;
@@ -84,13 +89,16 @@ public class Tiler {
         tiledMap = new TiledMap();
 
         // Here, we interpret and assemble the tile information for Layers 0 - 3 (Scenery)
-        for (int layer = 0; layer < 4; layer++) {
+        for (int layer = 0; layer < 4; layer++)
+        {
             //Create a new layer for us to press
             TiledMapTileLayer sceneryLayer = new TiledMapTileLayer(25, 10, 24, 24);
 
             // Fill out the scenery layer
-            for (int row = 0; row < 10; row++) {
-                for (int column = 0; column < 25; column++) {
+            for (int row = 0; row < 10; row++)
+            {
+                for (int column = 0; column < 25; column++)
+                {
                     // Division for row, modulo for column:
                     int tileNumber = sceneryData[layer][row][column] & 0xFF;
                     int tilesetRow = tileNumber / 16;
@@ -98,9 +106,11 @@ public class Tiler {
                     TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
 
                     // Determine which tileset we need to pull from
-                    if (tileNumber <= 0x7F) {
+                    if (tileNumber <= 0x7F)
+                    {
                         cell.setTile(new StaticTiledMapTile(splitTilesA[tilesetRow][tilesetColumn]));
-                    } else {
+                    } else
+                    {
                         cell.setTile(new StaticTiledMapTile(splitTilesB[tilesetRow - 8][tilesetColumn]));
                     }
                     // Press the tile Cell into place (note: we set the columns horizontally!)
@@ -119,7 +129,8 @@ public class Tiler {
         bgCell.setTile(new StaticTiledMapTile(new TextureRegion(bg)));
 
         // Assemble each strip of the gradient into the layer
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 25; i++)
+        {
             bgLayer.setCell(i, 0, bgCell);
         }
 
@@ -130,7 +141,8 @@ public class Tiler {
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
-    private void generateData(int xID, int yID) {
+    private void generateData(int xID, int yID)
+    {
         final int LAYER_SIZE = 250;
         final int OBJECT_LAYER_SIZE = LAYER_SIZE * 2;
         final int NUMBER_OF_OBJECT_LAYERS = 4;
@@ -143,9 +155,12 @@ public class Tiler {
         int cursorPosition = world.getMap().getScreenOffset(xID, yID);
 
         // Copy byte data for layers 0 - 3
-        for (int layer = 0; layer < 4; layer++) {
-            for (int row = 0; row < 10; row++) {
-                for (int column = 0; column < 25; column++, cursorPosition++) {
+        for (int layer = 0; layer < 4; layer++)
+        {
+            for (int row = 0; row < 10; row++)
+            {
+                for (int column = 0; column < 25; column++, cursorPosition++)
+                {
                     sceneryData[layer][row][column] = mapFileBytes[cursorPosition];
                 }
             }
@@ -162,16 +177,19 @@ public class Tiler {
         backgroundID = mapFileBytes[cursorPosition];
     }
 
-    public TiledMapRenderer getTiledMapRenderer() {
+    public TiledMapRenderer getTiledMapRenderer()
+    {
         return tiledMapRenderer;
     }
 
-    public void render() {
+    public void render()
+    {
         tiledMapRenderer.render(BACKGROUND_LAYER);
         tiledMapRenderer.render(PRIMARY_LAYERS);
     }
 
-    public void dispose() {
+    public void dispose()
+    {
         // Unload/dispose the getResources since we're not using them.
         manager.unload(world.getFiles().tileset(tsetAID));
         manager.unload(world.getFiles().tileset(tsetBID));

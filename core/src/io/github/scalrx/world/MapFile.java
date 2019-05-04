@@ -34,13 +34,15 @@ import io.github.scalrx.utilities.Pair;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class MapFile {
+public class MapFile
+{
 
     // Members
     private final HashMap<Pair<Integer>, Integer> mapFileOffsets;
     private final KsmFiles files;
 
-    public MapFile(final KsmFiles files) {
+    public MapFile(final KsmFiles files)
+    {
         mapFileOffsets = new HashMap<Pair<Integer>, Integer>();
         this.files = files;
 
@@ -59,52 +61,63 @@ public class MapFile {
     }
 
     // Decompress the Map.bin file for optimization
-    private void decompress() {
+    private void decompress()
+    {
         String mapBinFile = files.mapBin(false);
         GZip.decompress(mapBinFile);
         writeDateFile(mapBinFile);
     }
 
     // Used for checking whether or not the map has changed/been updated
-    private void writeDateFile(String filepath) {
-        try {
+    private void writeDateFile(String filepath)
+    {
+        try
+        {
             FileOutputStream output = new FileOutputStream(filepath + ".dat");
             DataOutputStream dataOutput = new DataOutputStream(output);
             dataOutput.writeLong(Gdx.files.external(filepath).lastModified());
             // TODO: Actually have this print out the number, not the bytes
             dataOutput.close();
 
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
     }
 
-    private long getMapBinDatDate(String filepath) {
-        try {
+    private long getMapBinDatDate(String filepath)
+    {
+        try
+        {
             FileInputStream input = new FileInputStream(filepath + ".dat");
             DataInputStream dis = new DataInputStream(input);
             return dis.readLong();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
         return -1;
     }
 
     // Get the Map file offset for the desired KsmScreen
-    public int getScreenOffset(int x, int y) {
+    public int getScreenOffset(int x, int y)
+    {
         return mapFileOffsets.get(new Pair<Integer>(x, y));
     }
 
-    public boolean screenOffsetExists(int x, int y) {
+    public boolean screenOffsetExists(int x, int y)
+    {
         return mapFileOffsets.containsKey(new Pair<Integer>(x, y));
     }
 
     // Produce all of the file offsets in the Map file
-    private void createFileOffsets() {
+    private void createFileOffsets()
+    {
         // Get file information
         final long SCREEN_DATA_SIZE = 3006;
 
-        try {
+        try
+        {
             // Open Map.bin.raw as a byte array
             FileHandle mapFile = Gdx.files.external(files.mapBin(true));
             byte[] mapFileBytes = mapFile.readBytes();
@@ -117,31 +130,40 @@ public class MapFile {
 
             int cursorPosition = 0;
 
-            while (cursorPosition < mapFileBytes.length) {
-                for (int charPos = 0; ; charPos++, cursorPosition++) {
-                    if ((mapFileBytes[cursorPosition] & 0xFF) == 'x') {
-                        if (charPos != 0) {
+            while (cursorPosition < mapFileBytes.length)
+            {
+                for (int charPos = 0; ; charPos++, cursorPosition++)
+                {
+                    if ((mapFileBytes[cursorPosition] & 0xFF) == 'x')
+                    {
+                        if (charPos != 0)
+                        {
                             throw new IOException("Invalid header; unexpected x-coordinate encountered.");
                         }
-                    } else if ((mapFileBytes[cursorPosition] & 0xFF) == 'y') {
+                    } else if ((mapFileBytes[cursorPosition] & 0xFF) == 'y')
+                    {
                         if (isNegative)
                             X = -coordVal;
                         else
                             X = coordVal;
                         coordVal = 0;
                         isNegative = false;
-                    } else if (((mapFileBytes[cursorPosition] & 0xFF) >= '0') && ((mapFileBytes[cursorPosition] & 0xFF) <= '9')) {
+                    } else if (((mapFileBytes[cursorPosition] & 0xFF) >= '0') && ((mapFileBytes[cursorPosition] & 0xFF) <= '9'))
+                    {
                         coordVal = coordVal * 10 + ((mapFileBytes[cursorPosition] & 0xFF) - '0');
-                    } else if ((mapFileBytes[cursorPosition] & 0xFF) == '-') {
+                    } else if ((mapFileBytes[cursorPosition] & 0xFF) == '-')
+                    {
                         isNegative = true;
                         coordVal = 0;
-                    } else if ((mapFileBytes[cursorPosition] & 0xFF) == 0) {
+                    } else if ((mapFileBytes[cursorPosition] & 0xFF) == 0)
+                    {
                         if (isNegative)
                             Y = -coordVal;
                         else
                             Y = coordVal;
                         break;
-                    } else {
+                    } else
+                    {
                         break;  // ?????????
                     }
                 }
@@ -154,7 +176,8 @@ public class MapFile {
                 cursorPosition += (5 + SCREEN_DATA_SIZE);
                 X = Y = coordVal = 0;
             }
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
         }
     }

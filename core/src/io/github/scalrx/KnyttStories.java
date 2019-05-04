@@ -35,7 +35,8 @@ import io.github.scalrx.screens.MenuScreen;
 import io.github.scalrx.utilities.AndroidApi;
 import io.github.scalrx.world.World;
 
-public class KnyttStories extends Game {
+public class KnyttStories extends Game
+{
 
     // Attributes we use for rendering a screen in a Knytt Stories level
     public static final int V_WIDTH = 854;
@@ -53,22 +54,26 @@ public class KnyttStories extends Game {
     private AndroidApi androidApi;
 
     // Desktop Constructor
-    public KnyttStories() {
+    public KnyttStories()
+    {
         super();
     }
 
     // Android Constructor
-    public KnyttStories(AndroidApi androidApi) {
+    public KnyttStories(AndroidApi androidApi)
+    {
         super();
         this.androidApi = androidApi;
     }
 
-    public AndroidApi getAndroidApi() {
+    public AndroidApi getAndroidApi()
+    {
         return androidApi;
     }
 
     @Override
-    public void create() {
+    public void create()
+    {
         // Initialize our SpriteBatch and AssetManager
         batch = new SpriteBatch();
         assetManager = new AssetManager();
@@ -106,12 +111,14 @@ public class KnyttStories extends Game {
     }
 
     @Override
-    public void render() {
+    public void render()
+    {
         super.render();
     }
 
     @Override
-    public void dispose() {
+    public void dispose()
+    {
         batch.dispose();
         assetManager.dispose();
     }
