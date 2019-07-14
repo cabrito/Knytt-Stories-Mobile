@@ -30,6 +30,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import io.github.scalrx.world.World;
 
@@ -191,9 +192,16 @@ public class Tiler
     public void dispose()
     {
         // Unload/dispose the getResources since we're not using them.
-        manager.unload(world.getFiles().tileset(tsetAID));
-        manager.unload(world.getFiles().tileset(tsetBID));
-        manager.unload(world.getFiles().gradient(backgroundID));
-        tiledMap.dispose();
+        try
+        {
+            manager.unload(world.getFiles().tileset(tsetAID));
+            manager.unload(world.getFiles().tileset(tsetBID));
+            manager.unload(world.getFiles().gradient(backgroundID));
+            tiledMap.dispose();
+        } catch (GdxRuntimeException e)
+        {
+            e.printStackTrace();
+        }
+        /* TODO: "Asset not loaded" Exception still happens. */
     }
 }

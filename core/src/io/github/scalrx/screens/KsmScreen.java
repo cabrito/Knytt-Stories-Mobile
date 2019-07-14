@@ -62,16 +62,12 @@ public class KsmScreen implements Screen
         this.yID = yID;
 
         camera = new OrthographicCamera();
-        camera.position.set(24 * 25 / 2.0f, 24 * 10 / 2.0f, 0);
         //viewport = new FitViewport(KnyttStories.V_WIDTH, KnyttStories.V_HEIGHT, camera);
         viewport = new FitViewport(24 * 25, 24 * 10, camera);
         controller = new OnscreenController(game.batch);
         tiler = new Tiler(game.assetManager, game.currWorld);
         objects = new ObjectData(game.currWorld);
         audioData = new AudioData(game.currWorld);
-
-        // Assemble all the data for this screen from the Map.bin.raw file
-        initializeData();
     }
 
     private void initializeData()
@@ -89,6 +85,9 @@ public class KsmScreen implements Screen
     @Override
     public void show()
     {
+        camera.position.set(24 * 25 / 2.0f, 24 * 10 / 2.0f, 0);
+        // Assemble all the data for this screen from the Map.bin.raw file
+        initializeData();
         // Handle all audio for this screen: do we need to fade out or play something immediately?
         game.audio.prepareScreenAudio(musicID, atmosAID, atmosBID);
     }
@@ -121,31 +120,34 @@ public class KsmScreen implements Screen
         // Draw controller to screen for mobile platforms
         if (Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS)
             controller.draw();
+        if (game.assetManager.update())
+        {
+            // Movement-related controls for us to use temporarily
+            if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || controller.isLeftPressed())
+            {
+                controller.resetTouch();
+                dispose();
+                game.setScreen(new KsmScreen(game, xID - 1, yID));
 
-        // Movement-related controls for us to use temporarily
-        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || controller.isLeftPressed())
-        {
-            controller.resetTouch();
-            game.setScreen(new KsmScreen(game, xID - 1, yID));
-            dispose();
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || controller.isRightPressed())
-        {
-            controller.resetTouch();
-            game.setScreen(new KsmScreen(game, xID + 1, yID));
-            dispose();
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || controller.isUpPressed())
-        {
-            controller.resetTouch();
-            game.setScreen(new KsmScreen(game, xID, yID - 1));
-            dispose();
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || controller.isDownPressed())
-        {
-            controller.resetTouch();
-            game.setScreen(new KsmScreen(game, xID, yID + 1));
-            dispose();
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || controller.isRightPressed())
+            {
+                controller.resetTouch();
+                dispose();
+                game.setScreen(new KsmScreen(game, xID + 1, yID));
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || controller.isUpPressed())
+            {
+                controller.resetTouch();
+                dispose();
+                game.setScreen(new KsmScreen(game, xID, yID - 1));
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || controller.isDownPressed())
+            {
+                controller.resetTouch();
+                dispose();
+                game.setScreen(new KsmScreen(game, xID, yID + 1));
+            }
         }
     }
 

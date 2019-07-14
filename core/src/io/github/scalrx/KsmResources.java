@@ -26,6 +26,9 @@ import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
 
+/**
+ * Provides assets to the game that are guaranteed to be specific to the UI.
+ */
 public final class KsmResources
 {
     private final AssetManager assetManager;

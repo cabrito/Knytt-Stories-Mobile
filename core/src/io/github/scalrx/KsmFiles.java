@@ -144,6 +144,7 @@ public class KsmFiles
         {
             // Swap the texture loader back to load internal ambiance files
             assetManager.setLoader(Texture.class, new TextureLoader(internal));
+            assetManager.finishLoading();
             return "Data/Tilesets/Tileset" + (tsid & 0xFF) + ".png";
         }
     }
